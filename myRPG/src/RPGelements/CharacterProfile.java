@@ -56,12 +56,12 @@ public class CharacterProfile{
 	 * */
 	protected int hp;
 	protected int attackDamage; 
-	protected int attackSpeed; 
+	protected double attackSpeed; 
 	protected int attackRange; 
 	protected int moveSpeed;
 	protected int armor; 
 	protected int magicResistance;
-	protected int fervor;
+	protected int fervor; /* crowd control reduction stat*/
 	
 	public CharacterProfile(String name, String month, int date, int year, String race, String profession, String faction){
 		this.name = name;
@@ -77,6 +77,7 @@ public class CharacterProfile{
 	}
 	
 	/*setters*/
+
 	public void updateExp(int expDiff){
 		this.totalExp += expDiff;
 		this.exp = Math.max(this.exp + expDiff, 0); 
