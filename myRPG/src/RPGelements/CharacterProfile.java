@@ -41,7 +41,7 @@ public class CharacterProfile{
 	private int date; 
 	private int year; 
 	
-	/* general stats */
+	/* general stats*/
 	private int exp;
 	private int totalExp;
 	private int level;    /*0 - 30*/
@@ -51,7 +51,7 @@ public class CharacterProfile{
 	private String classes[]; /*Warrior, Mage, Assassin, Archer, Priest*/
 	/* combat stats 
 	 *   
-	 * TODO: base stats will vary based on race, profession 
+	 * TODO: base stats will vary based on race and classes
 	 * 
 	 * */
 	protected int hp;
