@@ -1,4 +1,4 @@
-myRPG
+My attempt at building a Role Playing Game universe from scratch.
 =====
 
 trying to make an RPG in java for fun. This code is open for everyone to see, asthis project is purely a 
