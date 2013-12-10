@@ -1,5 +1,5 @@
 package RPGelements;
-
+import java.util.ArrayList;
 
 public class CharacterProfile{
 	
@@ -47,8 +47,8 @@ public class CharacterProfile{
 	private int level;    /*0 - 30*/
 	private String faction; /*4 major factions: Zaft, Kami, Follen, Xan-Ishrin*/
 	private String profession;  /* thief, spy, vassal, merchant, mercenary, sovereign, official, viceroy, architect*/
-	private String race;  /*elf, dwarf, human, liche */
-	private String classes[]; /*Warrior, Mage, Assassin, Archer, Priest*/
+	private String race;  /*elf, dwarf, human, liche, azealin */
+	protected ArrayList<String> characterclasses; /*Warrior, Mage, Assassin, Archer, Priest*/
 	/* combat stats 
 	 *   
 	 * TODO: base stats will vary based on race and classes
@@ -61,7 +61,10 @@ public class CharacterProfile{
 	protected int moveSpeed;
 	protected int armor; 
 	protected int magicResistance;
-	protected int fervor; /* crowd control reduction stat*/
+	protected int fervor;  /* crowd control reduction stat*/
+	protected int mana;   
+	protected int bonusMagic;
+	protected double luck;
 	
 	public CharacterProfile(String name, String month, int date, int year, String race, String profession, String faction){
 		this.name = name;
@@ -74,6 +77,7 @@ public class CharacterProfile{
 		this.level = 0; 
 		this.exp = 0;
 		this.totalExp = 0;
+		this.luck = 0.000001;
 	}
 	
 	/*setters*/
