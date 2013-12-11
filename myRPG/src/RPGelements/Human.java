@@ -8,12 +8,11 @@ public class Human extends CharacterProfile{
 		applyBaseStats();
 	}
 	
-	/* TODO: list of statistical bonuses humans get 
-	 * TODO: list of unique abilities humans get
+	/* TODO: apply scaling stats for humans
+	 * TODO: unique human abilities
 	 */
-	public void applyBaseStats(){
+	private void applyBaseStats(){
 		this.hp = 50; 
-		this.armor = 5; 
 		this.attackDamage = 7; 
 		this.attackSpeed = 0.50;
 		this.moveSpeed = 10; 
@@ -22,8 +21,7 @@ public class Human extends CharacterProfile{
 		this.fervor = 0;
 		this.mana = 25; 
 		this.bonusMagic = 0;
-	}
-	
+	}	
 	public void uniqueAbilities(){
 		
 	}

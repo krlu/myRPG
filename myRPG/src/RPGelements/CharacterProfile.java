@@ -35,6 +35,8 @@ public class CharacterProfile{
 		 	 2613,	 
 		 	 2681,	
 			 2750};	 
+	private final int MAXEXP = 9999;
+	private final int MAXLVL = 30;
 	/* user profile material*/
 	private String name;
 	private String month; 
@@ -48,12 +50,9 @@ public class CharacterProfile{
 	private String faction; /*4 major factions: Zaft, Kami, Follen, Xan-Ishrin*/
 	private String profession;  /* thief, spy, vassal, merchant, mercenary, sovereign, official, viceroy, architect*/
 	private String race;  /*elf, dwarf, human, liche, azealin */
-	protected ArrayList<String> characterclasses; /*Warrior, Mage, Assassin, Archer, Priest*/
-	/* combat stats 
-	 *   
-	 * TODO: base stats will vary based on race and classes
-	 * 
-	 * */
+	protected ArrayList<String> characterclasses; /*Warrior, Mage, Assassin, Marksman, Priest*/
+	
+	/* combat stats */
 	protected int hp;
 	protected int attackDamage; 
 	protected double attackSpeed; 
@@ -85,13 +84,18 @@ public class CharacterProfile{
 	public void updateExp(int expDiff){
 		this.totalExp += expDiff;
 		this.exp = Math.max(this.exp + expDiff, 0); 
-		
+		this.exp = Math.min(MAXEXP, this.exp);
 	}
-	public void levelUp(){
+	public boolean levelUp(){
+		if(this.level >= MAXLVL){
+			return false;
+		}
 		if(this.exp >= this.expThresholds[this.level]){
 			this.level += 1; 
 			this.exp = 0;
+			return true;
 		}
+		return false;
 	}
 	public void updateProfession(String profession){
 		this.profession = (profession != null && !profession.equals("")) ? profession : this.profession;
@@ -131,10 +135,7 @@ public class CharacterProfile{
 	public int getTotalExp(){
 		return this.totalExp;
 	}
-	
-	
-	
-	
+
 	
 	public static void main(String[] args){
 		CharacterProfile me = new CharacterProfile("Kenny", "August", 30, 1991, "human", "merchant", "");			
