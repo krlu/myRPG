@@ -51,6 +51,8 @@ public class CharacterProfile{
 	private String profession;  /* thief, spy, vassal, merchant, mercenary, sovereign, official, viceroy, architect*/
 	private String race;  /*elf, dwarf, human, liche, azealin */
 	protected ArrayList<String> characterclasses; /*Warrior, Mage, Assassin, Marksman, Priest*/
+	protected ArrayList<String> debuffs;
+	protected ArrayList<String> buffs;
 	
 	/* combat stats */
 	protected int hp;
@@ -61,8 +63,15 @@ public class CharacterProfile{
 	protected int armor; 
 	protected int magicResistance;
 	protected int fervor;  /* crowd control reduction stat*/
-	protected int mana;   
+	protected int mana;  
+	
+	/*over time stats in terms of per-second*/
+	protected int manaRegen;
 	protected int bonusMagic;
+	protected int gatherSpeed; 
+	protected int buildSpeed;
+	protected int healthRegen;
+	
 	protected double luck;
 	
 	public CharacterProfile(String name, String month, int date, int year, String race, String profession, String faction){
