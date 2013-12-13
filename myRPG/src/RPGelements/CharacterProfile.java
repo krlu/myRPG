@@ -53,6 +53,8 @@ public class CharacterProfile{
 	protected ArrayList<String> characterclasses; /*Warrior, Mage, Assassin, Marksman, Priest*/
 	protected ArrayList<String> debuffs;
 	protected ArrayList<String> buffs;
+	protected int[][] coordinatePosition;
+	protected String terrain;
 	
 	/* combat stats */
 	protected int hp;

@@ -29,7 +29,7 @@ public class Human extends CharacterProfile{
 		this.bonusMagic = 0;
 		this.manaRegen = 2;
 		this.gatherSpeed = 5;
-		this.buildSpeed = 1;
+		this.buildSpeed = 2;
 	}	
 	public int applyGatheringBonus(String resource){
 		int gatherBonus = 0;
