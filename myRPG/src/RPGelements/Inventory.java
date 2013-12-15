@@ -1,16 +1,26 @@
 package RPGelements;
 
+/**************************************************************
+ * This class serves to book-keep all items acquired and stored 
+ * by a particular player. Right now the association between 
+ * player and inventory is given by a CharacterProfile field 
+ * within this class. 
+ * TODO: setup relational database for inventory and profile
+ *************************************************************/
 public class Inventory {
 
 	// private int characterId /*so we know whose inventory this is */
 	protected String[][] smallItems;
 	protected String[][] largeItems;
+	protected CharacterProfile user; 
 
-	public Inventory() {
+	public Inventory(CharacterProfile user) {
+		this.user = user;
 		smallItems = new String[1][10];
 		largeItems = new String[1][3];
 	}
-
+	
+	/* Simple helper method for the acquiring and removing of items */
 	private boolean notOutOfBounds(String[][] grid, int row, int col) {
 		return (0 <= row && row < grid.length && 0 < col && col < grid[0].length);
 	}
@@ -26,7 +36,11 @@ public class Inventory {
 			System.err.println("Out of bounds for Small Item");
 		}
 	}
-
+	
+	/* ***********************************************
+	 * Generic add and remove methods
+	 * implemented for both small and large item slots
+	 *************************************************/
 	public void removeSmallItem(String item, int row, int col) {
 		if (notOutOfBounds(this.smallItems, row, col)) {
 			if (this.smallItems[row][col] != null) {
