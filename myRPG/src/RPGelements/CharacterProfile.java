@@ -1,5 +1,6 @@
 package RPGelements;
 import java.util.ArrayList;
+import FundamentalStructures.Tuple;
 
 public class CharacterProfile{
 	
@@ -53,8 +54,7 @@ public class CharacterProfile{
 	protected ArrayList<String> characterclasses; /*Warrior, Mage, Assassin, Marksman, Priest*/
 	protected ArrayList<String> debuffs;
 	protected ArrayList<String> buffs;
-	protected int[][] coordinatePosition;
-	protected String terrain;
+	protected Tuple<Integer,Integer> coordinatePosition; /*<x coordinate, y coordinate>*/
 	
 	/* combat stats */
 	protected int hp;
@@ -90,8 +90,10 @@ public class CharacterProfile{
 		this.luck = 0.000001;
 	}
 	
-	/*setters*/
-
+	/*setters and update methods*/
+	public void setPosition(int x, int y){
+		this.coordinatePosition = new Tuple<Integer, Integer>(x,y);
+	}
 	public void updateExp(int expDiff){
 		this.totalExp += expDiff;
 		this.exp = Math.max(this.exp + expDiff, 0); 
@@ -147,6 +149,22 @@ public class CharacterProfile{
 		return this.totalExp;
 	}
 
+	/* movement, ability usage, basic attack methods*/
+	public void moveUp(int distance){
+		this.coordinatePosition.r += distance;
+	}
+	public void moveDown(int distance){
+		this.coordinatePosition.r -= distance;
+	}
+	public void moveLeft(int distance){
+		this.coordinatePosition.l += distance;
+	}
+	public void moveRight(int distance){
+		this.coordinatePosition.l -= distance;
+	}
+	public int basicAttack(){
+		return this.attackDamage;
+	}
 	
 	public static void main(String[] args){
 		CharacterProfile me = new CharacterProfile("Kenny", "August", 30, 1991, "human", "merchant", "");			
@@ -156,3 +174,15 @@ public class CharacterProfile{
 		System.out.println(me.getDOB());
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+

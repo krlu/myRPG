@@ -4,23 +4,17 @@ package FundamentalStructures;
  */
 
 public class Tuple<L,R> {
-	private L l;
-	private R r; 
+	public L l;
+	public R r; 
 	
 	public Tuple(L l, R r){
 		this.l = l;
 		this.r = r;
 	}
 	
-	public L getL(){
-		return l;
-	}
-	public R getR(){
-		return r; 
-	}
 	
 	public boolean equals(Tuple<L,R> p){
-		if(this.l.equals(p.getL()) && this.r.equals(p.getR())){
+		if(this.l.equals(p.l) && this.r.equals(p.r)){
 			return true;
 		}
 		return false;
