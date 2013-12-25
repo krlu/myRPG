@@ -1,5 +1,6 @@
 package RPGelements;
 import java.util.ArrayList;
+
 import FundamentalStructures.Tuple;
 import RPGItemTree.Item;
 public class CharacterProfile{
@@ -151,6 +152,22 @@ public class CharacterProfile{
 		int sum = this.attackDamage + bonus;
 		this.attackDamage = (sum > 0) ?  0 : sum;
 	}
+	public void addToEquipedItems(Item item){
+		if(this.equipedItems.size() > EquipItemThreshold){
+			System.err.println("at equipment threshold, cannot equip more items!!");
+		}
+		else{
+			this.equipedItems.add(item);
+		}
+	}
+	public void removeFromEquipedItems(Item item){
+		if(this.equipedItems.contains(item)){
+			this.equipedItems.remove(item);
+		}
+		else{
+			System.err.println("item not found!");
+		}
+	}
 	public void updateArmor(int bonus){
 		this.armor += bonus; 
 	}
@@ -213,12 +230,26 @@ public class CharacterProfile{
 		return this.attackDamage;
 	}
 	
+	
+	
+	/***************************
+	 * Test bench down here!!
+	 * 
+	 */
 	public static void main(String[] args){
 		CharacterProfile me = new CharacterProfile("Kenny", "August", 30, 1991, "human", "merchant", "");			
 		me.updateDOB(null, 0,0); 
 		System.out.println(me.getDOB()); 
 		me.updateDOB("july", 4, 1453); 
 		System.out.println(me.getDOB());
+	}
+	
+	public void printEquipedItems(){
+		System.out.print("[");
+		for(Item item : this.equipedItems){
+			System.out.print(" " + item.itemName() + "  ");
+		}
+		System.out.println("]");
 	}
 }
 

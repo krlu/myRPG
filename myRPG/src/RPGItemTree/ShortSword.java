@@ -1,73 +1,49 @@
 package RPGItemTree;
 import RPGelements.CharacterProfile;
+import RPGelements.Dwarf;
+
 import java.util.ArrayList;
 
-public class ShortSword implements Item {
-	private boolean equiped; 
+public class ShortSword extends Item {
+
 	private int attackBonus; 
-	private int upgradeCost;
-	private int goldValue;
-	private ArrayList<Item> buildsFrom;
-	private ArrayList<Item> buildsTo;
-	
+	//TODO: RESOLVE RECURSION BETWEEN SHORT AND BROAD SWORD!!
 	public ShortSword() {
+		constructorHelper();
+		this.buildsTo.add(new BroadSword(this.name));
+	}
+	public ShortSword(String s) {
+		constructorHelper();
+	}
+	private void constructorHelper(){
+		this.attackBonus = 3;
 		this.goldValue = 50;
 		this.upgradeCost = 0;
-		this.attackBonus = 3;
-		this.buildsFrom = new ArrayList<Item>(); 
 		this.buildsTo = new ArrayList<Item>();
-		this.buildsTo.add(new BroadSword());
-	}
-
-	public void equipItem(CharacterProfile profile) {
-		if(this.equiped == true){
-			System.err.println("already equiped shortsword!");
-		}
-		else if (profile.getEquipedItems().size() <= CharacterProfile.EquipItemThreshold){
-			System.err.println("at equipe threshold, cannot equip more items!!");
-		}
-		else{
-			this.equiped = true; 
-			profile.updateAttack(this.attackBonus);
-		}
+		this.buildsFrom = new ArrayList<Item>();
+		this.name = "ShortSword";
 	}
 	
-	public void unequipItem(CharacterProfile profile){
-		if(this.equiped == false){
-			System.err.println("never equiped shortsword!");
-		}
-		else{
-			this.equiped = false; 
-			profile.updateAttack(-1*this.attackBonus);
-		}
+	@Override
+	public void applyItemEffects(CharacterProfile profile){
+		profile.updateAttack(this.attackBonus);
+	}
+	@Override
+	public void removeItemEffects(CharacterProfile profile){
+		profile.updateAttack(-1 * this.attackBonus);
 	}
 	
 	public void printStats() {
 		System.out.println("Attack Damage: + 3");
 	}
-
-	/*this is a basic item*/
-	public ArrayList<Item> buildsFrom() {
-		return this.buildsFrom;
+	public static void main(String[] args){
+		CharacterProfile me = new Dwarf("Kenny", "August", 30, 1991, "merchant", "");
+		ShortSword item = new ShortSword();
+		System.out.println("my item list:" + me.getEquipedItems().size());
+		System.out.println("builds to: " + item.buildsTo.get(0).itemName());
+		item.equipItem(me);
+		me.addToEquipedItems(item);
+		System.out.println("my item list:" + me.getEquipedItems().size());
+		me.printEquipedItems();
 	}
-	public ArrayList<Item> buildsInto() {
-		return this.buildsTo;
-	}
-
-	public int goldValue() {
-		return this.goldValue;
-	}
-
-	public int upgradeCost() {
-		return this.upgradeCost;
-	}
-	public int totalCost(){
-		int total = 0;
-		for(Item i : this.buildsFrom){
-			total += i.totalCost();
-		}
-		total += this.goldValue + this.upgradeCost;
-		return total;
-	}
-
 }
