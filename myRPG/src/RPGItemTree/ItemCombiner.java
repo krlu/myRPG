@@ -11,10 +11,6 @@ import java.util.HashMap;
  */
 public class ItemCombiner {
 
-	public ItemCombiner() {
-
-	}
-
 	public static Item combineItems(ArrayList<Item> components, Item product, CharacterProfile profile) {
 		if(hasAllComponents(product, components) && profile.getGold() >= product.upgradeCost()){
 			profile.updateGold(product.upgradeCost());
@@ -50,6 +46,8 @@ public class ItemCombiner {
 		return builds;
 	}
 
+	/*Simply checks required items against list of component items
+	 * TODO: decide if this should be optimized with HashMap*/
 	private static boolean hasAllComponents(Item product, ArrayList<Item> components) {
 		for (Item i : product.buildsFrom()) {
 			if (!components.contains(i)) {
