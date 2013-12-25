@@ -13,7 +13,7 @@ public class WorldMap {
 	
 	protected int[][] grid;
 	protected String[][] mapData;
-	protected String terrain; /*mountain, hill, water, grass, forest, sand*/
+	protected String[][] terrain; /*Mountain, Hill, Water, Grass, Forest, Sand*/
 	/*returns position of input user 
 	 */
 	private boolean notOutOfBounds(int[][] grid, int row, int col) {

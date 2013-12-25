@@ -72,7 +72,7 @@ public class CharacterProfile{
 	protected int bonusMagic;
 	protected int gatherSpeed; 
 	protected int buildSpeed;
-	protected int healthRegen;
+	protected int healthRegen; // per 5 seconds 
 	
 	protected double luck;
 	
