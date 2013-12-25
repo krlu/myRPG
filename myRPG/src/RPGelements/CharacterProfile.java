@@ -1,10 +1,11 @@
 package RPGelements;
 import java.util.ArrayList;
 import FundamentalStructures.Tuple;
-
+import RPGItemTree.Item;
 public class CharacterProfile{
 	
 	//private int characterID; /*auto-assign within database*/
+	public static final int EquipItemThreshold = 6; 
 	private int[] expThresholds = {
 			 50 ,	
 		 	 90	, 
@@ -54,7 +55,10 @@ public class CharacterProfile{
 	protected ArrayList<String> characterclasses; /*Warrior, Mage, Assassin, Marksman, Priest*/
 	protected ArrayList<String> debuffs;
 	protected ArrayList<String> buffs;
+	protected ArrayList<Item> equipedItems; /* can equip max of 6 items*/
 	protected Tuple<Integer,Integer> coordinatePosition; /*<x coordinate, y coordinate>*/
+	protected int gold;
+	
 	
 	/* combat stats */
 	protected int hp;
@@ -73,7 +77,6 @@ public class CharacterProfile{
 	protected int gatherSpeed; 
 	protected int buildSpeed;
 	protected int healthRegen; // per 5 seconds 
-	
 	protected double luck;
 	
 	public CharacterProfile(String name, String month, int date, int year, String race, String profession, String faction){
@@ -88,9 +91,15 @@ public class CharacterProfile{
 		this.exp = 0;
 		this.totalExp = 0;
 		this.luck = 0.000001;
+		this.equipedItems = new ArrayList<Item>();
+
 	}
 	
-	/*setters and update methods*/
+	/* **********************************************
+	 * setters and update methods.Have subsections 
+	 * for different fields, as some will be updated 
+	 * more frequently and differently than others
+	 * *********************************************/
 	public void setPosition(int x, int y){
 		this.coordinatePosition = new Tuple<Integer, Integer>(x,y);
 	}
@@ -110,6 +119,12 @@ public class CharacterProfile{
 		}
 		return false;
 	}
+	
+	/* ********************************************** 
+	 *  Updates the most basic character fields. 
+	 *  These are the least frequently updated fields 
+	 *  over the course of a game.
+	 ************************************************/
 	public void updateProfession(String profession){
 		this.profession = (profession != null && !profession.equals("")) ? profession : this.profession;
 	}
@@ -124,6 +139,32 @@ public class CharacterProfile{
 		this.month = (month != null && !month.equals(""))? month : this.month; 
 		this.date = (date > 0) ? date : this.date; 
 		this.year = (year > 0) ? year : this.year;
+	}
+	
+	/* *****************************************************
+	 * These are the most frequently updated fields, due to 
+	 * the prevalence of equip items debuffs, and various 
+	 * abilities. Buying/Selling changes gold frequently too
+	 * TODO: there will be many more to implement
+	 *******************************************************/
+	public void updateAttack(int bonus){
+		int sum = this.attackDamage + bonus;
+		this.attackDamage = (sum > 0) ?  0 : sum;
+	}
+	public void updateArmor(int bonus){
+		this.armor += bonus; 
+	}
+	public void updateMagicResist(int bonus){
+		this.magicResistance += bonus;
+	}
+	public void updateMoveSpeed(int bonus){
+		int sum = this.moveSpeed + bonus;
+		this.moveSpeed = (sum > 0) ? 0 : sum; 
+	}
+	public void updateGold(int amount){
+		if(this.gold + amount > 0){
+			this.gold += amount;
+		}
 	}
 	
 	/*getters*/
@@ -148,7 +189,12 @@ public class CharacterProfile{
 	public int getTotalExp(){
 		return this.totalExp;
 	}
-
+	public ArrayList<Item> getEquipedItems(){
+		return this.equipedItems;
+	}
+	public int getGold(){
+		return this.gold;
+	}
 	/* movement, ability usage, basic attack methods*/
 	public void moveUp(int distance){
 		this.coordinatePosition.r += distance;
@@ -162,6 +208,7 @@ public class CharacterProfile{
 	public void moveRight(int distance){
 		this.coordinatePosition.l -= distance;
 	}
+	// TODO: basicAttack does nothing yet!!
 	public int basicAttack(){
 		return this.attackDamage;
 	}

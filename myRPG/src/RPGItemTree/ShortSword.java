@@ -7,10 +7,16 @@ public class ShortSword implements Item {
 	private int attackBonus; 
 	private int upgradeCost;
 	private int goldValue;
+	private ArrayList<Item> buildsFrom;
+	private ArrayList<Item> buildsTo;
+	
 	public ShortSword() {
 		this.goldValue = 50;
 		this.upgradeCost = 0;
 		this.attackBonus = 3;
+		this.buildsFrom = new ArrayList<Item>(); 
+		this.buildsTo = new ArrayList<Item>();
+		this.buildsTo.add(new BroadSword());
 	}
 
 	public void equipItem(CharacterProfile profile) {
@@ -42,10 +48,10 @@ public class ShortSword implements Item {
 
 	/*this is a basic item*/
 	public ArrayList<Item> buildsFrom() {
-		return null;
+		return this.buildsFrom;
 	}
 	public ArrayList<Item> buildsInto() {
-		return null;
+		return this.buildsTo;
 	}
 
 	public int goldValue() {
@@ -56,7 +62,12 @@ public class ShortSword implements Item {
 		return this.upgradeCost;
 	}
 	public int totalCost(){
-		return this.goldValue + this.upgradeCost;
+		int total = 0;
+		for(Item i : this.buildsFrom){
+			total += i.totalCost();
+		}
+		total += this.goldValue + this.upgradeCost;
+		return total;
 	}
 
 }

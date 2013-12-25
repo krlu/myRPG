@@ -10,11 +10,16 @@ public class BroadSword implements Item {
 	private int attackBonus; 
 	private int upgradeCost;
 	private int goldValue;
+	private ArrayList<Item> buildsFrom;
+	private ArrayList<Item> buildsTo;
 	
 	public BroadSword() {
 		this.attackBonus = 6;
 		this.goldValue = 0;
 		this.upgradeCost = 50;
+		this.buildsTo = new ArrayList<Item>();
+		this.buildsFrom = new ArrayList<Item>();
+		this.buildsFrom.add(new ShortSword());
 	}
 
 	public void equipItem(CharacterProfile profile) {
@@ -45,16 +50,11 @@ public class BroadSword implements Item {
 	}
 
 
-	@Override
 	public ArrayList<Item> buildsFrom() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.buildsFrom;
 	}
-
-	@Override
 	public ArrayList<Item> buildsInto() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.buildsTo;
 	}
 	public int goldValue() {
 		return this.goldValue;
@@ -64,6 +64,11 @@ public class BroadSword implements Item {
 		return this.upgradeCost;
 	}
 	public int totalCost(){
-		return this.goldValue + this.upgradeCost;
+		int total = 0;
+		for(Item i : this.buildsFrom){
+			total += i.totalCost();
+		}
+		total += this.goldValue + this.upgradeCost;
+		return total;
 	}
 }
