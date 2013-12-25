@@ -8,8 +8,7 @@ public class Dwarf extends CharacterProfile{
 	 *  These bonuses scale with levels.
 	 ***********************************************************************************/
 	
-	public Dwarf(String name, String month, int date, int year, String race,
-			String profession, String faction) {
+	public Dwarf(String name, String month, int date, int year, String profession, String faction) {
 		super(name, month, date, year, "Dwarf", profession, faction);
 		applyBaseStats();
 	}
@@ -17,7 +16,7 @@ public class Dwarf extends CharacterProfile{
 		this.hp = 50; 
 		this.attackDamage = 9; 
 		this.attackSpeed = 0.45;
-		this.moveSpeed = 8; 
+		this.moveSpeed = 7; 
 		this.magicResistance = 4;
 		this.attackRange = 0;
 		this.fervor = 3;
@@ -35,7 +34,7 @@ public class Dwarf extends CharacterProfile{
 		return buildBonus;
 	}
 	public static void main(String[] args) {
-		CharacterProfile me = new Dwarf("Kenny", "August", 30, 1991, "asdfasdf", "merchant", "");			
+		CharacterProfile me = new Dwarf("Kenny", "August", 30, 1991, "merchant", "");			
 		System.out.println(me.getName() + "\n" + me.getDOB() + "\n" + me.getRace());
 	}
 }
