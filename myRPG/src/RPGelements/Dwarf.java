@@ -14,7 +14,7 @@ public class Dwarf extends CharacterProfile{
 	}
 	private void applyBaseStats(){
 		this.hp = 50; 
-		this.healthRegen = 5;
+		this.healthRegen = 4;
 		this.attackDamage = 9; 
 		this.attackSpeed = 0.45;
 		this.moveSpeed = 7; 
@@ -27,6 +27,8 @@ public class Dwarf extends CharacterProfile{
 		this.gatherSpeed = 5;
 		this.buildSpeed = 2;
 	}	
+	
+	/*Passive name: Pillar of Atlas*/
 	public int applyTerrainBuildBonus(String terrain){
 		int buildBonus = 0;
 		if(terrain.equals("Mountain") || terrain.equals("Foothills")){

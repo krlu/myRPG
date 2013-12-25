@@ -10,6 +10,7 @@ public class Human extends CharacterProfile{
 	 ***********************************************************************************/
 	
 	private ArrayList<String> amplifiedResources = new ArrayList<String>(Arrays.asList("Stone", "Iron", "Oil"));
+	
 	public Human(String name, String month, int date, int year, String race,
 			String profession, String faction) {
 		super(name, month, date, year, "Human", profession, faction);
@@ -17,7 +18,7 @@ public class Human extends CharacterProfile{
 	}
 	
 	private void applyBaseStats(){
-		this.healthRegen = 1;
+		this.healthRegen = 4;
 		this.hp = 50; 
 		this.healthRegen = 3; 
 		this.attackDamage = 7; 
@@ -32,6 +33,8 @@ public class Human extends CharacterProfile{
 		this.gatherSpeed = 5;
 		this.buildSpeed = 2;
 	}	
+	
+	/*Passive Name: Industrial Revolution*/
 	public int applyGatheringBonus(String resource){
 		int gatherBonus = 0;
 		if(this.amplifiedResources.contains(resource)){

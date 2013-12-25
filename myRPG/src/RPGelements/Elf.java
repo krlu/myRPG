@@ -4,7 +4,7 @@ public class Elf extends CharacterProfile {
 	/**********************************************************************
 	 * Unique Attributes: A race as a old as the world itself Elves draw 
 	 * much of their power from organic matter thus, they receive increased 
-	 * regenerative numbers when near water or forests. 
+	 * regenerative numbers when near water or forests. Scales with levels
 	 **********************************************************************/
 	public Elf(String name, String month, int date, int year, String profession, String faction) {
 		super(name, month, date, year, "Elf",profession, faction);
@@ -12,7 +12,7 @@ public class Elf extends CharacterProfile {
 	}
 	private void applyBaseStats(){
 		this.hp = 46; 
-		this.healthRegen = 5; 
+		this.healthRegen = 3; 
 		this.attackDamage = 6; 
 		this.attackSpeed = 0.52;
 		this.moveSpeed = 9; 
@@ -26,13 +26,14 @@ public class Elf extends CharacterProfile {
 		this.buildSpeed = 2;
 	}
 	
-	public int applyRegenerativeBonuses(String terrain){
-		int regenBonus = 0; 
+	/*Passive name: Gaia's Blessing*/
+	public void applyRegenerativeBonuses(String terrain){
 		if(terrain.equals("Water") || terrain.equals("Forest")){
-			regenBonus = 2; 
+			this.healthRegen += 1 + (getLevel()/4); 
+			this.manaRegen += 1 + (getLevel()/4); 
 		}
-		return regenBonus; 
 	}
+	
 	public static void main (String[] args){
 		
 	}
