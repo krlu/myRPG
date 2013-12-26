@@ -152,6 +152,10 @@ public class CharacterProfile{
 		int sum = this.attackDamage + bonus;
 		this.attackDamage = (sum > 0) ?  0 : sum;
 	}
+	public void updateMana(int bonus){
+		int sum = this.mana+ bonus;
+		this.mana = (sum > 0) ?  0 : sum;
+	}
 	public void addToEquipedItems(Item item){
 		if(this.equipedItems.size() > EquipItemThreshold){
 			System.err.println("at equipment threshold, cannot equip more items!!");
@@ -247,7 +251,7 @@ public class CharacterProfile{
 	public void printEquipedItems(){
 		System.out.print("[");
 		for(Item item : this.equipedItems){
-			System.out.print(" " + item.itemName() + "  ");
+			System.out.print(" " + item.getName() + "  ");
 		}
 		System.out.println("]");
 	}

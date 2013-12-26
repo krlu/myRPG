@@ -9,19 +9,15 @@ public class ShortSword extends Item {
 	private int attackBonus; 
 	//TODO: RESOLVE RECURSION BETWEEN SHORT AND BROAD SWORD!!
 	public ShortSword() {
-		constructorHelper();
-		this.buildsTo.add(new BroadSword(this.name));
-	}
-	public ShortSword(String s) {
-		constructorHelper();
-	}
-	private void constructorHelper(){
+		this.equiped = false;
 		this.attackBonus = 3;
 		this.goldValue = 50;
+		this.totalCost = 50;
 		this.upgradeCost = 0;
 		this.buildsTo = new ArrayList<Item>();
-		this.buildsFrom = new ArrayList<Item>();
+		this.buildsFrom = new ArrayList<String>();
 		this.name = "ShortSword";
+		this.buildsTo.add(new BroadSword());
 	}
 	
 	@Override
@@ -40,7 +36,7 @@ public class ShortSword extends Item {
 		CharacterProfile me = new Dwarf("Kenny", "August", 30, 1991, "merchant", "");
 		ShortSword item = new ShortSword();
 		System.out.println("my item list:" + me.getEquipedItems().size());
-		System.out.println("builds to: " + item.buildsTo.get(0).itemName());
+		System.out.println("builds to: " + item.buildsTo.get(0).getName());
 		item.equipItem(me);
 		me.addToEquipedItems(item);
 		System.out.println("my item list:" + me.getEquipedItems().size());

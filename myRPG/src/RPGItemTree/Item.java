@@ -3,13 +3,32 @@ import java.util.ArrayList;
 
 import RPGelements.CharacterProfile;
 
+
+/************************************************************************
+ *  An outline of an Item. All additional objects created in this package
+ *  will extend this class. Note that the methods and fields within this 
+ *  class reflect basic functionality of an equipment item. Gold values 
+ *  for this class are hard-coded to save computation.
+ ***********************************************************************/
+
+
 public class Item{
 	//private int itemID; 
 	public boolean equiped; 
 	protected int upgradeCost;
 	protected int goldValue;
+	protected int totalCost; 
 	protected String name;
-	protected ArrayList<Item> buildsFrom;
+	
+	/* ****************************************************** 
+	 * SUPER IMPORTANT!!! buildsFrom are just strings
+	 * whereas buildsTo are actual Item objects. We do this 
+	 * to prevent backwards reference, which would result in
+	 * a stack overflow. Moreover, when combining items, it 
+	 * is not necessary to refer to buildsFrom as Items since 
+	 * presumably user needs to have component items already
+	 ********************************************************/
+	protected ArrayList<String> buildsFrom;
 	protected ArrayList<Item> buildsTo;
 	public Item(){
 		
@@ -37,7 +56,7 @@ public class Item{
 			removeItemEffects(profile);
 		}
 	}
-	public String itemName(){
+	public String getName(){
 		return this.name;
 	}
 	/*Override in all extended classes!*/
@@ -49,7 +68,7 @@ public class Item{
 	}
 	
 	/*getters for fields*/
-	public ArrayList<Item> buildsFrom() {
+	public ArrayList<String> buildsFrom() {
 		return this.buildsFrom;
 	}
 	public ArrayList<Item> buildsInto() {
@@ -64,11 +83,6 @@ public class Item{
 		return this.upgradeCost;
 	}
 	public int totalCost(){
-		int total = 0;
-		for(Item i : this.buildsFrom){
-			total += i.totalCost();
-		}
-		total += this.goldValue + this.upgradeCost;
-		return total;
+		return this.totalCost;
 	}
 }

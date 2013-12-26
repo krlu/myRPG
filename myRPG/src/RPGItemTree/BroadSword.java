@@ -8,20 +8,17 @@ public class BroadSword extends Item {
 	 
 	private int attackBonus; 
 	
-	public BroadSword(String buildsFrom){
-		constructorHelper();
-	}
 	public BroadSword() {
-		constructorHelper();
-		this.buildsFrom.add(new ShortSword(this.name));
-	}
-	public void constructorHelper(){
+		this.equiped = false;
 		this.attackBonus = 6;
 		this.goldValue = 0;
 		this.upgradeCost = 50;
+		this.totalCost = 100;
 		this.buildsTo = new ArrayList<Item>();
-		this.buildsFrom = new ArrayList<Item>();
+		this.buildsFrom = new ArrayList<String>();
 		this.name = "BroadSword";
+		this.buildsFrom.add("ShortSword");
+		this.buildsTo.add(new EmeraldSword());
 	}
 	public void equipItem(CharacterProfile profile) {
 		if(this.equiped == true){

@@ -1,24 +1,23 @@
 package RPGItemTree;
 
 import java.util.ArrayList;
-import RPGelements.Inventory;
 import RPGelements.CharacterProfile;
 import java.util.HashMap;
 
-/**************************************************************************
- * Class devoted to combining component items and/or upgrading single items
+/***********************************************************************
+ * Class devoted to combining component items or upgrading single items
  * 
  */
 public class ItemCombiner {
 
 	public static Item combineItems(ArrayList<Item> components, Item product, CharacterProfile profile) {
 		if(hasAllComponents(product, components) && profile.getGold() >= product.upgradeCost()){
-			profile.updateGold(product.upgradeCost());
+			profile.updateAttack(product.upgradeCost());
 			return product;
 		}
 		return null;
 	}
-
+	
 	/*
 	 * returns all possible builds given a list of items.
 	 * TODO: not sure if this is necessary yet
@@ -49,11 +48,19 @@ public class ItemCombiner {
 	/*Simply checks required items against list of component items
 	 * TODO: decide if this should be optimized with HashMap*/
 	private static boolean hasAllComponents(Item product, ArrayList<Item> components) {
-		for (Item i : product.buildsFrom()) {
-			if (!components.contains(i)) {
+		ArrayList<String> itemNames = justItemNames(components);
+		for (String s : product.buildsFrom()) {
+			if (!itemNames.contains(s)) {
 				return false;
 			}
 		}
 		return true;
+	}
+	private static ArrayList<String> justItemNames(ArrayList<Item> items){
+		ArrayList<String> itemNames = new ArrayList<String>();
+		for(Item item : items){
+			itemNames.add(item.getName());
+		}
+		return itemNames;
 	}
 }
