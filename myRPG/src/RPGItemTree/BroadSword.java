@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 import RPGelements.CharacterProfile;
 
+/*******************
+ * Stats granted: 
+ * +6 attack damage
+ *******************/
 public class BroadSword extends Item {
 	 
 	private int attackBonus; 

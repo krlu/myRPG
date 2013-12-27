@@ -3,11 +3,14 @@ package RPGItemTree;
 import java.util.ArrayList;
 
 import RPGelements.CharacterProfile;
-
+/*******************
+ * Stats granted: 
+ * +10 mana
+ *******************/
 public class WaterCrystal extends Item {
 
 	private int manaBonus; 
-	//TODO: RESOLVE RECURSION BETWEEN SHORT AND BROAD SWORD!!
+	
 	public WaterCrystal() {
 		this.equiped = false;
 		this.manaBonus = 10;

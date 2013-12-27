@@ -1,8 +1,13 @@
 package RPGItemTree;
 
 import java.util.ArrayList;
-
 import RPGelements.CharacterProfile;
+
+/*******************
+ * Stats granted: 
+ * +20 mana
+ * +7 attack damage
+ *******************/
 
 public class EmeraldSword extends Item{
 	private int manaBonus;
@@ -34,6 +39,6 @@ public class EmeraldSword extends Item{
 	}
 	
 	public void printStats() {
-		System.out.println("mana: + 3");
+		System.out.println("mana: + 20 \n Attack Damage: + 7");
 	}
 }

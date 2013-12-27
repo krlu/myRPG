@@ -62,6 +62,8 @@ public class CharacterProfile{
 	
 	
 	/* combat stats */
+	protected double lifeSteal; 
+	protected double spellVamp; 
 	protected int hp;
 	protected int attackDamage; 
 	protected double attackSpeed; 
@@ -93,7 +95,8 @@ public class CharacterProfile{
 		this.totalExp = 0;
 		this.luck = 0.000001;
 		this.equipedItems = new ArrayList<Item>();
-
+		this.lifeSteal = 0.0;
+		this.spellVamp = 0.0;
 	}
 	
 	/* **********************************************
@@ -152,25 +155,17 @@ public class CharacterProfile{
 		int sum = this.attackDamage + bonus;
 		this.attackDamage = (sum > 0) ?  0 : sum;
 	}
+	public void updateLifeSteal(double bonus){
+		double sum = this.lifeSteal + bonus;
+		this.lifeSteal = (sum > 0.0) ? 0.0 : sum;
+	}
+	public void updateSpellVamp(double bonus){
+		double sum = this.spellVamp + bonus;
+		this.spellVamp = (sum > 0.0) ? 0.0 : sum;
+	}
 	public void updateMana(int bonus){
 		int sum = this.mana+ bonus;
 		this.mana = (sum > 0) ?  0 : sum;
-	}
-	public void addToEquipedItems(Item item){
-		if(this.equipedItems.size() > EquipItemThreshold){
-			System.err.println("at equipment threshold, cannot equip more items!!");
-		}
-		else{
-			this.equipedItems.add(item);
-		}
-	}
-	public void removeFromEquipedItems(Item item){
-		if(this.equipedItems.contains(item)){
-			this.equipedItems.remove(item);
-		}
-		else{
-			System.err.println("item not found!");
-		}
 	}
 	public void updateArmor(int bonus){
 		this.armor += bonus; 
@@ -185,6 +180,24 @@ public class CharacterProfile{
 	public void updateGold(int amount){
 		if(this.gold + amount > 0){
 			this.gold += amount;
+		}
+	}
+	
+	// TODO: find better way to equip item!!
+	public void addToEquipedItems(Item item){
+		if(this.equipedItems.size() > EquipItemThreshold){
+			System.err.println("at equipment threshold, cannot equip more items!!");
+		}
+		else{
+			this.equipedItems.add(item);
+		}
+	}
+	public void removeFromEquipedItems(Item item){
+		if(this.equipedItems.contains(item)){
+			this.equipedItems.remove(item);
+		}
+		else{
+			System.err.println("item not found!");
 		}
 	}
 	

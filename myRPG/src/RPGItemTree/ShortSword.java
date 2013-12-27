@@ -4,10 +4,14 @@ import RPGelements.Dwarf;
 
 import java.util.ArrayList;
 
+/*******************
+ * Stats granted: 
+ * +3 attack damage
+ *******************/
 public class ShortSword extends Item {
 
 	private int attackBonus; 
-	//TODO: RESOLVE RECURSION BETWEEN SHORT AND BROAD SWORD!!
+	
 	public ShortSword() {
 		this.equiped = false;
 		this.attackBonus = 3;
@@ -37,8 +41,11 @@ public class ShortSword extends Item {
 		ShortSword item = new ShortSword();
 		System.out.println("my item list:" + me.getEquipedItems().size());
 		System.out.println("builds to: " + item.buildsTo.get(0).getName());
+		
+		//TODO: find better way to equip item!!
 		item.equipItem(me);
 		me.addToEquipedItems(item);
+		
 		System.out.println("my item list:" + me.getEquipedItems().size());
 		me.printEquipedItems();
 	}
