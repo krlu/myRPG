@@ -1,6 +1,7 @@
 package RPGItemTree;
 
 import java.util.ArrayList;
+
 import RPGelements.CharacterProfile;
 
 /*******************
@@ -37,8 +38,8 @@ public class EmeraldSword extends Item{
 		profile.updateMana(-1 * this.manaBonus);
 		profile.updateAttack(-1*this.attackBonus);
 	}
-	
+	@Override
 	public void printStats() {
-		System.out.println("mana: + 20 \n Attack Damage: + 7");
+		System.out.println("mana: + 20 \n"+ "Attack Damage: + 7");
 	}
 }

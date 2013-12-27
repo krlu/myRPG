@@ -66,7 +66,9 @@ public class Item{
 	public void removeItemEffects(CharacterProfile profile){
 		System.err.println("method removeItemEffects need override!");	
 	}
-	
+	public void printStats(){
+		
+	}
 	/*getters for fields*/
 	public ArrayList<String> buildsFrom() {
 		return this.buildsFrom;

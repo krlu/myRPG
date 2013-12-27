@@ -24,29 +24,16 @@ public class BroadSword extends Item {
 		this.buildsFrom.add("ShortSword");
 		this.buildsTo.add(new EmeraldSword());
 	}
-	public void equipItem(CharacterProfile profile) {
-		if(this.equiped == true){
-			System.err.println("already equiped broadsword!");
-		}
-		else if (profile.getEquipedItems().size() <= CharacterProfile.EquipItemThreshold){
-			System.err.println("at equipe threshold, cannot equip more items!!");
-		}
-		else{
-			this.equiped = true; 
-			profile.updateAttack(this.attackBonus);
-		}
+
+	@Override
+	public void applyItemEffects(CharacterProfile profile){
+		profile.updateAttack(this.attackBonus);
 	}
-	
-	public void unequipItem(CharacterProfile profile){
-		if(this.equiped == false){
-			System.err.println("never equiped shortsword!");
-		}
-		else{
-			this.equiped = false; 
-			profile.updateAttack(-1*this.attackBonus);
-		}
+	@Override
+	public void removeItemEffects(CharacterProfile profile){
+		profile.updateAttack(-1 * this.attackBonus);
 	}
-	
+	@Override
 	public void printStats() {
 		System.out.println("Attack Damage: + 6");
 	}

@@ -1,7 +1,10 @@
 package RPGItemTree;
 
 import java.util.ArrayList;
+
 import RPGelements.CharacterProfile;
+import RPGelements.Dwarf;
+
 import java.util.HashMap;
 
 /***********************************************************************
@@ -12,7 +15,7 @@ public class ItemCombiner {
 
 	public static Item combineItems(ArrayList<Item> components, Item product, CharacterProfile profile) {
 		if(hasAllComponents(product, components) && profile.getGold() >= product.upgradeCost()){
-			profile.updateAttack(product.upgradeCost());
+			profile.updateGold(-product.upgradeCost());
 			return product;
 		}
 		return null;
@@ -49,8 +52,17 @@ public class ItemCombiner {
 	 * TODO: decide if this should be optimized with HashMap*/
 	private static boolean hasAllComponents(Item product, ArrayList<Item> components) {
 		ArrayList<String> itemNames = justItemNames(components);
+		if(itemNames.size() < product.buildsFrom().size()){
+			System.out.println("missing components!!");
+			return false;
+		}
+		if(itemNames.size() > product.buildsFrom().size()){
+			System.out.println("too many components!!");
+			return false;
+		}
 		for (String s : product.buildsFrom()) {
 			if (!itemNames.contains(s)) {
+				System.out.println("wrong components");
 				return false;
 			}
 		}
@@ -62,5 +74,27 @@ public class ItemCombiner {
 			itemNames.add(item.getName());
 		}
 		return itemNames;
+	}
+	
+	public static void main(String[] args){
+		CharacterProfile me = new Dwarf("Kenny", "August", 30, 1991, "merchant", "");
+		me.updateGold(1000);
+		Item shortSword = new ShortSword(); 
+		Item waterCrystal = new WaterCrystal();
+		ArrayList<Item> components = new ArrayList<Item>();
+		components.add(shortSword);
+		Item broadSword = ItemCombiner.combineItems(components, new BroadSword(), me);
+		broadSword.printStats();
+		components.remove(0);
+		components.add(broadSword);
+		components.add(new BroadSword());
+		Item emeraldSword1 = ItemCombiner.combineItems(components, new EmeraldSword(), me);
+		components.remove(1);
+		components.add(waterCrystal);
+		EmeraldSword emeraldSword = (EmeraldSword) ItemCombiner.combineItems(components, new EmeraldSword(), me);
+		System.out.println("************");
+		emeraldSword.printStats();
+		System.out.println("************");
+		System.out.println(me.getGold());
 	}
 }

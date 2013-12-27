@@ -32,7 +32,7 @@ public class ShortSword extends Item {
 	public void removeItemEffects(CharacterProfile profile){
 		profile.updateAttack(-1 * this.attackBonus);
 	}
-	
+	@Override
 	public void printStats() {
 		System.out.println("Attack Damage: + 3");
 	}

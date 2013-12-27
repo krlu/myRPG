@@ -73,10 +73,10 @@ public class CharacterProfile{
 	protected int magicResistance;
 	protected int fervor;  /* crowd control reduction stat*/
 	protected int mana;  
+	protected int bonusMagic;
 	
 	/*over time stats in terms of per-second*/
 	protected int manaRegen;
-	protected int bonusMagic;
 	protected int gatherSpeed; 
 	protected int buildSpeed;
 	protected int healthRegen; // per 5 seconds 

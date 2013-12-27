@@ -31,7 +31,7 @@ public class WaterCrystal extends Item {
 	public void removeItemEffects(CharacterProfile profile){
 		profile.updateMana(-1 * this.manaBonus);
 	}
-	
+	@Override
 	public void printStats() {
 		System.out.println("mana: + 10");
 	}
