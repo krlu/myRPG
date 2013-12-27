@@ -168,10 +168,12 @@ public class CharacterProfile{
 		this.mana = (sum > 0) ?  0 : sum;
 	}
 	public void updateArmor(int bonus){
-		this.armor += bonus; 
+		int sum = this.armor+ bonus;
+		this.armor = (sum > 0) ?  0 : sum;
 	}
 	public void updateMagicResist(int bonus){
-		this.magicResistance += bonus;
+		int sum = this.magicResistance + bonus; 
+		this.magicResistance = (sum > 0) ? 0 : sum;
 	}
 	public void updateMoveSpeed(int bonus){
 		int sum = this.moveSpeed + bonus;
