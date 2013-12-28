@@ -1,8 +1,8 @@
 package RPGelements;
 import java.util.ArrayList;
-
 import FundamentalStructures.Tuple;
 import RPGItemTree.Item;
+
 public class CharacterProfile{
 	
 	//private int characterID; /*auto-assign within database*/
@@ -40,6 +40,8 @@ public class CharacterProfile{
 			 2750};	 
 	private final int MAXEXP = 9999;
 	private final int MAXLVL = 30;
+	private final int MAXSKILLS = 5;
+	private final int MAXITEMS = 6;
 	/* user profile material*/
 	private String name;
 	private String month; 
@@ -49,13 +51,13 @@ public class CharacterProfile{
 	/* general stats*/
 	private int exp;
 	private int totalExp;
+	protected int skillPoints;
 	private int level;    /*0 - 30*/
 	private String faction; /*4 major factions: Zaft, Kami, Follen, Xan-Ishrin*/
 	private String profession;  /* thief, spy, vassal, merchant, mercenary, sovereign, official, viceroy, architect*/
 	private String race;  /*elf, dwarf, human, liche, azealin */
 	protected ArrayList<String> characterclasses; /*Warrior, Mage, Assassin, Marksman, Priest*/
-	protected ArrayList<String> debuffs;
-	protected ArrayList<String> buffs;
+	protected ArrayList<String> skills;	/*maximum of 5 skills*/
 	protected ArrayList<Item> equipedItems; /* can equip max of 6 items*/
 	protected Tuple<Integer,Integer> coordinatePosition; /*<x coordinate, y coordinate>*/
 	protected int gold;
@@ -90,15 +92,17 @@ public class CharacterProfile{
 		this.date = date;
 		this.year = year;
 		this.race = race; 
-		this.profession = (profession != null  && !profession.equals("")) ? profession : "Unemployed"; 
-		this.faction = (profession != null  && !profession.equals("")) ? profession : "Unaffiliated"; 
 		this.level = 0; 
 		this.exp = 0;
 		this.totalExp = 0;
 		this.luck = 0.000001;
-		this.equipedItems = new ArrayList<Item>();
 		this.lifeSteal = 0.0;
 		this.spellVamp = 0.0;
+		this.skillPoints = 0;
+		this.equipedItems = new ArrayList<Item>(MAXITEMS);
+		this.skills = new ArrayList<String>(MAXSKILLS);
+		this.profession = (profession != null  && !profession.equals("")) ? profession : "Unemployed"; 
+		this.faction = (profession != null  && !profession.equals("")) ? profession : "Unaffiliated"; 
 	}
 	
 	/* **********************************************
@@ -190,7 +194,25 @@ public class CharacterProfile{
 			this.gold += amount;
 		}
 	}
-	
+	/*added either through leveling or by removing a skill*/
+	public void addSkillPoints(int amount){
+		if(amount < 0){
+			System.err.print("adding negative amount of skillpoints!");
+		}
+		else{
+			this.skillPoints += amount;
+		}
+	}
+	public int useSkillPoints(int amountToUse){
+		if(amountToUse > this.skillPoints){
+			System.err.println("not enough skillpoints!");
+			return 0;
+		}
+		else{
+			this.skillPoints -= amountToUse; 
+			return amountToUse;
+		}
+	}
 	// TODO: find better way to equip item!!
 	public void addToEquipedItems(Item item){
 		if(this.equipedItems.size() > EquipItemThreshold){
@@ -249,7 +271,9 @@ public class CharacterProfile{
 	public int getGold(){
 		return this.gold;
 	}
-	
+	public int getSkillPoints(){
+		return this.skillPoints;
+	}
 	/* movement, ability usage, basic attack methods*/
 	public void moveUp(int distance){
 		this.coordinatePosition.r += distance;
