@@ -76,7 +76,6 @@ public class Item{
 	public ArrayList<Item> buildsInto() {
 		return this.buildsTo;
 	}
-
 	public int goldValue() {
 		return this.goldValue;
 	}
@@ -86,5 +85,10 @@ public class Item{
 	}
 	public int totalCost(){
 		return this.totalCost;
+	}
+	
+	/*comparator between items*/
+	public boolean equals(Item item){
+		return this.name.equals(item.getName());
 	}
 }

@@ -62,6 +62,7 @@ public class CharacterProfile{
 	
 	
 	/* combat stats */
+	protected double coolDownReduction; 
 	protected double lifeSteal; 
 	protected double spellVamp; 
 	protected int hp;
@@ -83,6 +84,7 @@ public class CharacterProfile{
 	protected double luck;
 	
 	public CharacterProfile(String name, String month, int date, int year, String race, String profession, String faction){
+		this.coolDownReduction = 0.0;
 		this.name = name;
 		this.month = month;
 		this.date = date;
@@ -175,6 +177,10 @@ public class CharacterProfile{
 		int sum = this.magicResistance + bonus; 
 		this.magicResistance = (sum > 0) ? 0 : sum;
 	}
+	public void updateCDR(int bonus){
+		double sum = this.coolDownReduction + bonus;
+		this.coolDownReduction = (sum > 0) ? 0 : sum; 
+	}
 	public void updateMoveSpeed(int bonus){
 		int sum = this.moveSpeed + bonus;
 		this.moveSpeed = (sum > 0) ? 0 : sum; 
@@ -210,6 +216,18 @@ public class CharacterProfile{
 	public String getDOB(){
 		return this.month + " " + this.date + " " + this.year;
 	}
+	public double getLifeSteal(){
+		return this.lifeSteal;
+	}
+	public double getSpellVamp(){
+		return this.spellVamp;
+	}
+	public double getCDR(){
+		return this.coolDownReduction;
+	}
+	public int getBonusMagic(){
+		return this.bonusMagic;
+	}
 	public int getLevel(){
 		return this.level;
 	}
@@ -231,6 +249,7 @@ public class CharacterProfile{
 	public int getGold(){
 		return this.gold;
 	}
+	
 	/* movement, ability usage, basic attack methods*/
 	public void moveUp(int distance){
 		this.coordinatePosition.r += distance;

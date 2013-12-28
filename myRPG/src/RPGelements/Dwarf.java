@@ -38,6 +38,6 @@ public class Dwarf extends CharacterProfile{
 	}
 	public static void main(String[] args) {
 		CharacterProfile me = new Dwarf("Kenny", "August", 30, 1991, "merchant", "");			
-		System.out.println(me.getName() + "\n" + me.getDOB() + "\n" + me.getRace());
+		System.out.println(me.getName() + "\n" + me.getDOB() + "\n" + me.getRace() + "\n" + me.getCDR());
 	}
 }
