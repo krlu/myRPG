@@ -67,8 +67,10 @@ public class CharacterProfile{
 	protected double coolDownReduction; 
 	protected double lifeSteal; 
 	protected double spellVamp; 
+	protected int maxhp;
 	protected int hp;
 	protected int attackDamage; 
+	protected int attackCounter; 
 	protected double attackSpeed; 
 	protected int attackRange; 
 	protected int moveSpeed;
@@ -99,6 +101,7 @@ public class CharacterProfile{
 		this.lifeSteal = 0.0;
 		this.spellVamp = 0.0;
 		this.skillPoints = 0;
+		this.attackCounter = 0;
 		this.equipedItems = new ArrayList<Item>(MAXITEMS);
 		this.skills = new ArrayList<String>(MAXSKILLS);
 		this.profession = (profession != null  && !profession.equals("")) ? profession : "Unemployed"; 
@@ -157,6 +160,14 @@ public class CharacterProfile{
 	 * abilities. Buying/Selling changes gold frequently too
 	 * TODO: there will be many more to implement
 	 *******************************************************/
+	public void updateMaxHp(int heal){
+		int sum = this.hp + heal;
+		this.maxhp = (sum > 0) ? sum : 0;
+	}
+	public void updateHp(int bonus){
+		int sum = this.hp + bonus;
+		this.hp = (sum > this.hp) ? this.maxhp : sum;
+	}
 	public void updateAttack(int bonus){
 		int sum = this.attackDamage + bonus;
 		this.attackDamage = (sum > 0) ?  sum : 0;
@@ -278,7 +289,21 @@ public class CharacterProfile{
 	public int getSkillPoints(){
 		return this.skillPoints;
 	}
+	public int getAttackCounter(){
+		return this.attackCounter;
+	}
+	public int getAttackDamage(){
+		return this.attackDamage;
+	}
 	/* movement, ability usage, basic attack methods*/
+	public void applyLifeSteal(){
+		int sum = this.hp + (int) (this.attackDamage * this.lifeSteal);
+		this.hp = (sum > this.hp) ? this.maxhp : sum;
+	}
+	public void applySpellVamp(int damage){
+		int sum = this.hp + (int) (damage * this.spellVamp);
+		this.hp = (sum > this.hp) ? this.maxhp : sum;
+	}
 	public void moveUp(int distance){
 		this.coordinatePosition.r += distance;
 	}
@@ -293,6 +318,8 @@ public class CharacterProfile{
 	}
 	// TODO: basicAttack does nothing yet!!
 	public int basicAttack(){
+		this.attackCounter += 1;
+		this.attackCounter = this.attackCounter % 1000;
 		return this.attackDamage;
 	}
 	

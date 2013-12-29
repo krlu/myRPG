@@ -11,6 +11,7 @@ public class Elf extends CharacterProfile {
 		applyBaseStats();
 	}
 	private void applyBaseStats(){
+		this.maxhp = 46;
 		this.hp = 46; 
 		this.healthRegen = 3; 
 		this.attackDamage = 6; 

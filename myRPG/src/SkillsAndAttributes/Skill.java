@@ -13,6 +13,8 @@ public class Skill {
 	protected int level3Cap; 
 	protected int level4Cap; 
 	protected int level5Cap; 
+
+	
 	public Skill() {
 	}
 	

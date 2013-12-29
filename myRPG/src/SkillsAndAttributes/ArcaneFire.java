@@ -1,6 +1,15 @@
 package SkillsAndAttributes;
 import  RPGelements.CharacterProfile;
 import RPGelements.Dwarf;
+
+/******************************************
+ * Basic damage ability with medium range  
+ * scales with bonus magic and skill points
+ * strong at high levels due to decreased 
+ * cool-downs and since mana costs remain 
+ * static even as damage amplifies. 
+ ******************************************/
+
 public class ArcaneFire extends Skill {
 
 	public ArcaneFire() {
@@ -21,7 +30,7 @@ public class ArcaneFire extends Skill {
 	 ***************************************************/
 	@Override
 	public int level1Effect(CharacterProfile profile){
-		return 10 + (int)(0.5 * profile.getBonusMagic());
+		return 12 + (int)(0.5 * profile.getBonusMagic());
 	}
 	@Override
 	public int level2Effect(CharacterProfile profile){
@@ -45,11 +54,11 @@ public class ArcaneFire extends Skill {
 	
 	/*additional effects upon leveling up*/
 	public void attainingLevel2(){
-		this.manaCost = 12;
+		this.manaCost = 15;
 	}
 	public void attainingLevel3(){
 		this.coolDown = 9;
-		this.manaCost = 20;
+		this.manaCost = 30;
 	}
 	public void attainingLevel4(){
 		this.coolDown = 8;
@@ -60,7 +69,7 @@ public class ArcaneFire extends Skill {
 	
 	public static void main(String [] args){
 		CharacterProfile me = new Dwarf("Kenny", "August", 30, 1991, "merchant", "");	
-		me.updateBonusMagic(500);
+		me.updateBonusMagic(400);
 		Skill arcaneFire = new ArcaneFire();
 		arcaneFire.updateSkillPoints(4);
 		System.out.println(arcaneFire.applyEffect(me));

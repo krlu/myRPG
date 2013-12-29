@@ -16,6 +16,7 @@ public class Liche extends CharacterProfile {
 	
 	private void applyBaseStats(){
 		this.healthRegen = 4;
+		this.maxhp = 54;
 		this.hp = 54; 
 		this.healthRegen = 3; 
 		this.attackDamage = 10; 
