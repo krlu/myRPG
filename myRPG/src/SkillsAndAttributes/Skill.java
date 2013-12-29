@@ -8,6 +8,11 @@ public class Skill {
 	protected int castRange;
 	protected int manaCost;
 	protected String name;
+	protected int level1Cap; 
+	protected int level2Cap; 
+	protected int level3Cap; 
+	protected int level4Cap; 
+	protected int level5Cap; 
 	public Skill() {
 	}
 	
@@ -22,7 +27,7 @@ public class Skill {
 			
 		}else{
 			int sum = this.skillPoints + points;
-			this.skillPoints = (sum > 0) ? 0 : sum; 
+			this.skillPoints = (sum > 0) ?  sum : 0; 
 		}
 	}
 	public double getCoolDown(){
@@ -40,4 +45,45 @@ public class Skill {
 	public String getName(){
 		return this.name;
 	}
+	/* override effects*/
+	public int applyEffect(CharacterProfile profile){
+		if(this.skillPoints == this.level1Cap){
+			return level1Effect(profile);
+		}
+		else if(this.skillPoints == this.level2Cap){
+			return level2Effect(profile);
+		}
+		else if(this.skillPoints == this.level3Cap){
+			return level3Effect(profile);
+		}
+		
+		else if(this.skillPoints == this.level4Cap){
+			return level4Effect(profile);
+		}
+		else if(this.skillPoints == this.level5Cap){
+			return level5Effect(profile);
+		}
+		else{
+			return 0;
+		}
+	}
+	public int level1Effect(CharacterProfile profile){
+		return 0;
+	}	
+	public int level2Effect(CharacterProfile profile){
+		return 0;
+	}
+	/*requires level 8*/
+	public int level3Effect(CharacterProfile profile){
+		return 0;
+	}
+	/*requires level 10*/
+	public int level4Effect(CharacterProfile profile){
+		return 0;
+	}
+	/*requires level 12*/
+	public int level5Effect(CharacterProfile profile){
+		return 0;
+	}
 }
+

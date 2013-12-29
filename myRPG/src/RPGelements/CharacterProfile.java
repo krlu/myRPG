@@ -159,35 +159,39 @@ public class CharacterProfile{
 	 *******************************************************/
 	public void updateAttack(int bonus){
 		int sum = this.attackDamage + bonus;
-		this.attackDamage = (sum > 0) ?  0 : sum;
+		this.attackDamage = (sum > 0) ?  sum : 0;
+	}
+	public void updateBonusMagic(int bonus){
+		int sum = this.bonusMagic + bonus;
+		this.bonusMagic = (sum > 0) ? sum : 0;
 	}
 	public void updateLifeSteal(double bonus){
 		double sum = this.lifeSteal + bonus;
-		this.lifeSteal = (sum > 0.0) ? 0.0 : sum;
+		this.lifeSteal = (sum > 0.0) ? sum : 0.0 ;
 	}
 	public void updateSpellVamp(double bonus){
 		double sum = this.spellVamp + bonus;
-		this.spellVamp = (sum > 0.0) ? 0.0 : sum;
+		this.spellVamp = (sum > 0.0) ? sum : 0.0;
 	}
 	public void updateMana(int bonus){
 		int sum = this.mana+ bonus;
-		this.mana = (sum > 0) ?  0 : sum;
+		this.mana = (sum > 0) ?  sum : 0;
 	}
 	public void updateArmor(int bonus){
 		int sum = this.armor+ bonus;
-		this.armor = (sum > 0) ?  0 : sum;
+		this.armor = (sum > 0) ?  sum : 0;
 	}
 	public void updateMagicResist(int bonus){
 		int sum = this.magicResistance + bonus; 
-		this.magicResistance = (sum > 0) ? 0 : sum;
+		this.magicResistance = (sum > 0) ?  sum : 0;
 	}
 	public void updateCDR(int bonus){
 		double sum = this.coolDownReduction + bonus;
-		this.coolDownReduction = (sum > 0) ? 0 : sum; 
+		this.coolDownReduction = (sum > 0) ? sum : 0; 
 	}
 	public void updateMoveSpeed(int bonus){
 		int sum = this.moveSpeed + bonus;
-		this.moveSpeed = (sum > 0) ? 0 : sum; 
+		this.moveSpeed = (sum > 0) ? sum : 0; 
 	}
 	public void updateGold(int amount){
 		if(this.gold + amount > 0){
