@@ -37,17 +37,17 @@ public class ArcaneFire extends Skill {
 		return 20 + (int)(0.5 * profile.getBonusMagic());
 	}
 	@Override
-	/*requires level 8*/
+	/*requires level 15*/
 	public int level3Effect(CharacterProfile profile){
 		return 40 + (int)(0.5 * profile.getBonusMagic());
 	}
 	@Override
-	/*requires level 10*/
+	/*requires level 20*/
 	public int level4Effect(CharacterProfile profile){
 		return 70 + (int)(0.5 * profile.getBonusMagic());
 	}
 	@Override
-	/*requires level 12*/
+	/*requires level 25*/
 	public int level5Effect(CharacterProfile profile){
 		return 120 + (int)(0.5 * profile.getBonusMagic());
 	}
@@ -69,9 +69,9 @@ public class ArcaneFire extends Skill {
 	
 	public static void main(String [] args){
 		CharacterProfile me = new Dwarf("Kenny", "August", 30, 1991, "merchant", "");	
-		me.updateBonusMagic(400);
+		me.updateBonusMagic(300);
 		Skill arcaneFire = new ArcaneFire();
-		arcaneFire.updateSkillPoints(4);
+		arcaneFire.updateSkillPoints(3);
 		System.out.println(arcaneFire.applyEffect(me));
 	}
 }

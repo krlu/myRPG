@@ -7,8 +7,10 @@ public class EmpoweredStrike extends Skill {
 
 /********************************************************************************
  * Basic damage ability with melee range,every 4th attack deals this skill procs 
- * and deals additional physical damage.strong at high levels due to increased 
- * damage/ratios and decreased attack counts b/w procs scales with attack speed.
+ * and deals additional physical damage. Lowers to 3 attacks b/w procs at lvl 4
+ * Weak at mid-levels due to poor scaling on damage and requires attack speed
+ * Strong at high levels due to increased damage/ratios and decreased counts 
+ * b/w procs and high scaling with purchase of attack speed items
  *******************************************************************************/
 	
 	public EmpoweredStrike() {
@@ -45,7 +47,7 @@ public class EmpoweredStrike extends Skill {
 		return 0;
 	}
 	@Override
-	/*requires level 10*/
+	/*requires level 20*/
 	public int level4Effect(CharacterProfile profile){
 		if(profile.getAttackCounter() % 3 == 0){
 			return 55 + (int)(0.8 * profile.getAttackDamage());
@@ -53,28 +55,14 @@ public class EmpoweredStrike extends Skill {
 		return 0;
 	}
 	@Override
-	/*requires level 12*/
+	/*requires level 25*/
 	public int level5Effect(CharacterProfile profile){
 		if(profile.getAttackCounter() % 3 == 0){
 			return 100 + (int)(0.9 * profile.getAttackDamage());
 		}
 		return 0;
 	}
-	
-	/*additional effects upon leveling up*/
-	public void attainingLevel2(){
-		this.manaCost = 15;
-	}
-	public void attainingLevel3(){
-		this.coolDown = 9;
-		this.manaCost = 30;
-	}
-	public void attainingLevel4(){
-		this.coolDown = 8;
-	}
-	public void attainingLevel5(){
-		this.coolDown = 7;
-	}
+
 	public static void main(String[] args){
 		CharacterProfile me = new Dwarf("Kenny", "August", 30, 1991, "merchant", "");	
 		me.updateAttack(200);

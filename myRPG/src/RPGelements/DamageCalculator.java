@@ -21,7 +21,10 @@ public class DamageCalculator {
 		return  (int) effectiveDamage;
 	}
 	
-	public static void main(String[] args){
-		
+	public static void main(String[] args){;
+		System.out.println(DamageCalculator.effectiveDamage(220,40) + " " + 425);
+		System.out.println(DamageCalculator.effectiveDamage(320,60) + " " + 700);
+		System.out.println(DamageCalculator.effectiveDamage(220,130) + " " + 950);
+		System.out.println(DamageCalculator.effectiveDamage(320,175) + " " + 1200);
 	}
 }

@@ -21,7 +21,7 @@ public class CharacterAssignment {
 			/*assign warrior base stats*/
 			profile.armor += 4;
 			profile.moveSpeed += 2; 
-			profile.hp += 20; 
+			profile.hp += 25; 
 			profile.attackDamage += 3;
 			profile.luck += 0.01;
 			profile.fervor += 3;
@@ -30,11 +30,11 @@ public class CharacterAssignment {
 	/*apply this function every time a CharacterProfile levels up*/
 	public static void scaleWarriorStats(CharacterProfile profile){
 		if(profile.characterclasses.contains("Warrior")){
-			profile.hp += 15;
+			profile.hp += 25;
 			profile.attackDamage += 3;
-			profile.armor += 3;
+			profile.armor += 4;
 			profile.mana += 5;
-			profile.magicResistance += 3;
+			profile.magicResistance += 4;
 		}
 	}
 	public static void removeWarriorClass(CharacterProfile profile){
@@ -43,7 +43,7 @@ public class CharacterAssignment {
 			profile.armor -= 4;
 			profile.characterclasses.remove("Warrior");
 			profile.moveSpeed -= 2; 
-			profile.hp -= 18;
+			profile.hp -= 25;
 			profile.attackDamage -= 4;
 			profile.luck -= 0.01;
 			profile.fervor -= 3;
@@ -61,7 +61,7 @@ public class CharacterAssignment {
 		if(!profile.characterclasses.contains("Mage")){
 			profile.characterclasses.add("Mage");
 			/*assign Mage base stats*/ 
-			profile.hp += 8; 
+			profile.hp += 15; 
 			profile.mana += 20;
 			profile.bonusMagic += 5;
 			profile.attackRange += 3;
@@ -72,18 +72,18 @@ public class CharacterAssignment {
 	/*apply this function every time a CharacterProfile levels up*/
 	public static void scaleMageStats(CharacterProfile profile){
 		if(profile.characterclasses.contains("Mage")){
-			profile.hp += 7;
+			profile.hp += 18;
 			profile.attackDamage += 1;
 			profile.bonusMagic += 6;
 			profile.mana += 10;
-			profile.magicResistance += 1;
-			profile.armor += 1;
+			profile.magicResistance += 2;
+			profile.armor += 2;
 		}
 	}
 	public static void removeMageClass(CharacterProfile profile){
 		if(profile.characterclasses.contains("Mage")){
 			/*remove Mage base stats*/ 
-			profile.hp -= 8; 
+			profile.hp -= 15; 
 			profile.mana -= 20;
 			profile.bonusMagic -= 5;
 			profile.attackRange -= 3;
@@ -104,7 +104,7 @@ public class CharacterAssignment {
 			profile.characterclasses.add("Assassin");
 			/*assign Assassin base stats*/
 			profile.moveSpeed += 6; 
-			profile.hp += 5; 
+			profile.hp += 20; 
 			profile.attackDamage += 8;
 			profile.attackRange += 1;
 			profile.luck += 0.05;
@@ -113,12 +113,12 @@ public class CharacterAssignment {
 	/*apply this function every time a CharacterProfile levels up*/
 	public static void scaleAssassinStats(CharacterProfile profile){
 		if(profile.characterclasses.contains("Assassin")){
-			profile.hp += 10;
+			profile.hp += 20;
 			profile.attackDamage += 5;
 			profile.attackSpeed += 0.005;
 			profile.mana += 3;
-			profile.magicResistance += 1;
-			profile.armor += 1;
+			profile.magicResistance += 2;
+			profile.armor += 2;
 		}
 	}
 	public static void removeAssassinClass(CharacterProfile profile){
@@ -148,7 +148,7 @@ public class CharacterAssignment {
 			profile.magicResistance += 3;
 			profile.mana += 10;
 			profile.moveSpeed += 1; 
-			profile.hp += 15; 
+			profile.hp += 18; 
 			profile.attackRange +=2;
 			profile.luck += 0.03;
 		
@@ -158,11 +158,11 @@ public class CharacterAssignment {
 	public static void scalePriestStats(CharacterProfile profile){
 		if(profile.characterclasses.contains("Priest")){
 			profile.attackDamage += 1;
-			profile.hp += 12;
+			profile.hp += 18;
 			profile.bonusMagic += 2;
 			profile.mana += 14;
 			profile.armor += 2;
-			profile.magicResistance += 2;
+			profile.magicResistance += 3;
 		}
 	}
 	public static void removePriestClass(CharacterProfile profile){
@@ -191,7 +191,7 @@ public class CharacterAssignment {
 			profile.characterclasses.add("Marksman");
 			/*assign Marksman base stats*/
 			profile.moveSpeed += 2; 
-			profile.hp += 10; 
+			profile.hp += 15; 
 			profile.attackRange += 5;
 			profile.attackDamage += 5;
 			profile.armor += 2;
@@ -201,7 +201,7 @@ public class CharacterAssignment {
 	/*apply this function every time a CharacterProfile levels up*/
 	public static void scaleMarksmanStats(CharacterProfile profile){
 		if(profile.characterclasses.contains("Marksman")){
-			profile.hp += 9;
+			profile.hp += 18;
 			profile.attackDamage += 4;
 			profile.attackSpeed += 0.003;
 			profile.mana += 5;
