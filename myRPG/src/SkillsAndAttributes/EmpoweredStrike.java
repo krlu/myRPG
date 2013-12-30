@@ -18,7 +18,7 @@ public class EmpoweredStrike extends Skill {
 		this.coolDown = 0;
 		this.castRange = 0;
 		this.manaCost = 0;
-		this.name = "Empowered Strike";
+		this.name = "EmpoweredStrike";
 		this.level1Cap = 0; 
 		this.level2Cap = 1;
 		this.level3Cap = 2;

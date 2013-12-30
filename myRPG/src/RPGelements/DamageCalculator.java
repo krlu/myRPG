@@ -22,9 +22,9 @@ public class DamageCalculator {
 	}
 	
 	public static void main(String[] args){;
-		System.out.println(DamageCalculator.effectiveDamage(220,40) + " " + 425);
-		System.out.println(DamageCalculator.effectiveDamage(320,60) + " " + 700);
-		System.out.println(DamageCalculator.effectiveDamage(220,130) + " " + 950);
-		System.out.println(DamageCalculator.effectiveDamage(320,175) + " " + 1200);
+		System.out.println(DamageCalculator.effectiveDamage(220,60) + " " + 425);
+		System.out.println(DamageCalculator.effectiveDamage(320,90) + " " + 700);
+		System.out.println(DamageCalculator.effectiveDamage(182,160) + " " + 950);
+		System.out.println(DamageCalculator.effectiveDamage(288,200) + " " + 1200);
 	}
 }

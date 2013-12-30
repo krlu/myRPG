@@ -17,7 +17,7 @@ public class ArcaneFire extends Skill {
 		this.coolDown = 10.0;
 		this.castRange = 4;
 		this.manaCost = 8;
-		this.name = "Arcane Fire";
+		this.name = "ArcaneFire";
 		this.level1Cap = 0; 
 		this.level2Cap = 1;
 		this.level3Cap = 2;

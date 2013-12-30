@@ -160,6 +160,10 @@ public class CharacterProfile{
 	 * abilities. Buying/Selling changes gold frequently too
 	 * TODO: there will be many more to implement
 	 *******************************************************/
+	public void updateAttackSpeed(double bonus){
+		double sum = this.attackSpeed * (1 + bonus);
+		this.attackSpeed = (sum > 0)? sum : 0;
+	}
 	public void updateMaxHp(int heal){
 		int sum = this.hp + heal;
 		this.maxhp = (sum > 0) ? sum : 0;
