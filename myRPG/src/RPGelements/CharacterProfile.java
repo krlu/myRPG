@@ -2,6 +2,7 @@ package RPGelements;
 import java.util.ArrayList;
 import FundamentalStructures.Tuple;
 import RPGItemTree.Item;
+import SkillsAndAttributes.Skill;
 
 public class CharacterProfile{
 	
@@ -57,7 +58,7 @@ public class CharacterProfile{
 	private String profession;  /* thief, spy, vassal, merchant, mercenary, sovereign, official, viceroy, architect*/
 	private String race;  /*elf, dwarf, human, liche, azealin */
 	protected ArrayList<String> characterclasses; /*Warrior, Mage, Assassin, Marksman, Priest*/
-	protected ArrayList<String> skills;	/*maximum of 5 skills*/
+	protected ArrayList<Skill> skills;	/*maximum of 5 skills*/
 	protected ArrayList<Item> equipedItems; /* can equip max of 6 items*/
 	protected Tuple<Integer,Integer> coordinatePosition; /*<x coordinate, y coordinate>*/
 	protected int gold;
@@ -103,7 +104,7 @@ public class CharacterProfile{
 		this.skillPoints = 0;
 		this.attackCounter = 0;
 		this.equipedItems = new ArrayList<Item>(MAXITEMS);
-		this.skills = new ArrayList<String>(MAXSKILLS);
+		this.skills = new ArrayList<Skill>(MAXSKILLS);
 		this.profession = (profession != null  && !profession.equals("")) ? profession : "Unemployed"; 
 		this.faction = (profession != null  && !profession.equals("")) ? profession : "Unaffiliated"; 
 	}
@@ -299,6 +300,9 @@ public class CharacterProfile{
 	public int getAttackDamage(){
 		return this.attackDamage;
 	}
+	public ArrayList<Skill> getSkills(){
+		return this.skills;
+	}
 	/* movement, ability usage, basic attack methods*/
 	public void applyLifeSteal(){
 		int sum = this.hp + (int) (this.attackDamage * this.lifeSteal);
@@ -320,7 +324,9 @@ public class CharacterProfile{
 	public void moveRight(int distance){
 		this.coordinatePosition.l -= distance;
 	}
-	// TODO: basicAttack does nothing yet!!
+	
+	
+	// TODO: will need to implement future procs from auto-attack
 	public int basicAttack(){
 		this.attackCounter += 1;
 		this.attackCounter = this.attackCounter % 1000;
