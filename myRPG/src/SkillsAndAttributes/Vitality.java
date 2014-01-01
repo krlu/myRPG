@@ -23,31 +23,31 @@ public class Vitality extends Skill {
 	@Override
 	public int level1Effect(CharacterProfile profile){
 		profile.updateHp(20 + (int)(0.3 * profile.getBonusMagic()));
-		return 0;
+		return 25 + (int)(0.3 * profile.getBonusMagic());
 	}
 	@Override
 	public int level2Effect(CharacterProfile profile){
 		profile.updateHp(35 + (int)(0.3 * profile.getBonusMagic()));
-		return 0;
+		return 40 + (int)(0.3 * profile.getBonusMagic());
 	}
 	
 	/*requires level 15*/
 	@Override
 	public int level3Effect(CharacterProfile profile){
 		profile.updateHp(60 + (int)(0.3 * profile.getBonusMagic()));
-		return 0;
+		return 70 + (int)(0.3 * profile.getBonusMagic());
 	}
 	/*requires level 19*/
 	@Override
 	public int level4Effect(CharacterProfile profile){
 		profile.updateHp(100 + (int)(0.3 * profile.getBonusMagic()));
-		return 0;
+		return 110 + (int)(0.3 * profile.getBonusMagic());
 	}
 	/*requires level 23*/
 	@Override
 	public int level5Effect(CharacterProfile profile){
 		profile.updateHp(150 + (int)(0.3 * profile.getBonusMagic()));
-		return 0;
+		return 160 + (int)(0.3 * profile.getBonusMagic());
 	}
 	/*additional effects upon leveling up*/
 	@Override

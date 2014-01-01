@@ -73,9 +73,40 @@ public class ArcaneFire extends Skill {
 	
 	public static void main(String [] args){
 		CharacterProfile me = new Dwarf("Kenny", "August", 30, 1991, "merchant", "");	
-		me.updateBonusMagic(300);
+		me.updateBonusMagic(10);
+		me.updateAttack(6);
 		Skill arcaneFire = new ArcaneFire();
-		arcaneFire.updateSkillPoints(3);
-		System.out.println(arcaneFire.applyEffect(me));
+		Skill vitality = new Vitality();
+		Skill empoweredStrike = new EmpoweredStrike();
+		
+		System.out.println(arcaneFire.applyEffect(me) + " , " + empoweredStrike.applyEffect(me) + " , " + vitality.applyEffect(me));
+		
+		me.updateBonusMagic(50);
+		me.updateAttack(30);
+		arcaneFire.updateSkillPoints(1);
+		vitality.updateSkillPoints(1);
+		empoweredStrike.updateSkillPoints(1);
+		System.out.println(arcaneFire.applyEffect(me) + " , " + empoweredStrike.applyEffect(me) + " , " + vitality.applyEffect(me));
+		
+		me.updateBonusMagic(100);
+		me.updateAttack(54);
+		arcaneFire.updateSkillPoints(1);
+		vitality.updateSkillPoints(1);
+		empoweredStrike.updateSkillPoints(1);
+		System.out.println(arcaneFire.applyEffect(me) + " , " + empoweredStrike.applyEffect(me) + " , " + vitality.applyEffect(me));
+		
+		me.updateBonusMagic(140);
+		me.updateAttack(60);
+		arcaneFire.updateSkillPoints(1);
+		vitality.updateSkillPoints(1);
+		empoweredStrike.updateSkillPoints(1);
+		System.out.println(arcaneFire.applyEffect(me) + " , " + empoweredStrike.applyEffect(me) + " , " + vitality.applyEffect(me));
+		
+		me.updateBonusMagic(160);
+		me.updateAttack(80);
+		arcaneFire.updateSkillPoints(1);
+		vitality.updateSkillPoints(1);
+		empoweredStrike.updateSkillPoints(1);
+		System.out.println(arcaneFire.applyEffect(me) + " , " + empoweredStrike.applyEffect(me) + " , " + vitality.applyEffect(me));
 	}
 }
