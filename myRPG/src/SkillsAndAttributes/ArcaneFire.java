@@ -16,7 +16,7 @@ public class ArcaneFire extends Skill {
 		this.skillPoints = 0;
 		this.coolDown = 10.0;
 		this.castRange = 4;
-		this.manaCost = 8;
+		this.manaCost = 15;
 		this.name = "ArcaneFire";
 		this.level1Cap = 0; 
 		this.level2Cap = 1;
@@ -30,7 +30,7 @@ public class ArcaneFire extends Skill {
 	 ***************************************************/
 	@Override
 	public int level1Effect(CharacterProfile profile){
-		return 12 + (int)(0.5 * profile.getBonusMagic());
+		return 10 + (int)(0.5 * profile.getBonusMagic());
 	}
 	@Override
 	public int level2Effect(CharacterProfile profile){
@@ -39,7 +39,7 @@ public class ArcaneFire extends Skill {
 	@Override
 	/*requires level 15*/
 	public int level3Effect(CharacterProfile profile){
-		return 40 + (int)(0.5 * profile.getBonusMagic());
+		return 35 + (int)(0.5 * profile.getBonusMagic());
 	}
 	@Override
 	/*requires level 20*/
@@ -53,16 +53,20 @@ public class ArcaneFire extends Skill {
 	}
 	
 	/*additional effects upon leveling up*/
+	@Override
 	public void attainingLevel2(){
-		this.manaCost = 15;
+		this.manaCost = 20;
 	}
+	@Override
 	public void attainingLevel3(){
 		this.coolDown = 9;
 		this.manaCost = 30;
 	}
+	@Override
 	public void attainingLevel4(){
 		this.coolDown = 8;
 	}
+	@Override
 	public void attainingLevel5(){
 		this.coolDown = 7;
 	}

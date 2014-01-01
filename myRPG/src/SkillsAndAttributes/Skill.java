@@ -47,7 +47,6 @@ public class Skill {
 	public String getName(){
 		return this.name;
 	}
-	/* override effects*/
 	public int applyEffect(CharacterProfile profile){
 		if(this.skillPoints == this.level1Cap){
 			return level1Effect(profile);
@@ -69,23 +68,33 @@ public class Skill {
 			return 0;
 		}
 	}
+	/* all methods below are overridden in sub-classes.*/
 	public int level1Effect(CharacterProfile profile){
 		return 0;
 	}	
 	public int level2Effect(CharacterProfile profile){
 		return 0;
 	}
-	/*requires level 8*/
 	public int level3Effect(CharacterProfile profile){
 		return 0;
 	}
-	/*requires level 10*/
 	public int level4Effect(CharacterProfile profile){
 		return 0;
 	}
-	/*requires level 12*/
 	public int level5Effect(CharacterProfile profile){
 		return 0;
+	}
+	public void attainingLevel2(){
+		
+	}
+	public void attainingLevel3(){
+		
+	}
+	public void attainingLevel4(){
+		
+	}
+	public void attainingLevel5(){
+		
 	}
 }
 

@@ -28,7 +28,7 @@ public class EmpoweredStrike extends Skill {
 	@Override
 	public int level1Effect(CharacterProfile profile){
 		if(profile.getAttackCounter() % 4 == 0){
-			return 15 + (int)(0.5 * profile.getAttackDamage());
+			return 12 + (int)(0.5 * profile.getAttackDamage());
 		}
 		return 0;
 	}
@@ -50,7 +50,7 @@ public class EmpoweredStrike extends Skill {
 	/*requires level 20*/
 	public int level4Effect(CharacterProfile profile){
 		if(profile.getAttackCounter() % 3 == 0){
-			return 55 + (int)(0.8 * profile.getAttackDamage());
+			return 50 + (int)(0.8 * profile.getAttackDamage());
 		}
 		return 0;
 	}
