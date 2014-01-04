@@ -41,5 +41,10 @@ public class AlbionGunblade extends Item {
 		profile.updateBonusMagic(-1 * this.bonusMagic);
 	}
 
-
+	public void printStats(){
+		System.out.println("attackSpeedBonus: + 20% \n" + 
+						   "bonusMagic: + 20" + 
+						   "mana: +20" + 
+						   "attack: + 10");
+	}
 }
