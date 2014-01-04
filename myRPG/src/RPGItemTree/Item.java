@@ -36,14 +36,17 @@ public class Item{
 	
 	public void equipItem(CharacterProfile profile) {
 		if(this.equiped == true){
-			System.err.println("already equiped shortsword!");
+			System.err.println("already equiped " + this.name + "!!");
 		}
 		else if (profile.getEquipedItems().size() > CharacterProfile.EquipItemThreshold){
 			System.err.println("at equipe threshold, cannot equip more items!!");
 		}
-		else{
+		else if(equipeConditions(profile)){
+				
 			this.equiped = true; 
 			applyItemEffects(profile);
+		}else{
+			System.err.println("cannot equip " + this.name + "!!");
 		}
 	}
 	
@@ -60,6 +63,10 @@ public class Item{
 		return this.name;
 	}
 	/*Override in all extended classes!*/
+	public boolean equipeConditions(CharacterProfile profile){
+		System.err.println("method applyItemEffects need override!");
+		return true;
+	}
 	public void applyItemEffects(CharacterProfile profile){
 		System.err.println("method applyItemEffects need override!");
 	}

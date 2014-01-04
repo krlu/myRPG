@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import RPGelements.CharacterProfile;
 /**
- * TODO: only equipable on profiles with range > 0 (non-melee only)
+ * Requires user with range > 0 (non-melee only)
  */
 public class PelletGun extends Item {
 	private double attackSpeedBonus; 
@@ -20,11 +20,26 @@ public class PelletGun extends Item {
 		this.name = "PelletGun";
 	}
 	@Override
+	public boolean equipeConditions(CharacterProfile profile){
+		if(profile.getAttackRange() > 0){
+			return true;
+		}
+		else{
+			System.err.println("You are not a ranged unit!");
+			return false;
+		}
+	}
+	@Override
 	public void applyItemEffects(CharacterProfile profile){
 		profile.updateAttackSpeed(this.attackSpeedBonus);
 	}
 	@Override
 	public void removeItemEffects(CharacterProfile profile){
 		profile.updateAttackSpeed(-1 * this.attackSpeedBonus);	
+	}
+	public static void main(String[] args){
+		CharacterProfile me = new CharacterProfile("Kenny", "August", 30, 1991, "human", "merchant", "");			
+		Item item = new AlbionGunblade();
+		item.equipItem(me);
 	}
 }

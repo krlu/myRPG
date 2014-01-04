@@ -303,6 +303,9 @@ public class CharacterProfile{
 	public ArrayList<Skill> getSkills(){
 		return this.skills;
 	}
+	public int getAttackRange(){
+		return this.attackRange;
+	}
 	/* movement, ability usage, basic attack methods*/
 	public void applyLifeSteal(){
 		int sum = this.hp + (int) (this.attackDamage * this.lifeSteal);

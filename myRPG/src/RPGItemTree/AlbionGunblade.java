@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import RPGelements.CharacterProfile;
 
+/**
+ * Requires user with range > 0 (non-melee only)
+ */
 public class AlbionGunblade extends Item {
 	
 	private double attackSpeedBonus;
@@ -25,6 +28,16 @@ public class AlbionGunblade extends Item {
 		this.buildsFrom.add("AlbionRifle");
 		this.buildsFrom.add("EmeraldSword");
 		this.name = "AlbionGunblade";
+	}
+	@Override
+	public boolean equipeConditions(CharacterProfile profile){
+		if(profile.getAttackRange() > 0){
+			return true;
+		}
+		else{
+			System.err.println("You are not a ranged unit!");
+			return false;
+		}
 	}
 	@Override
 	public void applyItemEffects(CharacterProfile profile){
