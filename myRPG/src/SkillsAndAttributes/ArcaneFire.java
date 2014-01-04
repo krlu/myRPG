@@ -79,34 +79,34 @@ public class ArcaneFire extends Skill {
 		Skill vitality = new Vitality();
 		Skill empoweredStrike = new EmpoweredStrike();
 		
-		System.out.println(arcaneFire.applyEffect(me) + " , " + empoweredStrike.applyEffect(me) + " , " + vitality.applyEffect(me));
+		System.out.println(arcaneFire.applyEffect(me,null) + " , " + empoweredStrike.applyEffect(me,null) + " , " + vitality.applyEffect(me,null));
 		
 		me.updateBonusMagic(50);
 		me.updateAttack(30);
 		arcaneFire.updateSkillPoints(1);
 		vitality.updateSkillPoints(1);
 		empoweredStrike.updateSkillPoints(1);
-		System.out.println(arcaneFire.applyEffect(me) + " , " + empoweredStrike.applyEffect(me) + " , " + vitality.applyEffect(me));
+		System.out.println(arcaneFire.applyEffect(me,null) + " , " + empoweredStrike.applyEffect(me,null) + " , " + vitality.applyEffect(me,null));
 		
 		me.updateBonusMagic(100);
 		me.updateAttack(54);
 		arcaneFire.updateSkillPoints(1);
 		vitality.updateSkillPoints(1);
 		empoweredStrike.updateSkillPoints(1);
-		System.out.println(arcaneFire.applyEffect(me) + " , " + empoweredStrike.applyEffect(me) + " , " + vitality.applyEffect(me));
+		System.out.println(arcaneFire.applyEffect(me, null) + " , " + empoweredStrike.applyEffect(me,null) + " , " + vitality.applyEffect(me, null));
 		
 		me.updateBonusMagic(140);
 		me.updateAttack(60);
 		arcaneFire.updateSkillPoints(1);
 		vitality.updateSkillPoints(1);
 		empoweredStrike.updateSkillPoints(1);
-		System.out.println(arcaneFire.applyEffect(me) + " , " + empoweredStrike.applyEffect(me) + " , " + vitality.applyEffect(me));
+		System.out.println(arcaneFire.applyEffect(me, null) + " , " + empoweredStrike.applyEffect(me, null) + " , " + vitality.applyEffect(me, null));
 		
 		me.updateBonusMagic(160);
 		me.updateAttack(80);
 		arcaneFire.updateSkillPoints(1);
 		vitality.updateSkillPoints(1);
 		empoweredStrike.updateSkillPoints(1);
-		System.out.println(arcaneFire.applyEffect(me) + " , " + empoweredStrike.applyEffect(me) + " , " + vitality.applyEffect(me));
+		System.out.println(arcaneFire.applyEffect(me, null) + " , " + empoweredStrike.applyEffect(me, null) + " , " + vitality.applyEffect(me, null));
 	}
 }

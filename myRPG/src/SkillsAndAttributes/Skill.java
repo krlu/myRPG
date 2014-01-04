@@ -13,8 +13,9 @@ public class Skill {
 	protected int level3Cap; 
 	protected int level4Cap; 
 	protected int level5Cap; 
-
-	
+	protected boolean tagetedAbility; 
+	protected boolean skillShot;
+	protected boolean effectRadius;
 	public Skill() {
 	}
 	
@@ -47,7 +48,7 @@ public class Skill {
 	public String getName(){
 		return this.name;
 	}
-	public int applyEffect(CharacterProfile profile){
+	public int applyEffect(CharacterProfile profile, CharacterProfile target){
 		if(this.skillPoints == this.level1Cap){
 			return level1Effect(profile);
 		}
@@ -56,8 +57,7 @@ public class Skill {
 		}
 		else if(this.skillPoints == this.level3Cap){
 			return level3Effect(profile);
-		}
-		
+		}		
 		else if(this.skillPoints == this.level4Cap){
 			return level4Effect(profile);
 		}
@@ -69,6 +69,9 @@ public class Skill {
 		}
 	}
 	/* all methods below are overridden in sub-classes.*/
+	private void applyDebuffs(CharacterProfile target){
+		
+	}
 	public int level1Effect(CharacterProfile profile){
 		return 0;
 	}	
