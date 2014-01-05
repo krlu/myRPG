@@ -12,9 +12,11 @@ import RPGelements.Dwarf;
 
 public class ArcaneFire extends Skill {
 
+	private double damageRatio;
 	public ArcaneFire() {
+		this.damageRatio = 0.5;
 		this.skillPoints = 0;
-		this.coolDown = 10.0;
+		this.coolDown = 12.0;
 		this.castRange = 4;
 		this.manaCost = 15;
 		this.name = "ArcaneFire";
@@ -30,28 +32,32 @@ public class ArcaneFire extends Skill {
 	 ***************************************************/
 	@Override
 	public int level1Effect(CharacterProfile profile){
-		return 10 + (int)(0.5 * profile.getBonusMagic());
+		return effectHelper(10, profile);
 	}
 	@Override
 	public int level2Effect(CharacterProfile profile){
-		return 20 + (int)(0.5 * profile.getBonusMagic());
+		return effectHelper(20, profile);
 	}
 	@Override
 	/*requires level 15*/
 	public int level3Effect(CharacterProfile profile){
-		return 35 + (int)(0.5 * profile.getBonusMagic());
+		return effectHelper(35, profile);
 	}
 	@Override
 	/*requires level 20*/
 	public int level4Effect(CharacterProfile profile){
-		return 70 + (int)(0.5 * profile.getBonusMagic());
+		return effectHelper(70, profile);
 	}
 	@Override
 	/*requires level 25*/
 	public int level5Effect(CharacterProfile profile){
-		return 120 + (int)(0.5 * profile.getBonusMagic());
+		return effectHelper(120, profile);
 	}
-	
+	private int effectHelper(int baseDamage, CharacterProfile profile){
+		int damage =  baseDamage + (int)(this.damageRatio * profile.getBonusMagic());
+		profile.updateTotalMagicDamage(damage);
+		return damage;
+	}
 	/*additional effects upon leveling up*/
 	@Override
 	public void attainingLevel2(){
@@ -59,16 +65,16 @@ public class ArcaneFire extends Skill {
 	}
 	@Override
 	public void attainingLevel3(){
-		this.coolDown = 9;
+		this.coolDown = 11.0;
 		this.manaCost = 30;
 	}
 	@Override
 	public void attainingLevel4(){
-		this.coolDown = 8;
+		this.coolDown = 9.0;
 	}
 	@Override
 	public void attainingLevel5(){
-		this.coolDown = 7;
+		this.coolDown = 7.0;
 	}
 	
 	public static void main(String [] args){

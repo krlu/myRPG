@@ -88,6 +88,10 @@ public class CharacterProfile{
 	protected int healthRegen; // per 5 seconds 
 	protected double luck;
 	
+	/*temporary damage stats during a combat phase*/
+	protected int totalPhysicalDamage; 
+	protected int totalMagicDamage;
+	
 	public CharacterProfile(String name, String month, int date, int year, String race, String profession, String faction){
 		this.coolDownReduction = 0.0;
 		this.name = name;
@@ -103,10 +107,12 @@ public class CharacterProfile{
 		this.spellVamp = 0.0;
 		this.skillPoints = 0;
 		this.attackCounter = 0;
-		this.equipedItems = new ArrayList<Item>(MAXITEMS);
+		this.totalMagicDamage = 0;
+		this.totalPhysicalDamage = 0;
 		this.skills = new ArrayList<Skill>(MAXSKILLS);
-		this.profession = (profession != null  && !profession.equals("")) ? profession : "Unemployed"; 
+		this.equipedItems = new ArrayList<Item>(MAXITEMS);
 		this.faction = (profession != null  && !profession.equals("")) ? profession : "Unaffiliated"; 
+		this.profession = (profession != null  && !profession.equals("")) ? profession : "Unemployed"; 
 	}
 	
 	/* **********************************************
@@ -161,6 +167,22 @@ public class CharacterProfile{
 	 * abilities. Buying/Selling changes gold frequently too
 	 * TODO: there will be many more to implement
 	 *******************************************************/
+	
+	/*call this method at end of combat phase*/
+	public void resetTotalDamage(){
+		this.totalMagicDamage = 0;
+		this.totalPhysicalDamage = 0;
+	}
+	/*used from beginning to end of 1 combat phase*/
+	public void updateTotalMagicDamage(int damage){
+		int sum = this.totalMagicDamage + damage;
+		this.totalMagicDamage = (sum > 0) ? sum : 0;
+	}
+	public void updateTotalPhysicalDamage(int damage){
+		int sum = this.totalPhysicalDamage + damage;
+		this.totalPhysicalDamage = (sum > 0) ? sum : 0;
+	}
+	
 	public void updateAttackSpeed(double bonus){
 		double sum = this.attackSpeed * (1 + bonus);
 		this.attackSpeed = (sum > 0)? sum : 0;
@@ -306,13 +328,31 @@ public class CharacterProfile{
 	public int getAttackRange(){
 		return this.attackRange;
 	}
-	/* movement, ability usage, basic attack methods*/
-	public void applyLifeSteal(){
-		int sum = this.hp + (int) (this.attackDamage * this.lifeSteal);
+	public int getArmor(){
+		return this.armor;
+	}
+	public int getMagicResist(){
+		return this.magicResistance;
+	}
+	public int getTotalMagicDamage(){
+		return this.totalMagicDamage;
+	}
+	public int getTotalPhysicalDamage(){
+		return this.totalPhysicalDamage;
+	}
+	
+	/* **********************************************
+	 * movement, ability usage, basic attack methods
+	 * TODO: still a lot yet  to implement here!!
+	 * *********************************************/
+	public void applyLifeSteal(CharacterProfile target){
+		int effectiveDamage = DamageCalculator.effectiveDamage(this.attackDamage, target.getArmor());
+		int sum = this.hp + (int) (effectiveDamage * this.lifeSteal);
 		this.hp = (sum > this.hp) ? this.maxhp : sum;
 	}
-	public void applySpellVamp(int damage){
-		int sum = this.hp + (int) (damage * this.spellVamp);
+	public void applySpellVamp(CharacterProfile target){
+		int effectiveDamage = DamageCalculator.effectiveDamage(this.totalMagicDamage, target.getMagicResist());
+		int sum = this.hp + (int) (effectiveDamage * this.spellVamp);
 		this.hp = (sum > this.hp) ? this.maxhp : sum;
 	}
 	public void moveUp(int distance){

@@ -1,21 +1,24 @@
 package SkillsAndAttributes;
 
 import RPGelements.CharacterProfile;
+import java.util.ArrayList;
 
-public class Skill {
+public class Skill {	
+	protected String name;
 	protected double coolDown; /*measured in seconds*/
 	protected int skillPoints;
 	protected int castRange;
 	protected int manaCost;
-	protected String name;
 	protected int level1Cap; 
 	protected int level2Cap; 
 	protected int level3Cap; 
 	protected int level4Cap; 
 	protected int level5Cap; 
+
 	protected boolean tagetedAbility; 
 	protected boolean skillShot;
 	protected boolean effectRadius;
+	
 	public Skill() {
 	}
 	
@@ -31,24 +34,21 @@ public class Skill {
 		}else{
 			int sum = this.skillPoints + points;
 			this.skillPoints = (sum > 0) ?  sum : 0; 
+		}		
+		if(this.skillPoints == this.level2Cap){
+			this.attainingLevel2();
 		}
+		if(this.skillPoints == this.level3Cap){
+			this.attainingLevel3();
+		}
+		if(this.skillPoints == this.level4Cap){
+			this.attainingLevel4();
+		}
+		if(this.skillPoints == this.level5Cap){
+			this.attainingLevel5();
+		}		
 	}
-	public double getCoolDown(){
-		return this.coolDown;
-	}
-	public int getRequiredSkillPoints(){
-		return this.skillPoints;
-	}
-	public int getCastRange(){
-		return this.castRange;
-	}
-	public int getManaCost(){
-		return this.manaCost;
-	}
-	public String getName(){
-		return this.name;
-	}
-	public int applyEffect(CharacterProfile profile, CharacterProfile target){
+	public int applyEffect(CharacterProfile profile, ArrayList<CharacterProfile> targets){
 		if(this.skillPoints == this.level1Cap){
 			return level1Effect(profile);
 		}
@@ -68,8 +68,26 @@ public class Skill {
 			return 0;
 		}
 	}
+	
+	/*getters*/
+	public double getCoolDown(){
+		return this.coolDown;
+	}
+	public int getRequiredSkillPoints(){
+		return this.skillPoints;
+	}
+	public int getCastRange(){
+		return this.castRange;
+	}
+	public int getManaCost(){
+		return this.manaCost;
+	}
+	public String getName(){
+		return this.name;
+	}
+	
 	/* all methods below are overridden in sub-classes.*/
-	private void applyDebuffs(CharacterProfile target){
+	private void applyDebuffs(ArrayList<CharacterProfile> targets){
 		
 	}
 	public int level1Effect(CharacterProfile profile){

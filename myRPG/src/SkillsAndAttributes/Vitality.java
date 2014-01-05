@@ -8,7 +8,9 @@ import RPGelements.CharacterProfile;
  ********************************************/
 public class Vitality extends Skill {
 
+	private double healRatio;
 	public Vitality() {
+		this.healRatio = 0.3;
 		this.skillPoints = 0;
 		this.coolDown = 20;
 		this.castRange = 2;
@@ -22,32 +24,32 @@ public class Vitality extends Skill {
 	}
 	@Override
 	public int level1Effect(CharacterProfile profile){
-		profile.updateHp(20 + (int)(0.3 * profile.getBonusMagic()));
-		return 25 + (int)(0.3 * profile.getBonusMagic());
+		return effectHelper(25, profile);
 	}
 	@Override
 	public int level2Effect(CharacterProfile profile){
-		profile.updateHp(35 + (int)(0.3 * profile.getBonusMagic()));
-		return 40 + (int)(0.3 * profile.getBonusMagic());
+		return effectHelper(50, profile);
 	}
 	
 	/*requires level 15*/
 	@Override
 	public int level3Effect(CharacterProfile profile){
-		profile.updateHp(60 + (int)(0.3 * profile.getBonusMagic()));
-		return 70 + (int)(0.3 * profile.getBonusMagic());
+		return effectHelper(80, profile);
 	}
 	/*requires level 19*/
 	@Override
 	public int level4Effect(CharacterProfile profile){
-		profile.updateHp(100 + (int)(0.3 * profile.getBonusMagic()));
-		return 110 + (int)(0.3 * profile.getBonusMagic());
+		return effectHelper(125, profile);
 	}
 	/*requires level 23*/
 	@Override
 	public int level5Effect(CharacterProfile profile){
-		profile.updateHp(150 + (int)(0.3 * profile.getBonusMagic()));
-		return 160 + (int)(0.3 * profile.getBonusMagic());
+		return effectHelper(170, profile);
+	}
+	private int effectHelper(int baseHeal, CharacterProfile profile){
+		int totalHeal = baseHeal + (int)(this.healRatio * profile.getBonusMagic());
+		profile.updateHp(totalHeal);
+		return totalHeal;
 	}
 	/*additional effects upon leveling up*/
 	@Override

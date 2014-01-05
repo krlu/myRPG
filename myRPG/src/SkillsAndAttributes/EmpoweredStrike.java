@@ -12,8 +12,11 @@ public class EmpoweredStrike extends Skill {
  * Strong at high levels due to increased damage/ratios and decreased counts 
  * b/w procs and high scaling with purchase of attack speed items
  *******************************************************************************/
-	
+	private int procNumber; 
+	private double damageRatio; 
 	public EmpoweredStrike() {
+		this.procNumber = 4;
+		this.damageRatio = 0.55;
 		this.skillPoints = 0;
 		this.coolDown = 0;
 		this.castRange = 0;
@@ -27,47 +30,64 @@ public class EmpoweredStrike extends Skill {
 	}
 	@Override
 	public int level1Effect(CharacterProfile profile){
-		if(profile.getAttackCounter() % 4 == 0){
-			return 12 + (int)(0.55 * profile.getAttackDamage());
-		}
-		return 0;
+		return effectHelper(12, profile);
 	}
 	@Override
 	public int level2Effect(CharacterProfile profile){
-		if(profile.getAttackCounter() % 4 == 0){
-			return 20 + (int)(0.6 * profile.getAttackDamage());
-		}
-		return 0;
+		return effectHelper(20, profile);
 	}
 	@Override
 	public int level3Effect(CharacterProfile profile){
-		if(profile.getAttackCounter() % 4 == 0){
-			return 30 + (int)(0.65 * profile.getAttackDamage());
-		}
-		return 0;
+		return effectHelper(30, profile);
 	}
 	@Override
 	/*requires level 20*/
 	public int level4Effect(CharacterProfile profile){
-		if(profile.getAttackCounter() % 3 == 0){
-			return 50 + (int)(0.75 * profile.getAttackDamage());
-		}
-		return 0;
+		return effectHelper(50, profile);
 	}
 	@Override
 	/*requires level 25*/
 	public int level5Effect(CharacterProfile profile){
-		if(profile.getAttackCounter() % 3 == 0){
-			return 100 + (int)(0.85 * profile.getAttackDamage());
+		return effectHelper(100, profile);
+	}
+	public int effectHelper(int baseDamage, CharacterProfile profile){
+		if(profile.getAttackCounter() % this.procNumber == 0){
+			int damage = baseDamage + (int)(this.damageRatio * profile.getAttackDamage());
+			profile.updateTotalPhysicalDamage(damage);
+			return damage;
 		}
 		return 0;
 	}
-
+	
+	
+	/* *****************************************
+	 * Overridden methods
+	 * TODO: not sure what to do with these yet
+	 *******************************************/
+	@Override
+	public void attainingLevel2(){
+		this.damageRatio = 0.6;
+	}
+	@Override
+	public void attainingLevel3(){
+		this.damageRatio = 0.7;
+	}
+	@Override
+	public void attainingLevel4(){
+		this.damageRatio = 0.8;
+		this.procNumber = 3;
+	}
+	@Override
+	public void attainingLevel5(){
+		this.damageRatio = 0.9;
+	}
+	
+	
 	public static void main(String[] args){
 		CharacterProfile me = new Dwarf("Kenny", "August", 30, 1991, "merchant", "");	
-		me.updateAttack(200);
-		Skill empoweredStrike = new EmpoweredStrike();
-		empoweredStrike.updateSkillPoints(4);
+		me.updateAttack(36);
+		EmpoweredStrike empoweredStrike = new EmpoweredStrike();
+		empoweredStrike.updateSkillPoints(1);
 		System.out.println(empoweredStrike.applyEffect(me, null));
 	}
 }
