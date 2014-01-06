@@ -15,6 +15,7 @@ public class EmpoweredStrike extends Skill {
 	private int procNumber; 
 	private double damageRatio; 
 	public EmpoweredStrike() {
+		this.maxTargets = 1;
 		this.procNumber = 4;
 		this.damageRatio = 0.55;
 		this.skillPoints = 0;
@@ -38,7 +39,7 @@ public class EmpoweredStrike extends Skill {
 	}
 	@Override
 	public int level3Effect(CharacterProfile profile){
-		return effectHelper(30, profile);
+		return effectHelper(35, profile);
 	}
 	@Override
 	/*requires level 20*/
@@ -59,11 +60,21 @@ public class EmpoweredStrike extends Skill {
 		return 0;
 	}
 	
-	
-	/* *****************************************
-	 * Overridden methods
-	 * TODO: not sure what to do with these yet
-	 *******************************************/
+	@Override
+	public boolean requirementsBeforeSkillPoints(CharacterProfile profile){
+		if(this.skillPoints < this.level3Cap){
+			return true;
+		}
+		else if(this.skillPoints == this.level3Cap){
+			return profile.getLevel() >= 20;
+		}
+		else if(this.skillPoints == this.level4Cap){
+			return profile.getLevel() >= 25;
+		}
+		else{
+			return false;
+		}
+	}
 	@Override
 	public void attainingLevel2(){
 		this.damageRatio = 0.6;
@@ -87,7 +98,7 @@ public class EmpoweredStrike extends Skill {
 		CharacterProfile me = new Dwarf("Kenny", "August", 30, 1991, "merchant", "");	
 		me.updateAttack(36);
 		EmpoweredStrike empoweredStrike = new EmpoweredStrike();
-		empoweredStrike.updateSkillPoints(1);
+		empoweredStrike.updateSkillPoints(1,me);
 		System.out.println(empoweredStrike.applyEffect(me, null));
 	}
 }

@@ -1,6 +1,5 @@
 package SkillsAndAttributes;
 import  RPGelements.CharacterProfile;
-import RPGelements.Dwarf;
 
 /******************************************
  * Basic damage ability with medium range  
@@ -14,6 +13,7 @@ public class ArcaneFire extends Skill {
 
 	private double damageRatio;
 	public ArcaneFire() {
+		this.maxTargets = 1;
 		this.damageRatio = 0.5;
 		this.skillPoints = 0;
 		this.coolDown = 12.0;
@@ -58,6 +58,25 @@ public class ArcaneFire extends Skill {
 		profile.updateTotalMagicDamage(damage);
 		return damage;
 	}
+	
+	@Override
+	public boolean requirementsBeforeSkillPoints(CharacterProfile profile){
+		if(this.skillPoints < this.level2Cap){
+			return true;
+		}
+		else if(this.skillPoints == this.level2Cap){
+			return profile.getLevel() >= 15;
+		}
+		else if(this.skillPoints == this.level3Cap){
+			return profile.getLevel() >= 20;
+		}
+		else if(this.skillPoints == this.level4Cap){
+			return profile.getLevel() >= 25;
+		}
+		else{
+			return false;
+		}
+	}
 	/*additional effects upon leveling up*/
 	@Override
 	public void attainingLevel2(){
@@ -70,6 +89,7 @@ public class ArcaneFire extends Skill {
 	}
 	@Override
 	public void attainingLevel4(){
+		this.manaCost = 40;
 		this.coolDown = 9.0;
 	}
 	@Override
@@ -78,41 +98,5 @@ public class ArcaneFire extends Skill {
 	}
 	
 	public static void main(String [] args){
-		CharacterProfile me = new Dwarf("Kenny", "August", 30, 1991, "merchant", "");	
-		me.updateBonusMagic(10);
-		me.updateAttack(6);
-		Skill arcaneFire = new ArcaneFire();
-		Skill vitality = new Vitality();
-		Skill empoweredStrike = new EmpoweredStrike();
-		
-		System.out.println(arcaneFire.applyEffect(me,null) + " , " + empoweredStrike.applyEffect(me,null) + " , " + vitality.applyEffect(me,null));
-		
-		me.updateBonusMagic(50);
-		me.updateAttack(30);
-		arcaneFire.updateSkillPoints(1);
-		vitality.updateSkillPoints(1);
-		empoweredStrike.updateSkillPoints(1);
-		System.out.println(arcaneFire.applyEffect(me,null) + " , " + empoweredStrike.applyEffect(me,null) + " , " + vitality.applyEffect(me,null));
-		
-		me.updateBonusMagic(100);
-		me.updateAttack(54);
-		arcaneFire.updateSkillPoints(1);
-		vitality.updateSkillPoints(1);
-		empoweredStrike.updateSkillPoints(1);
-		System.out.println(arcaneFire.applyEffect(me, null) + " , " + empoweredStrike.applyEffect(me,null) + " , " + vitality.applyEffect(me, null));
-		
-		me.updateBonusMagic(140);
-		me.updateAttack(60);
-		arcaneFire.updateSkillPoints(1);
-		vitality.updateSkillPoints(1);
-		empoweredStrike.updateSkillPoints(1);
-		System.out.println(arcaneFire.applyEffect(me, null) + " , " + empoweredStrike.applyEffect(me, null) + " , " + vitality.applyEffect(me, null));
-		
-		me.updateBonusMagic(160);
-		me.updateAttack(80);
-		arcaneFire.updateSkillPoints(1);
-		vitality.updateSkillPoints(1);
-		empoweredStrike.updateSkillPoints(1);
-		System.out.println(arcaneFire.applyEffect(me, null) + " , " + empoweredStrike.applyEffect(me, null) + " , " + vitality.applyEffect(me, null));
 	}
 }

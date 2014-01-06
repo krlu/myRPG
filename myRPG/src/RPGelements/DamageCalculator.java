@@ -10,7 +10,7 @@ public class DamageCalculator {
 		
 	}
 	
-	public static int effectiveDamage(int damage, int mitigator){
+	public static int effectiveDamage(double damage, int mitigator){
 		double effectiveDamage = 0;
 		if(mitigator >= 0){
 			effectiveDamage = ((double) damage * 100.0)/(100.0 + (double)mitigator);

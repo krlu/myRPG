@@ -10,6 +10,7 @@ public class Vitality extends Skill {
 
 	private double healRatio;
 	public Vitality() {
+		this.maxTargets = 1;
 		this.healRatio = 0.3;
 		this.skillPoints = 0;
 		this.coolDown = 20;
@@ -50,6 +51,25 @@ public class Vitality extends Skill {
 		int totalHeal = baseHeal + (int)(this.healRatio * profile.getBonusMagic());
 		profile.updateHp(totalHeal);
 		return totalHeal;
+	}	
+	
+	@Override
+	public boolean requirementsBeforeSkillPoints(CharacterProfile profile){
+		if(this.skillPoints < this.level2Cap){
+			return true;
+		}
+		else if(this.skillPoints == this.level2Cap){
+			return profile.getLevel() >= 15;
+		}
+		else if(this.skillPoints == this.level3Cap){
+			return profile.getLevel() >= 19;
+		}
+		else if(this.skillPoints == this.level4Cap){
+			return profile.getLevel() >= 25;
+		}
+		else{
+			return false;
+		}
 	}
 	/*additional effects upon leveling up*/
 	@Override

@@ -160,7 +160,10 @@ public class CharacterProfile{
 		this.date = (date > 0) ? date : this.date; 
 		this.year = (year > 0) ? year : this.year;
 	}
-	
+	// TODO: for testing only!!
+	public void setLevel(int level){
+		this.level = level;
+	}
 	/* *****************************************************
 	 * These are the most frequently updated fields, due to 
 	 * the prevalence of equip items debuffs, and various 
@@ -274,6 +277,12 @@ public class CharacterProfile{
 	}
 	
 	/*getters*/
+	public int getMaxHp(){
+		return this.maxhp;
+	}
+	public int getCurrentHp(){
+		return this.hp;
+	}
 	public String getName(){
 		return this.name;
 	}
