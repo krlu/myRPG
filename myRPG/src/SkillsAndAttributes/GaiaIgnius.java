@@ -4,14 +4,19 @@ import RPGelements.CharacterProfile;
 import RPGelements.DamageCalculator;
 
 /***********************************************************
- * Execution move that deals damage based on missing health
- */
+ * Execution skill that deals damage based on missing health
+ * making it effective at health stacking units as well as 
+ * low health targets with high magic resist. Long range so
+ * that user can cast from safe distance. 
+ * Skill has high cooldown, use wisely!!
+ ***********************************************************/
 public class GaiaIgnius extends Skill {
 	private final double percentRatio = 0.0003;
 	public GaiaIgnius() {
-		this.maxTargets = 1;
+		this.castRange = 6;
+		this.maxTargets = 3;
 		this.skillPoints = 0;
-		this.coolDown = 100.0;
+		this.coolDown = 120.0;
 		this.castRange = 4;
 		this.manaCost = 100;
 		this.name = "ArcaneFire";
@@ -21,25 +26,25 @@ public class GaiaIgnius extends Skill {
 	}
 	/*requires level 15*/
 	@Override
-	public int level1Effect(CharacterProfile profile){
-		return effectHelper(100, profile);
+	public int level1Effect(CharacterProfile profile,CharacterProfile target){
+		return effectHelper(100, profile,target);
 	}
 	/*requires level 20*/
 	@Override
-	public int level2Effect(CharacterProfile profile){
-		return effectHelper(140, profile);
+	public int level2Effect(CharacterProfile profile,CharacterProfile target){
+		return effectHelper(140, profile,target);
 	}
 	/*requires level 25*/
 	@Override
-	public int level3Effect(CharacterProfile profile){
-		return effectHelper(230, profile);
+	public int level3Effect(CharacterProfile profile,CharacterProfile target){
+		return effectHelper(230, profile,target);
 	}
-	public int effectHelper(int baseDamage, CharacterProfile profile){
-		CharacterProfile target = this.targets.get(0);
+	public int effectHelper(int baseDamage, CharacterProfile profile,CharacterProfile target){
 		double percent = 0.20 + 0.0005 * profile.getBonusMagic();
-		int damage = baseDamage + (int) ( percent * (target.getMaxHp() - target.getCurrentHp()));
-		profile.updateTotalMagicDamage(damage);
-		return damage;
+		int scaleDamage = (int) ( percent * (target.getMaxHp() - target.getCurrentHp()));
+		target.updateMagicDamageReceived(scaleDamage);
+		target.updateTrueDamageReceived(baseDamage);
+		return scaleDamage;
 	}
 	
 	@Override
@@ -59,11 +64,13 @@ public class GaiaIgnius extends Skill {
 	}
 	@Override
 	public void attainingLevel2(){
-		this.coolDown = 90;
+		this.castRange = 7;
+		this.coolDown = 110;
 	}
 	@Override
 	public void attainingLevel3(){
-		this.coolDown = 75;
+		this.castRange = 9;
+		this.coolDown = 95;
 	}
 	
 	public static void main(String args[]){

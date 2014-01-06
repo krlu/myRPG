@@ -13,7 +13,8 @@ public class ArcaneFire extends Skill {
 
 	private double damageRatio;
 	public ArcaneFire() {
-		this.maxTargets = 1;
+		this.damageType = MAGIC;
+		this.maxTargets = 2;
 		this.damageRatio = 0.5;
 		this.skillPoints = 0;
 		this.coolDown = 12.0;
@@ -31,31 +32,31 @@ public class ArcaneFire extends Skill {
 	 * higher level skills requires higher level profile
 	 ***************************************************/
 	@Override
-	public int level1Effect(CharacterProfile profile){
-		return effectHelper(10, profile);
+	public int level1Effect(CharacterProfile profile, CharacterProfile target){
+		return effectHelper(10, profile, target);
 	}
 	@Override
-	public int level2Effect(CharacterProfile profile){
-		return effectHelper(20, profile);
+	public int level2Effect(CharacterProfile profile,CharacterProfile target){
+		return effectHelper(20, profile,target);
 	}
 	@Override
 	/*requires level 15*/
-	public int level3Effect(CharacterProfile profile){
-		return effectHelper(35, profile);
+	public int level3Effect(CharacterProfile profile,CharacterProfile target){
+		return effectHelper(35, profile,target);
 	}
 	@Override
 	/*requires level 20*/
-	public int level4Effect(CharacterProfile profile){
-		return effectHelper(70, profile);
+	public int level4Effect(CharacterProfile profile,CharacterProfile target){
+		return effectHelper(70, profile,target);
 	}
 	@Override
 	/*requires level 25*/
-	public int level5Effect(CharacterProfile profile){
-		return effectHelper(120, profile);
+	public int level5Effect(CharacterProfile profile,CharacterProfile target){
+		return effectHelper(120, profile,target);
 	}
-	private int effectHelper(int baseDamage, CharacterProfile profile){
+	private int effectHelper(int baseDamage, CharacterProfile profile,CharacterProfile target){
 		int damage =  baseDamage + (int)(this.damageRatio * profile.getBonusMagic());
-		profile.updateTotalMagicDamage(damage);
+		target.updateMagicDamageReceived(damage);
 		return damage;
 	}
 	

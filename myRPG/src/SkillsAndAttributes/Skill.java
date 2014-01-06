@@ -1,14 +1,22 @@
 package SkillsAndAttributes;
 
 import RPGelements.CharacterProfile;
+import RPGelements.DamageCalculator;
 import RPGelements.Dwarf;
+import RPGelements.Human;
 
 import java.util.ArrayList;
 
-public class Skill {	
+public class Skill {
+	protected final int MAGIC = 0;
+	protected final int PHYSICAL = 1;
+	protected final int TRUE = 2;
+	protected final int NONDAMAGE = -1;
+	
 	protected String name;
 	protected double coolDown; /*measured in seconds*/
 	protected int skillPoints;
+	protected int damageType;
 	protected int castRange;
 	protected int manaCost;
 	protected int level1Cap; 
@@ -16,14 +24,12 @@ public class Skill {
 	protected int level3Cap; 
 	protected int level4Cap; 
 	protected int level5Cap; 
-
-	/*TODO: all abilities are single target right now!!*/
+	
 	protected int maxTargets;
 	protected boolean skillShot;
 	protected boolean effectRadius;
+	protected ArrayList<CharacterProfile> targets;
 	
-	/*for single target, list will be size 1*/
-	protected ArrayList<CharacterProfile> targets; 
 	public Skill() {
 	}
 	
@@ -59,30 +65,38 @@ public class Skill {
 	}
 	/*targets size is bounded by number of maxTargets*/
 	public int applyEffect(CharacterProfile profile, ArrayList<CharacterProfile> targets){
-		
 		// TODO: targets != null is ad-hoc check!! Will remove later!!!
+		this.targets = targets;
+		int damage = 0;
 		if( targets != null && targets.size() > this.maxTargets){
 			System.err.println("TOO MANY TARGETS!!");
 			return 0;
+		}	
+		for(CharacterProfile target : targets){
+		    damage = applyEffectHelper(profile, target);
 		}
+		return damage;
+	}
+	
+	public int applyEffectHelper(CharacterProfile profile, CharacterProfile target){
 		
-		this.targets = targets;
 		if(this.skillPoints == this.level1Cap){
-			return level1Effect(profile);
+			return level1Effect(profile, target);
 		}
 		else if(this.skillPoints == this.level2Cap){
-			return level2Effect(profile);
+			return level2Effect(profile, target);
 		}
 		else if(this.skillPoints == this.level3Cap){
-			return level3Effect(profile);
+			return level3Effect(profile, target);
 		}		
 		else if(this.skillPoints == this.level4Cap){
-			return level4Effect(profile);
+			return level4Effect(profile, target);
 		}
 		else if(this.skillPoints == this.level5Cap){
-			return level5Effect(profile);
+			return level5Effect(profile, target);
 		}
 		else{
+			System.err.println("error in skill points!!");
 			return 0;
 		}
 	}
@@ -112,23 +126,23 @@ public class Skill {
 	private void applyDebuffs(ArrayList<CharacterProfile> targets){
 		unimplementedPrint();
 	}
-	public int level1Effect(CharacterProfile profile){
+	public int level1Effect(CharacterProfile profile, CharacterProfile target){
 		unimplementedPrint();
 		return 0;
 	}	
-	public int level2Effect(CharacterProfile profile){
+	public int level2Effect(CharacterProfile profile, CharacterProfile target){
 		unimplementedPrint();
 		return 0;
 	}
-	public int level3Effect(CharacterProfile profile){
+	public int level3Effect(CharacterProfile profile, CharacterProfile target){
 		unimplementedPrint();
 		return 0;
 	}
-	public int level4Effect(CharacterProfile profile){
+	public int level4Effect(CharacterProfile profile, CharacterProfile target){
 		unimplementedPrint();
 		return 0;
 	}
-	public int level5Effect(CharacterProfile profile){
+	public int level5Effect(CharacterProfile profile, CharacterProfile target){
 		unimplementedPrint();
 		return 0;
 	}
@@ -153,7 +167,39 @@ public class Skill {
 	 * Test center for all skills!!!
 	 *******************************/
 	public static void main(String [] args){
+		testScenario2();
+	}
+	public static void testScenario2(){
 		CharacterProfile me = new Dwarf("Kenny", "August", 30, 1991, "merchant", "");	
+		CharacterProfile target = new Human("Kenny", "August", 30, 1991, "merchant", "");
+		ArrayList<CharacterProfile> targets = new ArrayList<CharacterProfile>();
+		targets.add(target);
+		me.setLevel(25);
+		me.updateBonusMagic(10);
+		me.updateBonusMagic(50);
+		me.updateBonusMagic(100);
+		me.updateBonusMagic(140);
+		me.updateBonusMagic(160);
+		target.updateMaxHp(3000);
+		target.updateHp(600);
+		target.updateMagicResist(83);
+		Skill GI = new GaiaIgnius();
+		GI.updateSkillPoints(4, me);
+		GI.applyEffect(me, targets);
+		System.out.println(target.getMaxHp());
+		System.out.println(target.getCurrentHp());
+		System.out.println("Gaia Ignius: "+ target.totalEffectiveDamageReceived());
+		target.resetDamageReceived();
+		Skill arcaneFire = new ArcaneFire();
+		arcaneFire.updateSkillPoints(4,me);
+		arcaneFire.applyEffect(me, targets);
+		System.out.println("Arcane Fire: " + target.totalEffectiveDamageReceived());
+	}
+	public static void testScenario1(){
+		CharacterProfile me = new Dwarf("Kenny", "August", 30, 1991, "merchant", "");	
+		CharacterProfile target = new Human("Kenny", "August", 30, 1991, "merchant", "");
+		ArrayList<CharacterProfile> targets = new ArrayList<CharacterProfile>();
+		targets.add(target);
 		me.setLevel(25);
 		me.updateBonusMagic(10);
 		me.updateAttack(6);
@@ -161,36 +207,36 @@ public class Skill {
 		Skill vitality = new Vitality();
 		Skill empoweredStrike = new EmpoweredStrike();
 		
-		System.out.println(arcaneFire.applyEffect(me,null) + " , " + empoweredStrike.applyEffect(me,null) + " , " + vitality.applyEffect(me,null));
+		System.out.println(arcaneFire.applyEffect(me,targets) + " , " + empoweredStrike.applyEffect(me,targets) + " , " + vitality.applyEffect(me,targets));
 		
 		me.updateBonusMagic(50);
 		me.updateAttack(30);
 		arcaneFire.updateSkillPoints(1,me);
 		vitality.updateSkillPoints(1,me);
 		empoweredStrike.updateSkillPoints(1,me);
-		System.out.println(arcaneFire.applyEffect(me,null) + " , " + empoweredStrike.applyEffect(me,null) + " , " + vitality.applyEffect(me,null));
+		System.out.println(arcaneFire.applyEffect(me,targets) + " , " + empoweredStrike.applyEffect(me,targets) + " , " + vitality.applyEffect(me,targets));
 		
 		me.updateBonusMagic(100);
 		me.updateAttack(54);
 		arcaneFire.updateSkillPoints(1,me);
 		vitality.updateSkillPoints(1,me);
 		empoweredStrike.updateSkillPoints(1,me);
-		System.out.println(arcaneFire.applyEffect(me, null) + " , " + empoweredStrike.applyEffect(me,null) + " , " + vitality.applyEffect(me, null));
+		System.out.println(arcaneFire.applyEffect(me, targets) + " , " + empoweredStrike.applyEffect(me,targets) + " , " + vitality.applyEffect(me, targets));
 		
 		me.updateBonusMagic(140);
 		me.updateAttack(60);
 		arcaneFire.updateSkillPoints(1,me);
 		vitality.updateSkillPoints(1,me);
 		empoweredStrike.updateSkillPoints(1,me);
-		System.out.println(arcaneFire.applyEffect(me, null) + " , " + empoweredStrike.applyEffect(me, null) + " , " + vitality.applyEffect(me, null));
+		System.out.println(arcaneFire.applyEffect(me, targets) + " , " + empoweredStrike.applyEffect(me, targets) + " , " + vitality.applyEffect(me, targets));
 		
 		me.updateBonusMagic(160);
 		me.updateAttack(80);
 		arcaneFire.updateSkillPoints(1,me);
 		vitality.updateSkillPoints(1,me);
 		empoweredStrike.updateSkillPoints(1,me);
-		System.out.println(arcaneFire.applyEffect(me, null) + " , " + empoweredStrike.applyEffect(me, null) + " , " + vitality.applyEffect(me, null));
-	
+		System.out.println(DamageCalculator.effectiveDamage(arcaneFire.applyEffect(me, targets), 0) + " , " + empoweredStrike.applyEffect(me, targets) + " , " + vitality.applyEffect(me, targets));
+		
 	}
 }
 

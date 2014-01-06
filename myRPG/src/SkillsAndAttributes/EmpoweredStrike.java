@@ -30,31 +30,31 @@ public class EmpoweredStrike extends Skill {
 		this.level5Cap = 4;
 	}
 	@Override
-	public int level1Effect(CharacterProfile profile){
-		return effectHelper(12, profile);
+	public int level1Effect(CharacterProfile profile,CharacterProfile target){
+		return effectHelper(12, profile,target);
 	}
 	@Override
-	public int level2Effect(CharacterProfile profile){
-		return effectHelper(20, profile);
+	public int level2Effect(CharacterProfile profile,CharacterProfile target){
+		return effectHelper(20, profile,target);
 	}
 	@Override
-	public int level3Effect(CharacterProfile profile){
-		return effectHelper(35, profile);
+	public int level3Effect(CharacterProfile profile,CharacterProfile target){
+		return effectHelper(35, profile,target);
 	}
 	@Override
 	/*requires level 20*/
-	public int level4Effect(CharacterProfile profile){
-		return effectHelper(50, profile);
+	public int level4Effect(CharacterProfile profile,CharacterProfile target){
+		return effectHelper(50, profile,target);
 	}
 	@Override
 	/*requires level 25*/
-	public int level5Effect(CharacterProfile profile){
-		return effectHelper(100, profile);
+	public int level5Effect(CharacterProfile profile, CharacterProfile target){
+		return effectHelper(100, profile,target);
 	}
-	public int effectHelper(int baseDamage, CharacterProfile profile){
+	public int effectHelper(int baseDamage, CharacterProfile profile,CharacterProfile target){
 		if(profile.getAttackCounter() % this.procNumber == 0){
 			int damage = baseDamage + (int)(this.damageRatio * profile.getAttackDamage());
-			profile.updateTotalPhysicalDamage(damage);
+			target.updatePhysicalDamageReceived(damage);
 			return damage;
 		}
 		return 0;

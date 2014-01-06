@@ -11,8 +11,7 @@ public class Human extends CharacterProfile{
 	
 	private ArrayList<String> amplifiedResources = new ArrayList<String>(Arrays.asList("Stone", "Iron", "Oil"));
 	
-	public Human(String name, String month, int date, int year, String race,
-			String profession, String faction) {
+	public Human(String name, String month, int date, int year, String profession, String faction) {
 		super(name, month, date, year, "Human", profession, faction);
 		applyBaseStats();
 	}
@@ -44,7 +43,7 @@ public class Human extends CharacterProfile{
 		return gatherBonus;
 	}
 	public static void main(String[] args) {
-		Human me = new Human("Kenny", "August", 30, 1991, "asdfasdf", "merchant", "");			
+		Human me = new Human("Kenny", "August", 30, 1991,  "merchant", "");			
 		System.out.println(me.getName() + "\n" + me.getDOB() + "\n" + me.getRace());
 		System.out.println(30/4);
 	}

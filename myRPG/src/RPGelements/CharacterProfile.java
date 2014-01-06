@@ -64,7 +64,7 @@ public class CharacterProfile{
 	protected int gold;
 	
 	
-	/* combat stats */
+	/* basic combat stats */
 	protected double coolDownReduction; 
 	protected double lifeSteal; 
 	protected double spellVamp; 
@@ -88,9 +88,10 @@ public class CharacterProfile{
 	protected int healthRegen; // per 5 seconds 
 	protected double luck;
 	
-	/*temporary damage stats during a combat phase*/
-	protected int totalPhysicalDamage; 
-	protected int totalMagicDamage;
+	/*damaged received during combat phase*/
+	protected int physicalDamageReceived; 
+	protected int magicDamageReceived;
+	protected int trueDamageReceived;
 	
 	public CharacterProfile(String name, String month, int date, int year, String race, String profession, String faction){
 		this.coolDownReduction = 0.0;
@@ -107,8 +108,9 @@ public class CharacterProfile{
 		this.spellVamp = 0.0;
 		this.skillPoints = 0;
 		this.attackCounter = 0;
-		this.totalMagicDamage = 0;
-		this.totalPhysicalDamage = 0;
+		this.trueDamageReceived = 0;
+		this.magicDamageReceived = 0;
+		this.physicalDamageReceived = 0;
 		this.skills = new ArrayList<Skill>(MAXSKILLS);
 		this.equipedItems = new ArrayList<Item>(MAXITEMS);
 		this.faction = (profession != null  && !profession.equals("")) ? profession : "Unaffiliated"; 
@@ -170,33 +172,26 @@ public class CharacterProfile{
 	 * abilities. Buying/Selling changes gold frequently too
 	 * TODO: there will be many more to implement
 	 *******************************************************/
-	
-	/*call this method at end of combat phase*/
-	public void resetTotalDamage(){
-		this.totalMagicDamage = 0;
-		this.totalPhysicalDamage = 0;
-	}
-	/*used from beginning to end of 1 combat phase*/
-	public void updateTotalMagicDamage(int damage){
-		int sum = this.totalMagicDamage + damage;
-		this.totalMagicDamage = (sum > 0) ? sum : 0;
-	}
-	public void updateTotalPhysicalDamage(int damage){
-		int sum = this.totalPhysicalDamage + damage;
-		this.totalPhysicalDamage = (sum > 0) ? sum : 0;
-	}
-	
+
 	public void updateAttackSpeed(double bonus){
 		double sum = this.attackSpeed * (1 + bonus);
 		this.attackSpeed = (sum > 0)? sum : 0;
 	}
-	public void updateMaxHp(int heal){
-		int sum = this.hp + heal;
+	public void updateMaxHp(int bonus){
+		int sum = this.maxhp + bonus;
 		this.maxhp = (sum > 0) ? sum : 0;
 	}
 	public void updateHp(int bonus){
 		int sum = this.hp + bonus;
-		this.hp = (sum > this.hp) ? this.maxhp : sum;
+		if(sum > this.maxhp){ 
+			this.hp = this.maxhp;
+		}
+		else if(sum < 0){
+			this.hp = 0;
+		}
+		else{
+			this.hp = sum;
+		}
 	}
 	public void updateAttack(int bonus){
 		int sum = this.attackDamage + bonus;
@@ -239,6 +234,27 @@ public class CharacterProfile{
 			this.gold += amount;
 		}
 	}
+	/* **************************************************
+	 * Compute all damage received, magic, physical, true 
+	 * Armor and Magic Resistance applied here!! 
+	 ****************************************************/
+	public void resetDamageReceived(){
+		this.magicDamageReceived = 0;
+		this.physicalDamageReceived = 0;
+		this.trueDamageReceived = 0;
+	}
+	public void updateMagicDamageReceived(int damage){
+		int sum = this.magicDamageReceived + damage;
+		this.magicDamageReceived = (sum > 0) ? sum : 0;
+	}
+	public void updatePhysicalDamageReceived(int damage){
+		int sum = this.physicalDamageReceived + damage;
+		this.physicalDamageReceived = (sum > 0) ? sum : 0;
+	}
+	public void updateTrueDamageReceived(int damage){
+		int sum = this.trueDamageReceived + damage;
+		this.trueDamageReceived = (sum > 0) ? sum : 0;
+	}
 	/*added either through leveling or by removing a skill*/
 	public void addSkillPoints(int amount){
 		if(amount < 0){
@@ -276,7 +292,9 @@ public class CharacterProfile{
 		}
 	}
 	
-	/*getters*/
+	/* *********
+	 * getters
+	 ***********/
 	public int getMaxHp(){
 		return this.maxhp;
 	}
@@ -343,13 +361,20 @@ public class CharacterProfile{
 	public int getMagicResist(){
 		return this.magicResistance;
 	}
-	public int getTotalMagicDamage(){
-		return this.totalMagicDamage;
+	public int totalEffectiveDamageReceived(){
+		int appliedWithMR = DamageCalculator.effectiveDamage(this.magicDamageReceived, this.magicResistance);
+		int appliedWithArmor = DamageCalculator.effectiveDamage(this.physicalDamageReceived, this.armor);
+		return this.trueDamageReceived + appliedWithMR + appliedWithArmor; 
 	}
-	public int getTotalPhysicalDamage(){
-		return this.totalPhysicalDamage;
+	public int magicDamageReceived(){
+		return this.magicDamageReceived;
 	}
-	
+	public int physicalDamageReceived(){
+		return this.physicalDamageReceived;
+	}
+	public int trueDamageReceived(){
+		return this.trueDamageReceived;
+	}
 	/* **********************************************
 	 * movement, ability usage, basic attack methods
 	 * TODO: still a lot yet  to implement here!!
@@ -360,7 +385,7 @@ public class CharacterProfile{
 		this.hp = (sum > this.hp) ? this.maxhp : sum;
 	}
 	public void applySpellVamp(CharacterProfile target){
-		int effectiveDamage = DamageCalculator.effectiveDamage(this.totalMagicDamage, target.getMagicResist());
+		int effectiveDamage = DamageCalculator.effectiveDamage(this.magicDamageReceived, target.getMagicResist());
 		int sum = this.hp + (int) (effectiveDamage * this.spellVamp);
 		this.hp = (sum > this.hp) ? this.maxhp : sum;
 	}

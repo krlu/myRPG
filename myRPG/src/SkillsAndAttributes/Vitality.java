@@ -24,32 +24,32 @@ public class Vitality extends Skill {
 		this.level5Cap = 4;
 	}
 	@Override
-	public int level1Effect(CharacterProfile profile){
-		return effectHelper(25, profile);
+	public int level1Effect(CharacterProfile profile, CharacterProfile target){
+		return effectHelper(25, profile, target);
 	}
 	@Override
-	public int level2Effect(CharacterProfile profile){
-		return effectHelper(50, profile);
+	public int level2Effect(CharacterProfile profile, CharacterProfile target){
+		return effectHelper(50, profile , target);
 	}
 	
 	/*requires level 15*/
 	@Override
-	public int level3Effect(CharacterProfile profile){
-		return effectHelper(80, profile);
+	public int level3Effect(CharacterProfile profile, CharacterProfile target){
+		return effectHelper(80, profile, target);
 	}
 	/*requires level 19*/
 	@Override
-	public int level4Effect(CharacterProfile profile){
-		return effectHelper(125, profile);
+	public int level4Effect(CharacterProfile profile ,CharacterProfile target){
+		return effectHelper(125, profile, target);
 	}
 	/*requires level 23*/
 	@Override
-	public int level5Effect(CharacterProfile profile){
-		return effectHelper(170, profile);
+	public int level5Effect(CharacterProfile profile, CharacterProfile target){
+		return effectHelper(170, profile, target);
 	}
-	private int effectHelper(int baseHeal, CharacterProfile profile){
+	private int effectHelper(int baseHeal, CharacterProfile profile , CharacterProfile target){
 		int totalHeal = baseHeal + (int)(this.healRatio * profile.getBonusMagic());
-		profile.updateHp(totalHeal);
+		target.updateHp(totalHeal);
 		return totalHeal;
 	}	
 	
