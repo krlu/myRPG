@@ -50,4 +50,12 @@ public class WorldMap {
 	public CharacterProfile getUnitOnMap(int x, int y){
 		return this.unitsOnMap[y][x];
 	}
+	/* ***********************************************
+	 * every terrain has a basic effect on each player
+	 * depending on race, class, items, and skills 
+	 * different terrain can also proc other effects 
+	 ************************************************/
+	public void applyTerrainEffect(CharacterProfile profile){
+		
+	}
 }

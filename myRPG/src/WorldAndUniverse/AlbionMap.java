@@ -21,8 +21,8 @@ public class AlbionMap extends WorldMap {
 	public static final String INFIRMARY = "Infirmary";
 	public static final String Tree = "Tree";
 	public static final String HOUSE = "House";
-	public static final String BrickRoad = "BrickRoad";
-	
+	public static final String BRICKROAD = "Brick Road";
+	public static final String DIRTROAD = "Dirt Road";
 	public AlbionMap(){
 		this.terrain = new String[1000][1000];
 	}
