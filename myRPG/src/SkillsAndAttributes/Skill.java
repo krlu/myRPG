@@ -4,7 +4,8 @@ import RPGelements.CharacterProfile;
 import RPGelements.DamageCalculator;
 import RPGelements.Dwarf;
 import RPGelements.Human;
-import RPGelements.WorldMap;
+import WorldAndUniverse.WorldMap;
+
 import java.util.ArrayList;
 
 public class Skill {

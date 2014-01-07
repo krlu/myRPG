@@ -1,5 +1,6 @@
-package RPGelements;
+package WorldAndUniverse;
 import FundamentalStructures.Tuple;
+import RPGelements.CharacterProfile;
 
 
 /**************************************************
@@ -20,8 +21,8 @@ public class WorldMap {
 		return (0 <= x && x < grid.length && 0 < y && y < grid[0].length);
 	}
 	public Tuple<Integer,Integer>getPosition(CharacterProfile profile){
-		if(notOutOfBounds(this.grid,profile.coordinatePosition.r, profile.coordinatePosition.l)){
-			return profile.coordinatePosition;
+		if(notOutOfBounds(this.grid,profile.getCoordinatePosition().r, profile.getCoordinatePosition().l)){
+			return profile.getCoordinatePosition();
 		}
 		return null;
 	}

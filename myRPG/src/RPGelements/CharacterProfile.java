@@ -375,6 +375,9 @@ public class CharacterProfile{
 	public int trueDamageReceived(){
 		return this.trueDamageReceived;
 	}
+	public Tuple<Integer, Integer> getCoordinatePosition(){
+		return this.coordinatePosition;
+	}
 	/* **********************************************
 	 * movement, ability usage, basic attack methods
 	 * TODO: still a lot yet  to implement here!!
