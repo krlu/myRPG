@@ -10,6 +10,7 @@ public class Vitality extends Skill {
 
 	private double healRatio;
 	public Vitality() {
+		this.effectRadius = 0;
 		this.maxTargets = 1;
 		this.healRatio = 0.3;
 		this.skillPoints = 0;
@@ -79,15 +80,15 @@ public class Vitality extends Skill {
 	@Override
 	public void attainingLevel3(){
 		this.coolDown = 18;
-		this.manaCost = 35;
-	}
-	@Override
-	public void attainingLevel4(){
 		this.manaCost = 40;
 	}
 	@Override
-	public void attainingLevel5(){
+	public void attainingLevel4(){
 		this.manaCost = 50;
+	}
+	@Override
+	public void attainingLevel5(){
+		this.manaCost = 60;
 		this.coolDown = 16;
 	}
 }

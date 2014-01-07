@@ -10,14 +10,14 @@ import FundamentalStructures.Tuple;
  **************************************************/
 
 public class WorldMap {
-	
+	protected CharacterProfile[][] unitsOnMap; // keeps track of all players on map
 	protected int[][] grid;
 	protected String[][] mapData;
 	protected String[][] terrain; /*Mountain, Hill, Water, Grass, Forest, Sand*/
 	/*returns position of input user 
 	 */
-	private boolean notOutOfBounds(int[][] grid, int row, int col) {
-		return (0 <= row && row < grid.length && 0 < col && col < grid[0].length);
+	public static boolean notOutOfBounds(int[][] grid, int x, int y) {
+		return (0 <= x && x < grid.length && 0 < y && y < grid[0].length);
 	}
 	public Tuple<Integer,Integer>getPosition(CharacterProfile profile){
 		if(notOutOfBounds(this.grid,profile.coordinatePosition.r, profile.coordinatePosition.l)){
@@ -32,5 +32,11 @@ public class WorldMap {
 	 *********************************/
 	public void loadMap(String[][] mapData){
 		
+	}
+	public int[][] getGrid(){
+		return this.grid;
+	}
+	public CharacterProfile getUnitOnMap(int x, int y){
+		return this.unitsOnMap[y][x];
 	}
 }

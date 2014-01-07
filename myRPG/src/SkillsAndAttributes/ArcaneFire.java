@@ -13,6 +13,7 @@ public class ArcaneFire extends Skill {
 
 	private double damageRatio;
 	public ArcaneFire() {
+		this.effectRadius = 0;
 		this.damageType = MAGIC;
 		this.maxTargets = 2;
 		this.damageRatio = 0.5;
@@ -90,7 +91,7 @@ public class ArcaneFire extends Skill {
 	}
 	@Override
 	public void attainingLevel4(){
-		this.manaCost = 40;
+		this.manaCost = 45;
 		this.coolDown = 9.0;
 	}
 	@Override

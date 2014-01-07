@@ -18,8 +18,8 @@ public class Human extends CharacterProfile{
 	
 	private void applyBaseStats(){
 		this.healthRegen = 4;
-		this.maxhp = 50;
-		this.hp = 50; 
+		this.maxhp = 60;
+		this.hp = 60; 
 		this.healthRegen = 3; 
 		this.attackDamage = 7; 
 		this.attackSpeed = 0.50;

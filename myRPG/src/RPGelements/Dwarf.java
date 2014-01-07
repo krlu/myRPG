@@ -13,8 +13,8 @@ public class Dwarf extends CharacterProfile{
 		applyBaseStats();
 	}
 	private void applyBaseStats(){
-		this.maxhp = 50;
-		this.hp = 50; 
+		this.maxhp = 60;
+		this.hp = 60; 
 		this.healthRegen = 4;
 		this.attackDamage = 9; 
 		this.attackSpeed = 0.45;

@@ -11,18 +11,23 @@ import RPGelements.DamageCalculator;
  * Skill has high cooldown, use wisely!!
  ***********************************************************/
 public class GaiaIgnius extends Skill {
-	private final double percentRatio = 0.0003;
+	
+	private final double percentRatio = 0.0005;
+	
 	public GaiaIgnius() {
-		this.castRange = 6;
 		this.maxTargets = 3;
+		this.castRange = 6;
+		this.effectRadius = 1;
 		this.skillPoints = 0;
 		this.coolDown = 120.0;
 		this.castRange = 4;
-		this.manaCost = 100;
+		this.manaCost = 110;
 		this.name = "ArcaneFire";
 		this.level1Cap = 1; 
 		this.level2Cap = 2;
 		this.level3Cap = 4;
+		this.level4Cap = -1;
+		this.level5Cap = -1;
 	}
 	/*requires level 15*/
 	@Override
@@ -40,7 +45,7 @@ public class GaiaIgnius extends Skill {
 		return effectHelper(230, profile,target);
 	}
 	public int effectHelper(int baseDamage, CharacterProfile profile,CharacterProfile target){
-		double percent = 0.20 + 0.0005 * profile.getBonusMagic();
+		double percent = 0.20 + this.percentRatio * profile.getBonusMagic();
 		int scaleDamage = (int) ( percent * (target.getMaxHp() - target.getCurrentHp()));
 		target.updateMagicDamageReceived(scaleDamage);
 		target.updateTrueDamageReceived(baseDamage);
@@ -64,8 +69,10 @@ public class GaiaIgnius extends Skill {
 	}
 	@Override
 	public void attainingLevel2(){
+		this.effectRadius = 2;
 		this.castRange = 7;
 		this.coolDown = 110;
+		this.manaCost = 150;
 	}
 	@Override
 	public void attainingLevel3(){

@@ -4,7 +4,7 @@ import RPGelements.CharacterProfile;
 import RPGelements.DamageCalculator;
 import RPGelements.Dwarf;
 import RPGelements.Human;
-
+import RPGelements.WorldMap;
 import java.util.ArrayList;
 
 public class Skill {
@@ -26,9 +26,8 @@ public class Skill {
 	protected int level5Cap; 
 	
 	protected int maxTargets;
+	protected int effectRadius;
 	protected boolean skillShot;
-	protected boolean effectRadius;
-	protected ArrayList<CharacterProfile> targets;
 	
 	public Skill() {
 	}
@@ -39,6 +38,10 @@ public class Skill {
 		this.coolDown = finalCD;
 	}
 	public void updateSkillPoints(int points, CharacterProfile profile){
+		if(points == 0){
+			System.err.println("requires non-zero input for updateskillpoints!");
+			return;
+		}
 		if(!requirementsBeforeSkillPoints(profile)){
 			System.out.println("not enough levels");
 			return;
@@ -63,10 +66,37 @@ public class Skill {
 			this.attainingLevel5();
 		}		
 	}
-	/*targets size is bounded by number of maxTargets*/
+	
+	/* ************************************************
+	 * For all area of effects and skill shot abilities
+	 * instead targets a square on the world-map, effect
+	 * simply spreads to surrounding squares depending 
+	 * on effect radius, takes in target location and map
+	 * as parameters in addition to the user profile
+	 ****************************************************/
+	public void applyNonTargetedEffect(CharacterProfile profile, WorldMap map, int xcoor, int ycoor){
+		int top = ycoor + this.effectRadius;
+		int bottom = ycoor + this.effectRadius; // row
+		int left = xcoor - this.effectRadius;
+		int right = xcoor + this.effectRadius; // col
+		for(int x=left; x < right; x++){
+			for(int y = bottom; y < top; y++){
+				if(WorldMap.notOutOfBounds(map.getGrid(), x, y)){
+					CharacterProfile target = map.getUnitOnMap(x, y);
+					if(target != null){
+						applyEffectHelper(profile, target);
+					}
+				}
+			}
+		}
+	}
+	
+	/* *************************************************
+	 * targets size is bounded by number of maxTargets
+	 * returns amount of damage dealt to last target 
+	 * TODO: might make method void, unused return value
+	 ***************************************************/
 	public int applyEffect(CharacterProfile profile, ArrayList<CharacterProfile> targets){
-		// TODO: targets != null is ad-hoc check!! Will remove later!!!
-		this.targets = targets;
 		int damage = 0;
 		if( targets != null && targets.size() > this.maxTargets){
 			System.err.println("TOO MANY TARGETS!!");
@@ -77,7 +107,7 @@ public class Skill {
 		}
 		return damage;
 	}
-	
+	/*applies the effects of a skill to 1 target*/
 	public int applyEffectHelper(CharacterProfile profile, CharacterProfile target){
 		
 		if(this.skillPoints == this.level1Cap){
@@ -176,28 +206,34 @@ public class Skill {
 		targets.add(target);
 		me.setLevel(25);
 		me.updateBonusMagic(10);
-		me.updateBonusMagic(50);
-		me.updateBonusMagic(100);
-		me.updateBonusMagic(140);
-		me.updateBonusMagic(160);
-		target.updateMaxHp(3000);
-		target.updateHp(600);
-		target.updateMagicResist(83);
+		me.updateAttack(6);
+		target.updateMaxHp(20);
+		target.updateHp(20);
+		target.updateMagicResist(4);
+		target.updateArmor(4);
 		Skill GI = new GaiaIgnius();
-		GI.updateSkillPoints(4, me);
+		GI.updateSkillPoints(1, me);
 		GI.applyEffect(me, targets);
 		System.out.println(target.getMaxHp());
 		System.out.println(target.getCurrentHp());
 		System.out.println("Gaia Ignius: "+ target.totalEffectiveDamageReceived());
+		
 		target.resetDamageReceived();
 		Skill arcaneFire = new ArcaneFire();
-		arcaneFire.updateSkillPoints(4,me);
+	//	arcaneFire.updateSkillPoints(2,me);
 		arcaneFire.applyEffect(me, targets);
 		System.out.println("Arcane Fire: " + target.totalEffectiveDamageReceived());
+		
+		target.resetDamageReceived();
+		Skill empoweredStrike = new EmpoweredStrike();
+	//	empoweredStrike.updateSkillPoints(2,me);
+		empoweredStrike.applyEffect(me,targets);
+		System.out.println("Empowered Strike: " + target.totalEffectiveDamageReceived());
 	}
 	public static void testScenario1(){
 		CharacterProfile me = new Dwarf("Kenny", "August", 30, 1991, "merchant", "");	
 		CharacterProfile target = new Human("Kenny", "August", 30, 1991, "merchant", "");
+		System.out.println(target.getArmor());
 		ArrayList<CharacterProfile> targets = new ArrayList<CharacterProfile>();
 		targets.add(target);
 		me.setLevel(25);
@@ -206,7 +242,6 @@ public class Skill {
 		Skill arcaneFire = new ArcaneFire();
 		Skill vitality = new Vitality();
 		Skill empoweredStrike = new EmpoweredStrike();
-		
 		System.out.println(arcaneFire.applyEffect(me,targets) + " , " + empoweredStrike.applyEffect(me,targets) + " , " + vitality.applyEffect(me,targets));
 		
 		me.updateBonusMagic(50);
@@ -235,7 +270,7 @@ public class Skill {
 		arcaneFire.updateSkillPoints(1,me);
 		vitality.updateSkillPoints(1,me);
 		empoweredStrike.updateSkillPoints(1,me);
-		System.out.println(DamageCalculator.effectiveDamage(arcaneFire.applyEffect(me, targets), 0) + " , " + empoweredStrike.applyEffect(me, targets) + " , " + vitality.applyEffect(me, targets));
+		System.out.println(DamageCalculator.effectiveDamage(arcaneFire.applyEffect(me, targets), 0) + " , " + DamageCalculator.effectiveDamage(empoweredStrike.applyEffect(me, targets),0 ) + " , " + vitality.applyEffect(me, targets));
 		
 	}
 }
