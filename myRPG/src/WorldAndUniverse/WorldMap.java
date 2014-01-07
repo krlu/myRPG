@@ -13,15 +13,24 @@ import RPGelements.CharacterProfile;
 public class WorldMap {
 	protected CharacterProfile[][] unitsOnMap; // keeps track of all players on map
 	protected int[][] grid;
-	protected String[][] mapData;
-	protected String[][] terrain; /*Mountain, Hill, Water, Grass, Forest, Sand*/
-	/*returns position of input user 
-	 */
+	protected String[][] terrain; /*Mountain, Hill, Water, Grass, Forest, Sand, various types of buildings*/
+	
+	public WorldMap(){
+	}
+	
 	public static boolean notOutOfBounds(int[][] grid, int x, int y) {
 		return (0 <= x && x < grid.length && 0 < y && y < grid[0].length);
 	}
-	public Tuple<Integer,Integer>getPosition(CharacterProfile profile){
-		if(notOutOfBounds(this.grid,profile.getCoordinatePosition().r, profile.getCoordinatePosition().l)){
+	
+	/* ***********************************
+	 * Loads the position of player on map
+	 * returns position of input user  
+	 *************************************/
+	public Tuple<Integer,Integer>loadCharacterPosition(CharacterProfile profile){
+		int x = profile.getCoordinatePosition().l;
+		int y = profile.getCoordinatePosition().r;
+		if(notOutOfBounds(this.grid, x, y) && unitsOnMap[y][x] == null){
+			unitsOnMap[y][x] = profile;
 			return profile.getCoordinatePosition();
 		}
 		return null;
@@ -31,9 +40,10 @@ public class WorldMap {
 	 * Loads the map when game starts
 	 * TODO: doesn't do anything yet!!
 	 *********************************/
-	public void loadMap(String[][] mapData){
-		
+	public void loadMap(String[][] mapData){		
 	}
+	
+	/*getters*/
 	public int[][] getGrid(){
 		return this.grid;
 	}
