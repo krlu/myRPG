@@ -35,8 +35,8 @@ public class Skill {
 	
 	/*CDR measured in percentage (0,1)*/
 	public void updateCoolDown(double CDR){
-		double finalCD = this.coolDown * (1.0 - CDR);
-		this.coolDown = finalCD;
+		double finalCD = this.coolDown - CDR;	
+		this.coolDown = (finalCD > 0)? finalCD : 0;
 	}
 	public void updateSkillPoints(int points, CharacterProfile profile){
 		if(points == 0){

@@ -23,6 +23,16 @@ public class AlbionRifle extends Item {
 		this.name = "AlbionRifle";
 	}
 	@Override
+	public boolean equipeConditions(CharacterProfile profile){
+		if(profile.getAttackRange() > 0){
+			return true;
+		}
+		else{
+			System.err.println("You are not a ranged unit!");
+			return false;
+		}
+	}
+	@Override
 	public void applyItemEffects(CharacterProfile profile){
 		profile.updateAttackSpeed(this.attackSpeedBonus);
 		profile.updateBonusMagic(this.bonusMagic);
