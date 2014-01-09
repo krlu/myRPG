@@ -1,45 +1,38 @@
-package RPGItemTree;
+package RPGItem;
 
 import java.util.ArrayList;
 
 import RPGelements.CharacterProfile;
-
 /*******************
  * Stats granted: 
- * +20 mana
- * +7 attack damage
+ * +10 mana
  *******************/
+public class WaterCrystal extends Item {
 
-public class EmeraldSword extends Item{
-	private int manaBonus;
-	private int attackBonus; 
+	private int manaBonus; 
 	
-	public EmeraldSword() {
+	public WaterCrystal() {
 		this.equiped = false;
-		this.manaBonus = 20;
-		this.attackBonus = 7;
-		this.goldValue = 0;
-		this.totalCost = 220;
-		this.upgradeCost = 80;
+		this.manaBonus = 10;
+		this.goldValue = 40;
+		this.totalCost = 40;
+		this.upgradeCost = 0;
 		this.buildsTo = new ArrayList<Item>();
 		this.buildsFrom = new ArrayList<String>();
 		this.name = "WaterCrystal";
-		this.buildsFrom.add("BroadSword");
-		this.buildsFrom.add("WaterCrystal");
+		this.buildsTo.add(new BroadSword());
 	}
 	
 	@Override
 	public void applyItemEffects(CharacterProfile profile){
 		profile.updateMana(this.manaBonus);
-		profile.updateAttack(this.attackBonus);
 	}
 	@Override
 	public void removeItemEffects(CharacterProfile profile){
 		profile.updateMana(-1 * this.manaBonus);
-		profile.updateAttack(-1*this.attackBonus);
 	}
 	@Override
 	public void printStats() {
-		System.out.println("mana: + 20 \n"+ "Attack Damage: + 7");
+		System.out.println("mana: + 10");
 	}
 }

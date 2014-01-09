@@ -1,4 +1,4 @@
-package RPGItemTree;
+package RPGItem;
 import java.util.ArrayList;
 
 import RPGelements.CharacterProfile;
@@ -93,7 +93,9 @@ public class Item{
 	public int totalCost(){
 		return this.totalCost;
 	}
-	
+	public boolean isEquipped(){
+		return this.equiped;
+	}
 	/*comparator between items*/
 	public boolean equals(Item item){
 		return this.name.equals(item.getName());

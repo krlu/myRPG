@@ -1,7 +1,8 @@
 package RPGelements;
 import java.util.ArrayList;
+
 import FundamentalStructures.Tuple;
-import RPGItemTree.Item;
+import RPGItem.Item;
 import SkillsAndAttributes.Skill;
 
 public class CharacterProfile{
@@ -281,21 +282,26 @@ public class CharacterProfile{
 		}
 	}
 	// TODO: find better way to equip item!!
-	public void addToEquipedItems(Item item){
+	public boolean addToEquipedItems(Item item){
 		if(this.equipedItems.size() > EquipItemThreshold){
 			System.err.println("at equipment threshold, cannot equip more items!!");
+			return false;
 		}
 		else{
 			this.equipedItems.add(item);
+			return true;
 		}
 	}
-	public void removeFromEquipedItems(Item item){
-		if(this.equipedItems.contains(item)){
+	// returns the removed item so that you can put it back in your inventory!!
+	public Item removeFromEquipedItems(int index){
+		Item item = this.equipedItems.get(index);
+		if(item != null){
 			this.equipedItems.remove(item);
 		}
 		else{
 			System.err.println("item not found!");
 		}
+		return item;
 	}
 	
 	/* *********

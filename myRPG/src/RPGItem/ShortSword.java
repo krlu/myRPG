@@ -1,4 +1,4 @@
-package RPGItemTree;
+package RPGItem;
 import RPGelements.CharacterProfile;
 import RPGelements.Dwarf;
 

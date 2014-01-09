@@ -1,4 +1,4 @@
-package RPGItemTree;
+package RPGItem;
 
 import java.util.ArrayList;
 

@@ -1,25 +1,30 @@
 package RPGelements;
-import RPGItemTree.*;
+import RPGItem.*;
 
 /**************************************************************
  * This class serves to book-keep all items acquired and stored 
  * by a particular player. Right now the association between 
  * player and inventory is given by a CharacterProfile field 
  * within this class. 
- * TODO: setup relational database for inventory and profile
- * TODO: probably won't need 2D array
+ * TODO: setup relational database for inventory and profile........eventually -_-
  *************************************************************/
 public class Inventory {
 
 	// private int characterId /*so we know whose inventory this is */
-	protected Item[][] smallItems;
+	protected Item[][] consumables; //consumables
 	protected Item[][] largeItems;
 	protected CharacterProfile user; 
 
 	public Inventory(CharacterProfile user) {
 		this.user = user;
-		smallItems = new Item[1][10];
-		largeItems = new Item[1][3];
+		consumables = new Item[2][6];
+		largeItems = new Item[2][5];
+	}
+	
+	public void equipSelectedItem(int row, int col){
+		if(!this.consumables[row][col].isEquipped() && user.addToEquipedItems(this.consumables[row][col])){
+			this.consumables[row][col].equipItem(user);
+		}
 	}
 	
 	/* Simple helper method for the acquiring and removing of items */
@@ -32,9 +37,9 @@ public class Inventory {
 	 * implemented for both small and large item slots
 	 *************************************************/
 	public void addSmallItem(Item item, int row, int col) {
-		if (notOutOfBounds(this.smallItems, row, col)) {
-			if (this.smallItems[row][col] == null) {
-				this.smallItems[row][col] = item;
+		if (notOutOfBounds(this.consumables, row, col)) {
+			if (this.consumables[row][col] == null) {
+				this.consumables[row][col] = item;
 			} else {
 				System.out.println("move this to another slot please!");
 			}
@@ -44,9 +49,9 @@ public class Inventory {
 	}
 	
 	public void removeSmallItem(Item item, int row, int col) {
-		if (notOutOfBounds(this.smallItems, row, col)) {
-			if (this.smallItems[row][col] != null) {
-				this.smallItems[row][col] = null;
+		if (notOutOfBounds(this.consumables, row, col)) {
+			if (this.consumables[row][col] != null) {
+				this.consumables[row][col] = null;
 			} else {
 				System.out.println("nothing to remove!");
 			}
@@ -77,14 +82,14 @@ public class Inventory {
 			System.err.println("Out of bounds for large Item");
 		}
 	}
-	public void expandSmallItemSlot(int rows, int cols){
-		Item[][] newSmallItemSlots = new Item[rows][cols];
+	public void expandConsumableslot(int rows, int cols){
+		Item[][] newConsumableslots = new Item[rows][cols];
 		if(rows <= 0 || cols <= 0){
 			System.err.println("Row or Col is negative value");
 		}
 		else{
-			copyOver(this.smallItems, newSmallItemSlots);
-			this.smallItems = newSmallItemSlots;
+			copyOver(this.consumables, newConsumableslots);
+			this.consumables = newConsumableslots;
 		}
 	}
 	public void expandLargeItemSlot(int rows, int cols){

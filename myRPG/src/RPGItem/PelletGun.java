@@ -1,26 +1,23 @@
-package RPGItemTree;
+package RPGItem;
 
 import java.util.ArrayList;
 
 import RPGelements.CharacterProfile;
-
-public class AlbionRifle extends Item {
-
+/**
+ * Requires user with range > 0 (non-melee only)
+ */
+public class PelletGun extends Item {
 	private double attackSpeedBonus; 
-	private int bonusMagic; 
-	public AlbionRifle() {
+	public PelletGun() {
 		this.equiped = false;
 		this.attackSpeedBonus = 0.10;
-		this.bonusMagic = 15;
-		this.goldValue = 0;
-		this.totalCost = 175;
-		this.upgradeCost = 75;
+		this.goldValue = 50;
+		this.totalCost = 50;
+		this.upgradeCost = 0;
 		this.buildsTo = new ArrayList<Item>();
 		this.buildsFrom = new ArrayList<String>();
-		this.buildsTo.add(new AlbionGunblade());
-		this.buildsFrom.add("PelletGun");
-		this.buildsFrom.add("JadeRelic");
-		this.name = "AlbionRifle";
+		this.buildsTo.add(new AlbionRifle());
+		this.name = "PelletGun";
 	}
 	@Override
 	public boolean equipeConditions(CharacterProfile profile){
@@ -35,12 +32,14 @@ public class AlbionRifle extends Item {
 	@Override
 	public void applyItemEffects(CharacterProfile profile){
 		profile.updateAttackSpeed(this.attackSpeedBonus);
-		profile.updateBonusMagic(this.bonusMagic);
 	}
 	@Override
 	public void removeItemEffects(CharacterProfile profile){
 		profile.updateAttackSpeed(-1 * this.attackSpeedBonus);	
-		profile.updateBonusMagic(-1 * this.bonusMagic);
 	}
-
+	public static void main(String[] args){
+		CharacterProfile me = new CharacterProfile("Kenny", "August", 30, 1991, "human", "merchant", "");			
+		Item item = new AlbionGunblade();
+		item.equipItem(me);
+	}
 }
