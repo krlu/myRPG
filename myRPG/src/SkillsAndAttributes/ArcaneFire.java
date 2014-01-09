@@ -13,6 +13,7 @@ public class ArcaneFire extends Skill {
 
 	private double damageRatio;
 	public ArcaneFire() {
+		this.amountOfEffectTime = 0;
 		this.effectRadius = 0;
 		this.damageType = MAGIC;
 		this.maxTargets = 2;

@@ -1,6 +1,5 @@
 package RPGItem;
 import java.util.ArrayList;
-
 import RPGelements.CharacterProfile;
 
 

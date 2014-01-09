@@ -15,6 +15,7 @@ public class EmpoweredStrike extends Skill {
 	private int procNumber; 
 	private double damageRatio; 
 	public EmpoweredStrike() {
+		this.amountOfEffectTime = 0;
 		this.maxTargets = 1;
 		this.procNumber = 4;
 		this.damageRatio = 0.55;

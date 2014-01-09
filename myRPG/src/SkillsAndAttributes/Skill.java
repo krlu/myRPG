@@ -26,6 +26,7 @@ public class Skill {
 	protected int level4Cap; 
 	protected int level5Cap; 
 	
+	protected int amountOfEffectTime; // for over time effects
 	protected int maxTargets;
 	protected int effectRadius;
 	protected boolean skillShot;

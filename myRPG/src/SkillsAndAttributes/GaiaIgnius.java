@@ -15,6 +15,7 @@ public class GaiaIgnius extends Skill {
 	private final double percentRatio = 0.0005;
 	
 	public GaiaIgnius() {
+		this.amountOfEffectTime = 0;
 		this.maxTargets = 3;
 		this.castRange = 6;
 		this.effectRadius = 1;

@@ -10,6 +10,7 @@ public class Vitality extends Skill {
 
 	private double healRatio;
 	public Vitality() {
+		this.amountOfEffectTime = 0;
 		this.effectRadius = 0;
 		this.maxTargets = 1;
 		this.healRatio = 0.3;
