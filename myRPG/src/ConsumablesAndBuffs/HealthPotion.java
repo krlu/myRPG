@@ -4,7 +4,7 @@ import RPGelements.CharacterProfile;
 
 /* *****************************************
  * Heals user for 50 hp over 10 seconds
- * TODO: I DON'T KNOW HOW TO DO OVER TIME EFFECTS!!! FUCKKKKKK!!!!
+ * TODO: NOT BOTHERING WITH OVER TIME !!!
  ******************************************/
 public class HealthPotion extends Consumable {
 	protected int heal;
