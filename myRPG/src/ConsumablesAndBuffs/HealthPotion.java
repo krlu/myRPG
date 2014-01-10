@@ -11,6 +11,9 @@ public class HealthPotion extends Consumable {
 	public HealthPotion() {
 		this.heal = 50;
 		this.amountOfEffectTime = 10;
+		this.numCopies = 0;
+		this.goldValue = 5;
+		this.name = "HealthPotion";
 	}
 	
 	@Override

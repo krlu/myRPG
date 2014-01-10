@@ -86,7 +86,9 @@ public class CharacterProfile{
 	protected int manaRegen;
 	protected int gatherSpeed; 
 	protected int buildSpeed;
-	protected int healthRegen; // per 5 seconds 
+	protected int healthRegen; // per 5 seconds
+	
+	/*miscellaneous stats*/
 	protected double luck;
 	
 	/*damaged received during combat phase*/
@@ -184,10 +186,6 @@ public class CharacterProfile{
 		double sum = this.attackSpeed * (1 + bonus);
 		this.attackSpeed = (sum > 0)? sum : 0;
 	}
-	public void updateMaxHp(int bonus){
-		int sum = this.maxhp + bonus;
-		this.maxhp = (sum > 0) ? sum : 0;
-	}
 	public void updateHp(int bonus){
 		int sum = this.hp + bonus;
 		if(sum > this.maxhp){ 
@@ -199,6 +197,10 @@ public class CharacterProfile{
 		else{
 			this.hp = sum;
 		}
+	}
+	public void updateMaxHp(int bonus){
+		int sum = this.maxhp + bonus;
+		this.maxhp = (sum > 0) ? sum : 0;
 	}
 	public void updateAttack(int bonus){
 		int sum = this.attackDamage + bonus;

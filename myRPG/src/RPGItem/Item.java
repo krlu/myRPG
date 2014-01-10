@@ -1,7 +1,8 @@
 package RPGItem;
 import java.util.ArrayList;
-import RPGelements.CharacterProfile;
 
+import RPGelements.CharacterProfile;
+import FundamentalStructures.Tuple;
 
 /************************************************************************
  *  An outline of an Item. All additional objects created in this package
@@ -14,6 +15,7 @@ import RPGelements.CharacterProfile;
 public class Item{
 	//private int itemID; 
 	public boolean equiped; 
+	protected Tuple<Integer,Integer> inventoryPosition;
 	protected int upgradeCost;
 	protected int goldValue;
 	protected int totalCost; 
@@ -30,7 +32,7 @@ public class Item{
 	protected ArrayList<String> buildsFrom;
 	protected ArrayList<Item> buildsTo;
 	public Item(){
-		
+		this.inventoryPosition = new Tuple<Integer,Integer>(0,0);
 	}
 	
 	public void equipItem(CharacterProfile profile) {
@@ -48,7 +50,7 @@ public class Item{
 			System.err.println("cannot equip " + this.name + "!!");
 		}
 	}
-	
+
 	public void unequipItem(CharacterProfile profile){
 		if(this.equiped == false){
 			System.err.println("never equiped shortsword!");
@@ -58,8 +60,9 @@ public class Item{
 			removeItemEffects(profile);
 		}
 	}
-	public String getName(){
-		return this.name;
+	public void updateInventoryPosition(int row, int col){
+		this.inventoryPosition.l = row;
+		this.inventoryPosition.r = col;
 	}
 	/*Override in all extended classes!*/
 	public boolean equipeConditions(CharacterProfile profile){
@@ -76,6 +79,9 @@ public class Item{
 		
 	}
 	/*getters for fields*/
+	public String getName(){
+		return this.name;
+	}
 	public ArrayList<String> buildsFrom() {
 		return this.buildsFrom;
 	}
@@ -95,8 +101,17 @@ public class Item{
 	public boolean isEquipped(){
 		return this.equiped;
 	}
+	public Tuple<Integer,Integer> getInventoryPosition(){
+		return this.inventoryPosition;
+	}
 	/*comparator between items*/
 	public boolean equals(Item item){
 		return this.name.equals(item.getName());
+	}
+	
+	public static void main(String[] args){
+		Item item = new AlbionRifle();
+		item.updateInventoryPosition(3, 4);
+		System.out.println(item.getInventoryPosition().l);
 	}
 }
