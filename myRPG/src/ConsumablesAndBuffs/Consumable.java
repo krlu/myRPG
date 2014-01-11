@@ -1,6 +1,10 @@
 package ConsumablesAndBuffs;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import FundamentalStructures.Tuple;
 import RPGelements.CharacterProfile;
+import RPGelements.Dwarf;
 
 /* ******************************************************************
  * Consumables behave like items in that they are stored in inventory 
@@ -56,5 +60,25 @@ public class Consumable {
 	
 
 	public static void main(String[] args) {
+		Timer timer = new Timer();
+		timer.schedule( new TimerTask() {
+			CharacterProfile me = new Dwarf("Kenny", "August", 30, 1991, "merchant", "");	
+			HealthPotion hp = new HealthPotion();
+			ManaPotion mp = new ManaPotion();
+			int i=0;
+		    public void run() {
+		    	if(i >= 2){
+		    		mp.applyConsumableEffects(me);
+		    	}
+		    	hp.applyConsumableEffects(me);
+		    	if(i < 12){
+		    		System.out.println(i + " , " + hp.totalHeal() + " " + hp.remainingTime() + " , " + mp.totalManaRegened() + " " + mp.remainingTime());
+		    	}
+		    	else{
+		    		System.out.println(i);
+		    	}
+		    	i++;
+		    }
+		 }, 1000, 1000);
 	}
 }

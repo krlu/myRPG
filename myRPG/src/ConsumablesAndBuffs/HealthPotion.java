@@ -1,8 +1,5 @@
 package ConsumablesAndBuffs;
 import RPGelements.CharacterProfile;
-import RPGelements.Dwarf;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /* *****************************************
  * Heals user for 50 hp over 10 seconds
@@ -36,20 +33,5 @@ public class HealthPotion extends Consumable {
 		return this.remainingEffectTime;
 	}
 	public static void main(String[] argv) {		
-		Timer timer = new Timer();
-		timer.schedule( new TimerTask() {
-			CharacterProfile me = new Dwarf("Kenny", "August", 30, 1991, "merchant", "");	
-			HealthPotion hp = new HealthPotion();
-			ManaPotion mp = new ManaPotion();
-			int i=0;
-		    public void run() {
-		    	if(i >= 2){
-		    		mp.applyConsumableEffects(me);
-		    	}
-		    	hp.applyConsumableEffects(me);
-		    	System.out.println(i + " , " + hp.totalHeal() + " " + hp.remainingTime() + " , " + mp.totalManaRegened() + " " + mp.remainingTime());
-		    	i++;
-		    }
-		 }, 1000, 1000);
 	} 
 }
