@@ -16,7 +16,7 @@ public class Consumable {
 	protected int goldValue;
 	protected String name;
 	protected int amountOfEffectTime; // for over time effects
-	
+	protected int remainingEffectTime;
 	public Consumable() {
 		this.inventoryPosition = new Tuple<Integer,Integer>(0,0);
 	}
