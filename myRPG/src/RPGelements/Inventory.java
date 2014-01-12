@@ -22,9 +22,9 @@ public class Inventory {
 		items = new Item[2][5];
 	}
 	
-	/* consumables can be used on anyone */
-	public void useConsumable(CharacterProfile profile, int row, int col){
-		this.consumables[row][col].applyConsumableEffects(profile);
+	/* consumables can only be used on self */
+	public void useConsumable(int row, int col){
+		this.consumables[row][col].applyConsumableEffects(this.user);
 		removeConsumableFromPosition(row, col);
 	}
 	public void equipSelectedItem(int row, int col){
@@ -80,10 +80,12 @@ public class Inventory {
 			Consumable ctemp = this.consumables[row][col];
 			if (ctemp == null) {
 				this.consumables[row][col] = consumable;
+				consumable.updateInventoryPosition(row, col);
 				return true;
 			} 
 			else if(ctemp.equals(consumable) && ctemp.getNumCopies() < Consumable.maxCopies){
 				this.consumables[row][col].updateNumCopies(1);
+				consumable.updateInventoryPosition(row, col);
 				return true;
 			}
 			else{
@@ -132,6 +134,7 @@ public class Inventory {
 		if (notOutOfBounds(this.items, row, col)) {
 			if (this.items[row][col] == null) {
 				this.items[row][col] = item;
+				item.updateInventoryPosition(row, col);
 				return true;
 			} else {
 				System.out.println("move this to another slot please!");
@@ -150,7 +153,7 @@ public class Inventory {
 				System.out.println("nothing to remove!");
 			}
 		} else {
-			System.err.println("Out of bounds for large Item");
+			System.err.println("Out of bounds for Item");
 		}
 		return false;
 	}
