@@ -14,7 +14,10 @@ public class WorldMap {
 	protected CharacterProfile[][] unitsOnMap; // keeps track of all players on map
 	protected int[][] grid;
 	protected String[][] terrain; /*Mountain, Hill, Water, Grass, Forest, Sand, various types of buildings*/
-	
+	public static final String WATER = "Water";
+	public static final String HILL = "Hill";	
+	public static final String SAND = "Sand";
+
 	public WorldMap(){
 	}
 	
@@ -24,7 +27,9 @@ public class WorldMap {
 	
 	/* ***********************************
 	 * Loads the position of player on map
-	 * returns position of input user  
+	 * Called again to updates position 
+	 * as player moves. Returns null if 
+	 * out of bounds. Form is (x,y) 
 	 *************************************/
 	public Tuple<Integer,Integer>loadCharacterPosition(CharacterProfile profile){
 		int x = profile.getCoordinatePosition().l;
