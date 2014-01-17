@@ -17,7 +17,6 @@ public class Skill {
 	protected String name;
 	protected double coolDown; /*measured in seconds*/
 	protected int skillPoints;
-	protected int damageType;
 	protected int castRange;
 	protected int manaCost;
 	protected int level1Cap; 
@@ -25,7 +24,6 @@ public class Skill {
 	protected int level3Cap; 
 	protected int level4Cap; 
 	protected int level5Cap; 
-	
 	protected int amountOfEffectTime; // for over time effects
 	protected int maxTargets;
 	protected int effectRadius;
@@ -33,7 +31,7 @@ public class Skill {
 	
 	public Skill() {
 	}
-	
+
 	/*CDR measured in percentage (0,1)*/
 	public void updateCoolDown(double CDR){
 		double finalCD = this.coolDown - CDR;	
@@ -207,28 +205,29 @@ public class Skill {
 		ArrayList<CharacterProfile> targets = new ArrayList<CharacterProfile>();
 		targets.add(target);
 		me.setLevel(25);
-		me.updateBonusMagic(10);
-		me.updateAttack(6);
-		target.updateMaxHp(20);
-		target.updateHp(20);
-		target.updateMagicResist(4);
-		target.updateArmor(4);
-		Skill GI = new GaiaIgnius();
-		GI.updateSkillPoints(1, me);
-		GI.applyEffect(me, targets);
+		me.updateBonusMagic(450);
+		me.updateAttack(200);
+		target.updateMaxHp(1000);
+		target.updateHp(550);
+		target.updateMagicResist(40);
+		target.updateArmor(40);
 		System.out.println(target.getMaxHp());
 		System.out.println(target.getCurrentHp());
+		
+		Skill GI = new GaiaIgnius();
+		GI.updateSkillPoints(4, me);
+		GI.applyEffect(me, targets);
 		System.out.println("Gaia Ignius: "+ target.totalEffectiveDamageReceived());
 		
 		target.resetDamageReceived();
 		Skill arcaneFire = new ArcaneFire();
-	//	arcaneFire.updateSkillPoints(2,me);
+		arcaneFire.updateSkillPoints(4,me);
 		arcaneFire.applyEffect(me, targets);
 		System.out.println("Arcane Fire: " + target.totalEffectiveDamageReceived());
 		
 		target.resetDamageReceived();
 		Skill empoweredStrike = new EmpoweredStrike();
-	//	empoweredStrike.updateSkillPoints(2,me);
+		empoweredStrike.updateSkillPoints(4,me);
 		empoweredStrike.applyEffect(me,targets);
 		System.out.println("Empowered Strike: " + target.totalEffectiveDamageReceived());
 	}
