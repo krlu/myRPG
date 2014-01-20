@@ -11,7 +11,7 @@ public class Stun extends StatusEffect {
 	private final double ZERO = 0.0;
 	private double originalAttackSpeed; 
 	private int originalMoveSpeed;
-	public Stun(int effectTime) {
+	public Stun(double effectTime) {
 		super(effectTime);
 		this.originalMoveSpeed = 0;
 	}

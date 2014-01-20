@@ -1,5 +1,4 @@
 package SkillsAndAttributes;
-import RPGelements.CharacterProfile;
 
 public class WarriorSkillTree {
 	protected int skill1;

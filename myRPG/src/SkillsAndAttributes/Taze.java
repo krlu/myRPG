@@ -1,25 +1,20 @@
 package SkillsAndAttributes;
-import  RPGelements.CharacterProfile;
 
-/******************************************
- * Basic damage ability with medium range  
- * scales with bonus magic and skill points
- * strong at high levels due to decreased 
- * cool-downs and since mana costs remain 
- * static even as damage amplifies. 
- ******************************************/
+import RPGelements.CharacterProfile;
+import StatusEffect.*;
 
-public class ArcaneFire extends Skill {
-
+public class Taze extends Skill {
+	
 	private double damageRatio;
-	public ArcaneFire() {
-		this.amountOfEffectTime = 0;
+	private Stun stun;
+	private double duration;
+	public Taze(){
+		this.duration = 0.75;
 		this.effectRadius = 0;
-		this.maxTargets = 2;
 		this.damageRatio = 0.5;
 		this.skillPoints = 0;
-		this.coolDown = 11.0;
-		this.castRange = 4;
+		this.coolDown = 14.0;
+		this.castRange = 3;
 		this.manaCost = 15;
 		this.name = "ArcaneFire";
 		this.level1Cap = 0; 
@@ -56,8 +51,11 @@ public class ArcaneFire extends Skill {
 		return effectHelper(120, profile,target);
 	}
 	private int effectHelper(int baseDamage, CharacterProfile profile,CharacterProfile target){
+		this.stun = new Stun(this.duration);
 		int damage =  baseDamage + (int)(this.damageRatio * profile.getBonusMagic());
 		target.updateMagicDamageReceived(damage);
+		this.stun.applyEffect(target);
+		target.addStatusEffect(this.stun);
 		return damage;
 	}
 	
@@ -82,21 +80,23 @@ public class ArcaneFire extends Skill {
 	/*additional effects upon leveling up*/
 	@Override
 	public void attainingLevel2(){
-		this.manaCost = 20;
+		this.manaCost = 30;
+		this.duration = 1.0;
 	}
 	@Override
 	public void attainingLevel3(){
-		this.coolDown = 10.0;
+		this.coolDown = 12.0;
+		this.duration = 1.25;
 		this.manaCost = 30;
 	}
 	@Override
 	public void attainingLevel4(){
 		this.manaCost = 45;
-		this.coolDown = 8.0;
+		this.duration = 1.5;
+		this.coolDown = 11.0;
 	}
-	@Override
 	public void attainingLevel5(){
-		this.coolDown = 6.0;
+		this.duration = 1.75;
 	}
 	
 	public static void main(String [] args){

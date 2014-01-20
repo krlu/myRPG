@@ -5,7 +5,7 @@ import RPGelements.DamageCalculator;
 import RPGelements.Dwarf;
 import RPGelements.Human;
 import WorldAndUniverse.WorldMap;
-
+import StatusEffect.StatusEffect;
 import java.util.ArrayList;
 
 public class Skill {
@@ -153,9 +153,7 @@ public class Skill {
 		unimplementedPrint();
 		return false;
 	}
-	private void applyDebuffs(ArrayList<CharacterProfile> targets){
-		unimplementedPrint();
-	}
+
 	public int level1Effect(CharacterProfile profile, CharacterProfile target){
 		unimplementedPrint();
 		return 0;

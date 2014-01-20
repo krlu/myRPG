@@ -6,9 +6,9 @@ import RPGelements.CharacterProfile;
  */
 public class StatusEffect {
 	
-	protected int effectTime; 
+	protected double effectTime; 
 	
-	public StatusEffect(int effectTime){
+	public StatusEffect(double effectTime){
 		this.effectTime = effectTime;
 	}
 	
@@ -40,7 +40,7 @@ public class StatusEffect {
 			System.out.println("effect has worn out!");
 		}
 	}
-	public int remainingEffectTime(){
+	public double remainingEffectTime(){
 		return this.effectTime;
 	}
 }
