@@ -10,12 +10,11 @@ public class Taze extends Skill {
 	private double duration;
 	public Taze(){
 		this.duration = 0.75;
-		this.effectRadius = 0;
-		this.damageRatio = 0.5;
+		this.damageRatio = 0.4;
 		this.skillPoints = 0;
 		this.coolDown = 14.0;
 		this.castRange = 3;
-		this.manaCost = 15;
+		this.manaCost = 25;
 		this.name = "ArcaneFire";
 		this.level1Cap = 0; 
 		this.level2Cap = 1;
@@ -80,18 +79,18 @@ public class Taze extends Skill {
 	/*additional effects upon leveling up*/
 	@Override
 	public void attainingLevel2(){
-		this.manaCost = 30;
+		this.manaCost = 32;
 		this.duration = 1.0;
 	}
 	@Override
 	public void attainingLevel3(){
 		this.coolDown = 12.0;
 		this.duration = 1.25;
-		this.manaCost = 30;
+		this.manaCost = 45;
 	}
 	@Override
 	public void attainingLevel4(){
-		this.manaCost = 45;
+		this.manaCost = 65;
 		this.duration = 1.5;
 		this.coolDown = 11.0;
 	}
