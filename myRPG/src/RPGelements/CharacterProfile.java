@@ -184,6 +184,9 @@ public class CharacterProfile{
 			skill.updateCoolDown(percentage);
 		}
 	}
+	public void setAttackSpeed(double value){
+		this.attackSpeed = value;
+	}
 	public void updateAttackSpeed(double bonus){
 		double sum = this.attackSpeed * (1 + bonus);
 		this.attackSpeed = (sum > 0)? sum : 0;
@@ -381,8 +384,14 @@ public class CharacterProfile{
 	public int getAttackDamage(){
 		return this.attackDamage;
 	}
+	public int getMovementSpeed(){
+		return this.moveSpeed;
+	}
 	public ArrayList<Skill> getSkills(){
 		return this.skills;
+	}
+	public double getAttackSpeed(){
+		return this.attackSpeed;
 	}
 	public int getAttackRange(){
 		return this.attackRange;

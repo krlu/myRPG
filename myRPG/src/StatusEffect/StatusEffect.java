@@ -1,5 +1,4 @@
 package StatusEffect;
-import java.util.ArrayList;
 import RPGelements.CharacterProfile;
 /*
  * Basic class for stuns, roots, taunts, fears, slows, speedups...etc.
@@ -9,18 +8,27 @@ public class StatusEffect {
 	
 	protected int effectTime; 
 	
-	public StatusEffect(){
-		
+	public StatusEffect(int effectTime){
+		this.effectTime = effectTime;
 	}
 	
 	public void applyEffect(CharacterProfile target){
 		if(effectTime > 0){
-			applyEffectHelper();
+			applyEffectHelper(target);
+		}
+		else if (effectTime == 0){
+			removeEffects(target);
+		}
+		else{
+			System.err.println("time is NEGATIVE VALUE!!");
 		}
 	}
 	
 	// to be overridden in subclasses
-	public void applyEffectHelper(){
+	public void removeEffects(CharacterProfile target){
+		System.err.println("needs override!!");
+	}
+	public void applyEffectHelper(CharacterProfile target){
 		System.err.println("needs override!!");
 	}
 	
