@@ -1,9 +1,9 @@
 package RPGelements;
 import java.util.ArrayList;
-
 import FundamentalStructures.Tuple;
 import RPGItem.Item;
 import SkillsAndAttributes.Skill;
+import StatusEffect.StatusEffect;
 
 public class CharacterProfile{
 	
@@ -81,6 +81,7 @@ public class CharacterProfile{
 	protected int fervor;  /* crowd control reduction stat*/
 	protected int mana;  
 	protected int bonusMagic;
+	protected ArrayList<StatusEffect> statusEffects;
 	
 	/*over time stats in terms of per-second*/
 	protected int manaRegen;
@@ -116,6 +117,7 @@ public class CharacterProfile{
 		this.physicalDamageReceived = 0;
 		this.skills = new ArrayList<Skill>(MAXSKILLS);
 		this.equipedItems = new ArrayList<Item>(MAXITEMS);
+		this.statusEffects = new ArrayList<StatusEffect>();
 		this.faction = (profession != null  && !profession.equals("")) ? profession : "Unaffiliated"; 
 		this.profession = (profession != null  && !profession.equals("")) ? profession : "Unemployed"; 
 	}
@@ -244,9 +246,25 @@ public class CharacterProfile{
 		}
 	}
 	/* **************************************************
+	 * Compute all status effect from self and outside
 	 * Compute all damage received, magic, physical, true 
 	 * Armor and Magic Resistance applied here!! 
 	 ****************************************************/
+	public void addStatusEffect(StatusEffect effect){
+		this.statusEffects.add(effect);
+	}
+	// once effect wears off, remove from list
+	public void checkStatusEffects(){
+		ArrayList<StatusEffect> tempList = new ArrayList<StatusEffect>();
+		for(StatusEffect effect : this.statusEffects){
+			if(effect.remainingEffectTime() != 0){
+				effect.updateEffectTime();
+				tempList.add(effect);
+			}
+		}
+		this.statusEffects = tempList;
+	}
+	
 	public void resetDamageReceived(){
 		this.magicDamageReceived = 0;
 		this.physicalDamageReceived = 0;
