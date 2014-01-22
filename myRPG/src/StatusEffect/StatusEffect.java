@@ -7,7 +7,7 @@ import RPGelements.CharacterProfile;
 public class StatusEffect {
 	
 	protected double effectTime; 
-	
+	protected String name;
 	public StatusEffect(double effectTime){
 		this.effectTime = effectTime;
 	}
@@ -23,7 +23,9 @@ public class StatusEffect {
 			System.err.println("time is NEGATIVE VALUE!!");
 		}
 	}
-	
+	public String getName(){
+		return this.name;
+	}
 	// to be overridden in subclasses
 	public void removeEffects(CharacterProfile target){
 		System.err.println("needs override!!");

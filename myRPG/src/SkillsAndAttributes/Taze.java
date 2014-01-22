@@ -85,17 +85,17 @@ public class Taze extends Skill {
 	@Override
 	public void attainingLevel3(){
 		this.coolDown = 12.0;
-		this.duration = 1.25;
+		this.duration = 1.5;
 		this.manaCost = 45;
 	}
 	@Override
 	public void attainingLevel4(){
 		this.manaCost = 65;
-		this.duration = 1.5;
+		this.duration = 1.75;
 		this.coolDown = 11.0;
 	}
 	public void attainingLevel5(){
-		this.duration = 1.75;
+		this.duration = 2.0;
 	}
 	
 	public static void main(String [] args){

@@ -6,6 +6,8 @@ import RPGelements.CharacterProfile;
  * Reduces movement speed and attack speed to zero. 
  * Affected target also cannot cast spells for the 
  * duration of the stun.
+ * Stun is a combination of root and silence and 
+ * reduces attack speed to zero.
  *************************************************/
 public class Stun extends StatusEffect {
 	private final double ZERO = 0.0;
@@ -14,6 +16,7 @@ public class Stun extends StatusEffect {
 	public Stun(double effectTime) {
 		super(effectTime);
 		this.originalMoveSpeed = 0;
+		this.name = "Stun";
 	}
 	
 	@Override
