@@ -100,6 +100,6 @@ public class EmpoweredStrike extends Skill {
 		me.updateAttack(36);
 		EmpoweredStrike empoweredStrike = new EmpoweredStrike();
 		empoweredStrike.updateSkillPoints(1,me);
-		System.out.println(empoweredStrike.applyEffect(me, null));
+		System.out.println(empoweredStrike.applyTargetedEffect(me, null));
 	}
 }

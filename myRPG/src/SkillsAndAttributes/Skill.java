@@ -14,6 +14,8 @@ public class Skill {
 	protected final int TRUE = 2;
 	protected final int NONDAMAGE = -1;
 	
+	
+	protected boolean SILENCED; 
 	protected String name;
 	protected double coolDown; /*measured in seconds*/
 	protected int skillPoints;
@@ -31,7 +33,12 @@ public class Skill {
 	
 	public Skill() {
 	}
-
+	public void silence(){
+		this.SILENCED = true;
+	}
+	public void unsilence(){
+		this.SILENCED = false;
+	}
 	/*CDR measured in percentage (0,1)*/
 	public void updateCoolDown(double CDR){
 		double finalCD = this.coolDown - CDR;	
@@ -75,6 +82,10 @@ public class Skill {
 	 * as parameters in addition to the user profile
 	 ****************************************************/
 	public void applyNonTargetedEffect(CharacterProfile profile, WorldMap map, int xcoor, int ycoor){
+		if(this.SILENCED){
+			System.out.println("cannot cast while SILENCED");
+			return;
+		}
 		int top = ycoor + this.effectRadius;
 		int bottom = ycoor + this.effectRadius; // row
 		int left = xcoor - this.effectRadius;
@@ -96,7 +107,11 @@ public class Skill {
 	 * returns amount of damage dealt to last target 
 	 * TODO: might make method void, unused return value
 	 ***************************************************/
-	public int applyEffect(CharacterProfile profile, ArrayList<CharacterProfile> targets){
+	public int applyTargetedEffect(CharacterProfile profile, ArrayList<CharacterProfile> targets){
+		if(this.SILENCED){
+			System.out.println("cannot cast while silenced");
+			return 0;
+		}
 		int damage = 0;
 		if( targets != null && targets.size() > this.maxTargets){
 			System.err.println("TOO MANY TARGETS!!");
@@ -214,19 +229,19 @@ public class Skill {
 		
 		Skill GI = new GaiaIgnius();
 		GI.updateSkillPoints(4, me);
-		GI.applyEffect(me, targets);
+		GI.applyTargetedEffect(me, targets);
 		System.out.println("Gaia Ignius: "+ target.totalEffectiveDamageReceived());
 		
 		target.resetDamageReceived();
 		Skill arcaneFire = new ArcaneFire();
 		arcaneFire.updateSkillPoints(4,me);
-		arcaneFire.applyEffect(me, targets);
+		arcaneFire.applyTargetedEffect(me, targets);
 		System.out.println("Arcane Fire: " + target.totalEffectiveDamageReceived());
 		
 		target.resetDamageReceived();
 		Skill empoweredStrike = new EmpoweredStrike();
 		empoweredStrike.updateSkillPoints(4,me);
-		empoweredStrike.applyEffect(me,targets);
+		empoweredStrike.applyTargetedEffect(me,targets);
 		System.out.println("Empowered Strike: " + target.totalEffectiveDamageReceived());
 	}
 	public static void testScenario1(){
@@ -241,35 +256,35 @@ public class Skill {
 		Skill arcaneFire = new ArcaneFire();
 		Skill vitality = new Vitality();
 		Skill empoweredStrike = new EmpoweredStrike();
-		System.out.println(arcaneFire.applyEffect(me,targets) + " , " + empoweredStrike.applyEffect(me,targets) + " , " + vitality.applyEffect(me,targets));
+		System.out.println(arcaneFire.applyTargetedEffect(me,targets) + " , " + empoweredStrike.applyTargetedEffect(me,targets) + " , " + vitality.applyTargetedEffect(me,targets));
 		
 		me.updateBonusMagic(50);
 		me.updateAttack(30);
 		arcaneFire.updateSkillPoints(1,me);
 		vitality.updateSkillPoints(1,me);
 		empoweredStrike.updateSkillPoints(1,me);
-		System.out.println(arcaneFire.applyEffect(me,targets) + " , " + empoweredStrike.applyEffect(me,targets) + " , " + vitality.applyEffect(me,targets));
+		System.out.println(arcaneFire.applyTargetedEffect(me,targets) + " , " + empoweredStrike.applyTargetedEffect(me,targets) + " , " + vitality.applyTargetedEffect(me,targets));
 		
 		me.updateBonusMagic(100);
 		me.updateAttack(54);
 		arcaneFire.updateSkillPoints(1,me);
 		vitality.updateSkillPoints(1,me);
 		empoweredStrike.updateSkillPoints(1,me);
-		System.out.println(arcaneFire.applyEffect(me, targets) + " , " + empoweredStrike.applyEffect(me,targets) + " , " + vitality.applyEffect(me, targets));
+		System.out.println(arcaneFire.applyTargetedEffect(me, targets) + " , " + empoweredStrike.applyTargetedEffect(me,targets) + " , " + vitality.applyTargetedEffect(me, targets));
 		
 		me.updateBonusMagic(140);
 		me.updateAttack(60);
 		arcaneFire.updateSkillPoints(1,me);
 		vitality.updateSkillPoints(1,me);
 		empoweredStrike.updateSkillPoints(1,me);
-		System.out.println(arcaneFire.applyEffect(me, targets) + " , " + empoweredStrike.applyEffect(me, targets) + " , " + vitality.applyEffect(me, targets));
+		System.out.println(arcaneFire.applyTargetedEffect(me, targets) + " , " + empoweredStrike.applyTargetedEffect(me, targets) + " , " + vitality.applyTargetedEffect(me, targets));
 		
 		me.updateBonusMagic(160);
 		me.updateAttack(80);
 		arcaneFire.updateSkillPoints(1,me);
 		vitality.updateSkillPoints(1,me);
 		empoweredStrike.updateSkillPoints(1,me);
-		System.out.println(DamageCalculator.effectiveDamage(arcaneFire.applyEffect(me, targets), 0) + " , " + DamageCalculator.effectiveDamage(empoweredStrike.applyEffect(me, targets),0 ) + " , " + vitality.applyEffect(me, targets));
+		System.out.println(DamageCalculator.effectiveDamage(arcaneFire.applyTargetedEffect(me, targets), 0) + " , " + DamageCalculator.effectiveDamage(empoweredStrike.applyTargetedEffect(me, targets),0 ) + " , " + vitality.applyTargetedEffect(me, targets));
 		
 	}
 }

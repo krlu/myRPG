@@ -1,5 +1,6 @@
 package StatusEffect;
 import RPGelements.CharacterProfile;
+import SkillsAndAttributes.Skill;
 
 
 /************************************************* 
@@ -24,11 +25,17 @@ public class Stun extends StatusEffect {
 		this.originalMoveSpeed = target.getMovementSpeed();
 		this.originalAttackSpeed = target.getAttackDamage();
 		target.setAttackSpeed(ZERO);
-		target.updateMoveSpeed(-this.originalMoveSpeed);	
+		target.updateMoveSpeed(-this.originalMoveSpeed);
+		for(Skill s : target.getSkills()){
+			s.silence();
+		}
 	}
 	@Override
 	public void removeEffects(CharacterProfile target){
 		target.setAttackSpeed(this.originalAttackSpeed);
 		target.updateMoveSpeed(this.originalMoveSpeed);
+		for(Skill s : target.getSkills()){
+			s.unsilence();
+		}
 	}
 }
