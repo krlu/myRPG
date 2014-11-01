@@ -1,12 +1,12 @@
 package SkillsAndAttributes;
 
+import java.util.ArrayList;
+
 import RPGelements.CharacterProfile;
 import RPGelements.DamageCalculator;
 import RPGelements.Dwarf;
 import RPGelements.Human;
 import WorldAndUniverse.WorldMap;
-import StatusEffect.StatusEffect;
-import java.util.ArrayList;
 
 public class Skill {
 	protected final int MAGIC = 0;
@@ -15,7 +15,7 @@ public class Skill {
 	protected final int NONDAMAGE = -1;
 	
 	
-	//protected boolean MOVEMENTSKILL = false;
+	protected boolean MOVEMENTSKILL = false;
 	protected boolean SILENCED; 
 	protected String name;
 	protected double coolDown; /*measured in seconds*/
@@ -75,6 +75,7 @@ public class Skill {
 		}		
 	}
 	
+	// TODO: implement movement skills separately!!
 	/*public int applyMovementEffect(CharacterProfile profile){
 		if(this.SILENCED){
 			System.out.println("cannot cast while silenced");
@@ -135,6 +136,10 @@ public class Skill {
 	 * TODO: might make method void, unused return value
 	 ***************************************************/
 	public int applyTargetedEffect(CharacterProfile profile, ArrayList<CharacterProfile> targets){
+		if(this.maxTargets < 0){
+			applyEffectHelper(profile,profile);
+			return 0;
+		}
 		if(this.SILENCED){
 			System.out.println("cannot cast while silenced");
 			return 0;
@@ -188,6 +193,9 @@ public class Skill {
 	}
 	public String getName(){
 		return this.name;
+	}
+	public boolean isMovementSkill(){
+		return this.MOVEMENTSKILL;
 	}
 	
 	/* all methods below are overridden in sub-classes.*/

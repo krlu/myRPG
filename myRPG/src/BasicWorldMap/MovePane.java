@@ -1,7 +1,6 @@
 package BasicWorldMap;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -9,6 +8,7 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
@@ -41,9 +41,13 @@ public class MovePane {
                 JFrame frame = new JFrame("Testing");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setLayout(new BorderLayout());
-                Human h = new Human("Kenny", "August", 30, 1991,  "merchant", "");
+                
+                // TODO: eventually want to load human data from database!!!
+                // don't want to create human in memory every time.
+                Human h = new Human("Kenny", "August", 30, 1991,  "merchant", "");    
                 h.addSkill(new Blink());
-                frame.add(new TestPane(h));// TODO: pass in the character/unit object!!
+                
+                frame.add(new TestPane(h)); // pass in the character/unit object!!
                 frame.pack();
                 frame.setLocationRelativeTo(null);
                 frame.setVisible(true);
@@ -57,64 +61,67 @@ public class MovePane {
     }
 
     @SuppressWarnings("serial")
+    // TODO: make this handle arbitrary skills besides blinking!!
 	public class TestPane extends JPanel {
 	//	private static final long serialVersionUID = -4047734207601020551L;
+    	private double lastTime = System.currentTimeMillis();
 		private JPanel mobby;
         private Timer moveTimer;
         private Direction moveDirection = Direction.None;
         private int SPEED; 
-        private int BLINK;
-        private Direction currentDirection = Direction.None; 
-        private double lastUsedSkillTime = -1;
-        private Skill s = null;
-        public TestPane(Human h) {
-        	
+        private ArrayList<Skill> movementSkills;
+        public TestPane(final Human h) {
         	/* creates the image on the map
-        	 * can specify size and color
+        	 * can specify size and color through character profile
         	 */
-            mobby = new JPanel();
-            mobby.setBackground(Color.BLUE); 
-            mobby.setSize(50, 50);;
+            mobby = h.avatar;
             setLayout(new BorderLayout());
             JPanel pool = new JPanel(null);
             pool.add(mobby);
             add(pool);
-            this.s = (Blink)h.getSkills().get(0);
             
+            movementSkills = new ArrayList<Skill>();
             this.SPEED = h.getMovementSpeed(); // will depend on the stats of the unit that's moving
             
+            // get all movement skills loaded in one place
+            for(Skill s : h.getSkills()){
+            	if(s.isMovementSkill()){
+            		this.movementSkills.add(s); 
+            	}
+            }
 
             moveTimer = new Timer(10, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    Container parent = mobby.getParent();
-                    Rectangle bounds = mobby.getBounds();
+                    Container parent = mobby.getParent(); // TODO: should be retrieving the map data!!
+                    Rectangle bounds = mobby.getBounds(); // retrieves the character data!
                     
                     // can control speed at which the object moves
                     switch (moveDirection) {
                         case Up:
                             bounds.y -= SPEED;
-                            currentDirection = Direction.Up;
+                            h.setOrientation(Direction.Up);
                             break;
                         case Down:
                             bounds.y += SPEED;
-                            currentDirection = Direction.Down;
+                            h.setOrientation(Direction.Down);
                             break;
                         case Left:
                             bounds.x -= SPEED;
-                            currentDirection = Direction.Left;
+                            h.setOrientation(Direction.Left);
                             break;
                         case Right:
                             bounds.x += SPEED;
-                            currentDirection = Direction.Right;
+                            h.setOrientation(Direction.Right);
                             break;
                         case Blink:
-                        	 ((Blink)s).blinkMove(bounds, currentDirection);;
+                        	 // TODO: no other targets right now!!! only self targeting!!
+                        	 movementSkills.get(0).applyTargetedEffect(h, null); 
+                        	 bounds.x = h.getCoordinatePosition().l;
+                        	 bounds.y = h.getCoordinatePosition().r;
                         default:
                         	break;
                     }
-                 //   SPEED = Math.max(1, SPEED*2);
-
                     if (bounds.x < 0) {
                         bounds.x = 0;
                     } else if (bounds.x + bounds.width > parent.getWidth()) {
@@ -125,13 +132,16 @@ public class MovePane {
                     } else if (bounds.y + bounds.height > parent.getHeight()) {
                         bounds.y = parent.getHeight() - bounds.height;
                     }
-
+                    h.setPosition(bounds.x, bounds.y);
                     mobby.setBounds(bounds);
-
+                    double now = System.currentTimeMillis();
+                    if(now - lastTime >= 1000){
+                    	h.updateMana(h.getManaRegen());
+                    }
                 }       
             });
-            moveTimer.setInitialDelay(0);
-            InputMap im = pool.getInputMap(WHEN_IN_FOCUSED_WINDOW);
+            
+            InputMap im = pool.getInputMap();
             ActionMap am = pool.getActionMap();
 
             im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0, false), "UpPressed");
@@ -144,8 +154,10 @@ public class MovePane {
             im.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0, true), "RightReleased");
             im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, 0, false), "ZPressed");
             im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, 0, true), "ZReleased");
-            
+                       
             KeyUpAction keyUpAction = new KeyUpAction();
+            
+            // TODO: add functionality for hot-key assignments!!
             am.put("UpReleased", keyUpAction);
             am.put("DownReleased", keyUpAction);
             am.put("LeftReleased", keyUpAction);
@@ -160,9 +172,11 @@ public class MovePane {
 
         }
 
+        // TODO: map should not be resize-able!!! 
+        // TODO: map should also be in map-data class!!
         @Override
         public Dimension getPreferredSize() {
-            return new Dimension(400, 400); // TODO: map should not be resize-able!!!
+            return new Dimension(400, 400);
         }
 
         public class KeyUpAction extends AbstractAction {
@@ -177,7 +191,7 @@ public class MovePane {
         public class MoveAction extends AbstractAction {
 
             private Direction direction;
-
+            
             public MoveAction(Direction direction) {
                 this.direction = direction;
             }

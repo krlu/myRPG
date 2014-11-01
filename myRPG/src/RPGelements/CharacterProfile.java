@@ -1,5 +1,10 @@
 package RPGelements;
+import java.awt.Color;
 import java.util.ArrayList;
+
+import javax.swing.JPanel;
+
+import BasicWorldMap.MovePane.Direction;
 import FundamentalStructures.Tuple;
 import RPGItem.Item;
 import SkillsAndAttributes.Skill;
@@ -44,11 +49,16 @@ public class CharacterProfile{
 	private final int MAXLVL = 30;
 	private final int MAXSKILLS = 5;
 	private final int MAXITEMS = 6;
+	
 	/* user profile material*/
 	private String name;
 	private String month; 
 	private int date; 
 	private int year; 
+	
+	/* location and orientation in space*/
+	protected Tuple<Integer,Integer> coordinatePosition; /*<x coordinate, y coordinate>*/
+	protected Direction currentDirection = Direction.None;
 	
 	/* general stats*/
 	private int exp;
@@ -61,7 +71,6 @@ public class CharacterProfile{
 	protected ArrayList<String> characterclasses; /*Warrior, Mage, Assassin, Marksman, Priest*/
 	protected ArrayList<Skill> skills;	/*maximum of 5 skills*/
 	protected ArrayList<Item> equipedItems; /* can equip max of 6 items*/
-	protected Tuple<Integer,Integer> coordinatePosition; /*<x coordinate, y coordinate>*/
 	protected int gold;
 	
 	
@@ -79,7 +88,8 @@ public class CharacterProfile{
 	protected int armor; 
 	protected int magicResistance;
 	protected int fervor;  /* crowd control reduction stat*/
-	protected int mana;  
+	protected int mana; 
+	protected int maxMana;
 	protected int bonusMagic;
 	protected ArrayList<StatusEffect> statusEffects;
 	
@@ -97,7 +107,13 @@ public class CharacterProfile{
 	protected int magicDamageReceived;
 	protected int trueDamageReceived;
 	
+	
+	/*character graphical appearance on UI*/
+	public JPanel avatar;
+	
 	public CharacterProfile(String name, String month, int date, int year, String race, String profession, String faction){
+		
+		/*stats for character profile*/
 		this.coolDownReduction = 0.0;
 		this.name = name;
 		this.month = month;
@@ -120,6 +136,14 @@ public class CharacterProfile{
 		this.statusEffects = new ArrayList<StatusEffect>();
 		this.faction = (profession != null  && !profession.equals("")) ? profession : "Unaffiliated"; 
 		this.profession = (profession != null  && !profession.equals("")) ? profession : "Unemployed"; 
+		
+		/* Sets appearance on UI of character profile
+		 * TODO: We can make this waaaay better!!!!
+		 * */
+        JPanel mobby = new JPanel();
+        mobby.setBackground(Color.GREEN); 
+        mobby.setSize(50, 50);
+        this.avatar = mobby;
 	}
 	
 	/* **********************************************
@@ -127,6 +151,12 @@ public class CharacterProfile{
 	 * for different fields, as some will be updated 
 	 * more frequently and differently than others
 	 * *********************************************/
+	public void setOrientation(Direction direction){
+		this.currentDirection = direction;
+	}
+	public Direction getOrientation(){
+		return this.currentDirection;
+	}
 	public void setPosition(int x, int y){
 		this.coordinatePosition = new Tuple<Integer, Integer>(x,y);
 	}
@@ -228,7 +258,12 @@ public class CharacterProfile{
 	}
 	public void updateMana(int bonus){
 		int sum = this.mana+ bonus;
-		this.mana = (sum > 0) ?  sum : 0;
+		if(sum > this.maxMana){
+			this.mana = sum;
+		}
+		else if(sum < 0){
+			System.err.println("Mana is negative!!!");
+		}
 	}
 	public void updateArmor(int bonus){
 		int sum = this.armor+ bonus;
@@ -338,6 +373,15 @@ public class CharacterProfile{
 	}
 	public int getCurrentHp(){
 		return this.hp;
+	}
+	public int getMaxMana(){
+		return this.maxMana;
+	}
+	public int getMana(){
+		return this.mana;
+	}
+	public int getManaRegen(){
+		return this.manaRegen;
 	}
 	public String getName(){
 		return this.name;

@@ -88,7 +88,7 @@ public class ItemCombiner {
 		components.remove(0);
 		components.add(broadSword);
 		components.add(new BroadSword());
-		Item emeraldSword1 = ItemCombiner.combineItems(components, new EmeraldSword(), me);
+	//	Item emeraldSword1 = ItemCombiner.combineItems(components, new EmeraldSword(), me);
 		components.remove(1);
 		components.add(waterCrystal);
 		EmeraldSword emeraldSword = (EmeraldSword) ItemCombiner.combineItems(components, new EmeraldSword(), me);
