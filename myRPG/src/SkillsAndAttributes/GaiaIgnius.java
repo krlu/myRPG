@@ -16,7 +16,7 @@ public class GaiaIgnius extends Skill {
 	
 	public GaiaIgnius() {
 		this.amountOfEffectTime = 0;
-		this.maxTargets = 3;
+		this.maxTargets = 0;
 		this.castRange = 6;
 		this.effectRadius = 2;
 		this.skillPoints = 0;

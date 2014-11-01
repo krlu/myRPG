@@ -20,6 +20,7 @@ import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import RPGelements.*;
 public class MovePane {
 
     public static void main(String[] args) {
@@ -38,7 +39,7 @@ public class MovePane {
                 JFrame frame = new JFrame("Testing");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setLayout(new BorderLayout());
-                frame.add(new TestPane(null));// TODO: pass in the character/unit object!!
+                frame.add(new TestPane(new Human("Kenny", "August", 30, 1991,  "merchant", "")));// TODO: pass in the character/unit object!!
                 frame.pack();
                 frame.setLocationRelativeTo(null);
                 frame.setVisible(true);
@@ -61,7 +62,7 @@ public class MovePane {
         private int BLINK;
         private Direction currentDirection = Direction.None; 
         private double lastUsedSkillTime = -1;
-        public TestPane(Object o) {
+        public TestPane(Human h) {
         	
         	/* creates the image on the map
         	 * can specify size and color
@@ -74,10 +75,10 @@ public class MovePane {
             pool.add(mobby);
             add(pool);
             
-            this.SPEED = 5; // will depend on the stats of the unit that's moving
+            this.SPEED = h.getMovementSpeed(); // will depend on the stats of the unit that's moving
             this.BLINK = 200; // depends on stats of blinking/flashing skill
 
-            moveTimer = new Timer(20, new ActionListener() {
+            moveTimer = new Timer(10, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     Container parent = mobby.getParent();

@@ -23,7 +23,7 @@ public class Human extends CharacterProfile{
 		this.healthRegen = 3; 
 		this.attackDamage = 7; 
 		this.attackSpeed = 0.50;
-		this.moveSpeed = 10; 
+		this.moveSpeed = 5; 
 		this.magicResistance = 3;
 		this.attackRange = 0;
 		this.fervor = 0;
