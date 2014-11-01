@@ -177,6 +177,9 @@ public class CharacterProfile{
 	 * abilities. Buying/Selling changes gold frequently too
 	 * TODO: there will be many more to implement
 	 *******************************************************/
+	public void addSkill(Skill s){
+		this.skills.add(s);
+	}
 	public void updateSkillsCoolDownByPercentage(double cdr){
 		for(Skill skill : this.skills){
 			double percentage;

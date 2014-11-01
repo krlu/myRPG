@@ -20,7 +20,9 @@ import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import RPGelements.*;
+import RPGelements.Human;
+import SkillsAndAttributes.Blink;
+import SkillsAndAttributes.Skill;
 public class MovePane {
 
     public static void main(String[] args) {
@@ -39,7 +41,9 @@ public class MovePane {
                 JFrame frame = new JFrame("Testing");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setLayout(new BorderLayout());
-                frame.add(new TestPane(new Human("Kenny", "August", 30, 1991,  "merchant", "")));// TODO: pass in the character/unit object!!
+                Human h = new Human("Kenny", "August", 30, 1991,  "merchant", "");
+                h.addSkill(new Blink());
+                frame.add(new TestPane(h));// TODO: pass in the character/unit object!!
                 frame.pack();
                 frame.setLocationRelativeTo(null);
                 frame.setVisible(true);
@@ -62,6 +66,7 @@ public class MovePane {
         private int BLINK;
         private Direction currentDirection = Direction.None; 
         private double lastUsedSkillTime = -1;
+        private Skill s = null;
         public TestPane(Human h) {
         	
         	/* creates the image on the map
@@ -74,9 +79,10 @@ public class MovePane {
             JPanel pool = new JPanel(null);
             pool.add(mobby);
             add(pool);
+            this.s = (Blink)h.getSkills().get(0);
             
             this.SPEED = h.getMovementSpeed(); // will depend on the stats of the unit that's moving
-            this.BLINK = 200; // depends on stats of blinking/flashing skill
+            
 
             moveTimer = new Timer(10, new ActionListener() {
                 @Override
@@ -103,7 +109,7 @@ public class MovePane {
                             currentDirection = Direction.Right;
                             break;
                         case Blink:
-                        	 blinkMove(bounds);
+                        	 ((Blink)s).blinkMove(bounds, currentDirection);;
                         default:
                         	break;
                     }
@@ -122,38 +128,7 @@ public class MovePane {
 
                     mobby.setBounds(bounds);
 
-                }
-                
-                // blinks unit a short distance across map on 3 second cooldown!
-                public void blinkMove(Rectangle bounds){
-                	 double now = System.currentTimeMillis();
-                	 if(lastUsedSkillTime > 0 && (now - lastUsedSkillTime)/1000 < 3){
-                		 System.out.println("SKILL IS ON COOLDOWN!!");
-                		 return;
-                	 }
-                	 else{
-                		 lastUsedSkillTime = now;
-                		 System.out.println("BLINKED!!");
-                	 }
-                	 switch (currentDirection) {
-                     	case Up:
-                         	bounds.y -= BLINK;
-                         	break;
-                     	case Down:
-                    	 	bounds.y += BLINK;
-                         	break;
-                     	case Left:
-                         	bounds.x -= BLINK;
-                         	break;
-                     	case Right:
-                         	bounds.x += BLINK;
-                         	break;
-                     	case Blink:
-                    	 
-                     	default:
-                     		break;
-                	 }
-                }
+                }       
             });
             moveTimer.setInitialDelay(0);
             InputMap im = pool.getInputMap(WHEN_IN_FOCUSED_WINDOW);

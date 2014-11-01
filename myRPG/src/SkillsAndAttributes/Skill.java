@@ -15,6 +15,7 @@ public class Skill {
 	protected final int NONDAMAGE = -1;
 	
 	
+	//protected boolean MOVEMENTSKILL = false;
 	protected boolean SILENCED; 
 	protected String name;
 	protected double coolDown; /*measured in seconds*/
@@ -73,6 +74,32 @@ public class Skill {
 			this.attainingLevel5();
 		}		
 	}
+	
+	/*public int applyMovementEffect(CharacterProfile profile){
+		if(this.SILENCED){
+			System.out.println("cannot cast while silenced");
+			return 0;
+		}
+		if(this.skillPoints == this.level1Cap){
+			return level1Effect(profile, null);
+		}
+		else if(this.skillPoints == this.level2Cap){
+			return level2Effect(profile, null);
+		}
+		else if(this.skillPoints == this.level3Cap){
+			return level3Effect(profile, null);
+		}		
+		else if(this.skillPoints == this.level4Cap){
+			return level4Effect(profile, null);
+		}
+		else if(this.skillPoints == this.level5Cap){
+			return level5Effect(profile, null);
+		}
+		else{
+			System.err.println("error in skill points!!");
+			return 0;
+		}
+	}*/
 	
 	/* ************************************************
 	 * For all area of effects and skill shot abilities
