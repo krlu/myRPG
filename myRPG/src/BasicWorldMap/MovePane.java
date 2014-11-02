@@ -48,10 +48,10 @@ public class MovePane {
                 
                 // TODO: eventually want to load human data from database!!!
                 // don't want to create human in memory every time.
-                Human h = new Human("Kenny", "August", 30, 1991,  "merchant", "");    
-                h.addSkill(new Blink());
+                Human profile = new Human("Kenny", "August", 30, 1991,  "merchant", "");    
+                profile.addSkill(new Blink());
                 
-                frame.add(new TestPane(h)); // pass in the character/unit object!!
+                frame.add(new TestPane(profile)); // pass in the character/unit object!!
                 frame.pack();
                 frame.setLocationRelativeTo(null);
                 frame.setVisible(true);
@@ -82,19 +82,19 @@ public class MovePane {
         private JPanel mbar;
         private JPanel mana;
         private ArrayList<Skill> movementSkills; // relevant movement skills 
-        public TestPane(final Human h) {
+        public TestPane(final CharacterProfile profile) {
         	
         	// load map objects as 2D graphics 
             JPanel pool = new JPanel(null);
-        	loadGraphics(h, pool);
-        	addMouseListener(pool,h);
+        	loadGraphics(profile, pool);
+        	addMouseListener(pool,profile);
         	
         	// load player skills on map
             movementSkills = new ArrayList<Skill>();
-            this.SPEED = h.getMovementSpeed(); // will depend on the stats of the unit that's moving
+            this.SPEED = profile.getMovementSpeed(); // will depend on the stats of the unit that's moving
             
             // get all movement skills loaded in one place
-            for(Skill s : h.getSkills()){
+            for(Skill s : profile.getSkills()){
             	if(s.isMovementSkill()){
             		this.movementSkills.add(s); 
             	}
@@ -103,7 +103,7 @@ public class MovePane {
             /* ******************************************
              *  Load timer for ambient events        
              *  These events occur without user input
-             *  And are computed separately for modularity
+             *  Includes hp/mana regen, buffs/debuffs...etc
              ********************************************/
             ambientTimer = new Timer(10, new ActionListener(){
             	 @Override
@@ -111,8 +111,8 @@ public class MovePane {
             		 	secondInterval += 20; 
             		 	if(secondInterval == _SECOND){
             		 		// update health and mana stats
-            		 		h.updateMana(h.getManaRegen());
-                       		h.updateHp(h.getHpRegen());
+            		 		profile.updateMana(profile.getManaRegen());
+                       		profile.updateHp(profile.getHpRegen());
                        		secondInterval = 0;
             		 	}
                        	// update health and mana bars
@@ -126,17 +126,17 @@ public class MovePane {
             	 
             	 public void showRealTimeStats(){
                      double remainingCD = movementSkills.get(0).getRemainingCD();
-                     System.out.println("Health: " + h.getCurrentHp() + "   MANA: " + h.getCurrentMana() + "   Cooldown: " + remainingCD);
+                     System.out.println("Health: " + profile.getCurrentHp() + "   MANA: " + profile.getCurrentMana() + "   Cooldown: " + remainingCD);
                    
             	 }
             	 
             	 public void updateHealthAndManaBars(Rectangle hpRect, Rectangle manaRect){
-                     hpRect.width = (int)(barLength * ((double)h.getCurrentHp()/h.getMaxHp()));
-                     manaRect.width = (int)(barLength * ((double)h.getCurrentMana()/h.getMaxMana()));
+                     hpRect.width = (int)(barLength * ((double)profile.getCurrentHp()/profile.getMaxHp()));
+                     manaRect.width = (int)(barLength * ((double)profile.getCurrentMana()/profile.getMaxMana()));
                      
                      hp.setBounds(hpRect);
                      mana.setBounds(manaRect);
-                     if(h.getCurrentHp() == 0){
+                     if(profile.getCurrentHp() == 0){
                      	hpRect.width = 0;
                          hp.setBounds(hpRect);
                      	mobby.setBackground(Color.BLACK);
@@ -145,7 +145,7 @@ public class MovePane {
                      	ambientTimer.stop();
                      	return; 
                      }
-                     if(h.getCurrentMana() == 0){
+                     if(profile.getCurrentMana() == 0){
                      	manaRect.width = 0;
                      	mana.setBounds(manaRect);
                      } 
@@ -153,11 +153,11 @@ public class MovePane {
             });
             ambientTimer.start();
             
-            /* *******************************************
+            /* *******************************************************
              *  Load timer player dependent events.       
              *  These events occur based on user input
-             *  Examples include movements and skill usage
-             *********************************************/
+             *  Includes targeted/non-targeted skills, effects, etc...
+             *********************************************************/
             moveTimer = new Timer(10, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -169,47 +169,47 @@ public class MovePane {
                     switch (moveDirection) {
                         case Up:
                             bounds.y -= SPEED;
-                            h.setOrientation(Direction.Up);
+                            profile.setOrientation(Direction.Up);
                             break;
                         case Down:
                             bounds.y += SPEED;
-                            h.setOrientation(Direction.Down);
+                            profile.setOrientation(Direction.Down);
                             break;
                         case Left:
                             bounds.x -= SPEED;
-                            h.setOrientation(Direction.Left);
+                            profile.setOrientation(Direction.Left);
                             break;
                         case Right:
                             bounds.x += SPEED;
-                            h.setOrientation(Direction.Right);
+                            profile.setOrientation(Direction.Right);
                             break;
                         case Blink:
                         	 // TODO: no other targets right now!!! only self targeting!!
-                        	 movementSkills.get(0).applyTargetedEffect(h, null); 
-                        	 bounds.x = h.getCoordinatePosition().l;
-                        	 bounds.y = h.getCoordinatePosition().r;
+                        	 movementSkills.get(0).applyTargetedEffect(profile, null); 
+                        	 bounds.x = profile.getCoordinatePosition().l;
+                        	 bounds.y = profile.getCoordinatePosition().r;
                         default:
                         	break;
                     }
                     if (bounds.x < 0) {
                         bounds.x = 0;
                         mobby.setBackground(randomColor());
-                        h.updateHp(-1);
+                        profile.updateHp(-1);
                     } else if (bounds.x + bounds.width > parent.getWidth()) {
                     	mobby.setBackground(randomColor());
                         bounds.x = parent.getWidth() - bounds.width;
-                        h.updateHp(-1);
+                        profile.updateHp(-1);
                     }
                     if (bounds.y < 2*barHeight) {
                     	mobby.setBackground(randomColor());
                         bounds.y = 2*barHeight;
-                        h.updateHp(-1);
+                        profile.updateHp(-1);
                     } else if (bounds.y + bounds.height > parent.getHeight()) {
                     	mobby.setBackground(randomColor());
                         bounds.y = parent.getHeight() - bounds.height;
-                        h.updateHp(-1);
+                        profile.updateHp(-1);
                     }
-                    h.setPosition(bounds.x, bounds.y);
+                    profile.setPosition(bounds.x, bounds.y);
                     mobby.setBounds(bounds);
                 }
                 
@@ -261,7 +261,7 @@ public class MovePane {
             am.put("ZPressed", new MoveAction(Direction.Blink));
 
         }
-        public void loadGraphics(Human h, JPanel pool){
+        public void loadGraphics(CharacterProfile profile, JPanel pool){
         	// health bar data
             hbar = new JPanel();
             hbar.setBackground(Color.RED); 
@@ -270,7 +270,7 @@ public class MovePane {
         	// health bar data
             hp = new JPanel();
             hp.setBackground(Color.GREEN); 
-            int hpLength = (int)(barLength * h.getCurrentHp()/h.getMaxHp());
+            int hpLength = (int)(barLength * profile.getCurrentHp()/profile.getMaxHp());
             hp.setSize(hpLength, barHeight);
                        
             // mana bar panel prioritizing is weird!!!
@@ -288,11 +288,11 @@ public class MovePane {
             Rectangle mRect2 = mana.getBounds(); 
             mRect2.y = 10;
             mana.setBounds(mRect2);     
-            int manaLength = (int)(barLength * h.getCurrentMana()/h.getMaxMana());  
+            int manaLength = (int)(barLength * profile.getCurrentMana()/profile.getMaxMana());  
             mana.setSize(manaLength, barHeight);
             
             // the player avatar graphics
-            mobby = h.avatar; 
+            mobby = profile.avatar; 
             Rectangle r = mobby.getBounds(); 
             r.y = 20;
             mobby.setBounds(r);
@@ -314,7 +314,41 @@ public class MovePane {
             	private JPanel avatar;
             	private Rectangle r;
             	private int SPEED = profile.getMovementSpeed();
-            	private Timer t; 
+            	
+            	// TODO: find less hacky solution to creating timers!!
+            	private Timer t = new Timer(10, new ActionListener(){
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						if((r.x == X && r.y == Y) || profile.getCurrentHp() == 0){
+							//System.out.println("STOPPED");
+							t.stop();
+							//moveTimer.start();
+							return;
+						}
+						int xDist = Math.abs(r.x - X);
+						int yDist = Math.abs(r.y - Y);
+						if(r.x > X){
+							r.x -= Math.min(xDist,SPEED);
+							profile.setOrientation(Direction.Left);
+						}
+						else if(r.x < X){
+							r.x += Math.min(xDist,SPEED);
+							profile.setOrientation(Direction.Right);
+						}
+						
+						if(r.y > Y){
+							r.y -= Math.min(yDist,SPEED);
+							profile.setOrientation(Direction.Up);
+						}
+						else if(r.y < Y){
+							r.y += Math.min(yDist,SPEED);
+							profile.setOrientation(Direction.Down);
+						}
+						avatar.setBounds(r);
+					}
+					
+            	});	
 				@Override
 				public void mouseClicked(MouseEvent e) {
 
@@ -322,12 +356,13 @@ public class MovePane {
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
-					//System.out.println("HI");
+					//System.out.println("HI");					
 				}
 
 				@Override
 				public void mouseExited(MouseEvent e) {
 					//System.out.println("BYE");
+					//t.stop();
 				}
 
 				@Override
@@ -336,37 +371,7 @@ public class MovePane {
 					r = avatar.getBounds(); 
 					X = e.getX() - r.width/2; 
 					Y = e.getY() - r.height/2;
-					t = new Timer(10, new ActionListener(){
-
-							@Override
-							public void actionPerformed(ActionEvent e) {
-								if((r.x == X && r.y == Y) || profile.getCurrentHp() == 0){
-									//System.out.println("STOPPED");
-									t.stop();
-									return;
-									//moveTimer.start();
-								}
-								int xDist = Math.abs(r.x - X);
-								int yDist = Math.abs(r.y - Y);
-								if(r.x > X){
-									r.x -= Math.min(xDist,SPEED);
-								}
-								else if(r.x < X){
-									r.x += Math.min(xDist,SPEED);
-								}
-								
-								if(r.y > Y){
-									r.y -= Math.min(yDist,SPEED);
-								}
-								else if(r.y < Y){
-									r.y += Math.min(yDist,SPEED);
-								}
-								avatar.setBounds(r);
-							}
-							
-					});	
 					t.start();
-					//moveTimer.stop();
 				}
 
 				@Override
