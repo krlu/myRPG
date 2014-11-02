@@ -28,8 +28,9 @@ public class Human extends CharacterProfile{
 		this.attackRange = 0;
 		this.fervor = 0;
 		this.mana = 25; 
+		this.maxMana = 25;
 		this.bonusMagic = 0;
-		this.manaRegen = 2;
+		this.manaRegen = 3;
 		this.gatherSpeed = 5;
 		this.buildSpeed = 2;
 	}	

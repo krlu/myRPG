@@ -257,12 +257,16 @@ public class CharacterProfile{
 		this.spellVamp = (sum > 0.0) ? sum : 0.0;
 	}
 	public void updateMana(int bonus){
-		int sum = this.mana+ bonus;
+		int sum = this.mana + bonus;
 		if(sum > this.maxMana){
-			this.mana = sum;
+			this.mana = this.maxMana;
+			return;
 		}
 		else if(sum < 0){
 			System.err.println("Mana is negative!!!");
+		}
+		else{
+			this.mana = sum;
 		}
 	}
 	public void updateArmor(int bonus){
@@ -374,10 +378,13 @@ public class CharacterProfile{
 	public int getCurrentHp(){
 		return this.hp;
 	}
+	public int getHpRegen(){
+		return this.healthRegen;
+	}
 	public int getMaxMana(){
 		return this.maxMana;
 	}
-	public int getMana(){
+	public int getCurrentMana(){
 		return this.mana;
 	}
 	public int getManaRegen(){

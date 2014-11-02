@@ -34,7 +34,7 @@ public class Liche extends CharacterProfile {
 	
 	/*passive name: Blood Price*/
 	public int applyDamageBonus(){
-		int percenthp = Math.max(2, this.hp * (1/50));
+		double percenthp = Math.max(2, this.hp * (1/50));
 		this.hp -= percenthp; 
 		return 3 + 2*getLevel();
 	}

@@ -1,6 +1,7 @@
 package BasicWorldMap;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -63,13 +64,16 @@ public class MovePane {
     @SuppressWarnings("serial")
     // TODO: make this handle arbitrary skills besides blinking!!
 	public class TestPane extends JPanel {
-	//	private static final long serialVersionUID = -4047734207601020551L;
-    	private double lastTime = System.currentTimeMillis();
+    	
+    	private final int _SECOND = 1000;
 		private JPanel mobby;
-        private Timer moveTimer;
+        private Timer moveTimer; 	// keeps track of player input events
+        private Timer ambientTimer; // keeps track of ambient events
         private Direction moveDirection = Direction.None;
         private int SPEED; 
-        private ArrayList<Skill> movementSkills;
+        
+        private ArrayList<Skill> movementSkills; // relevant movement skills 
+        
         public TestPane(final Human h) {
         	/* creates the image on the map
         	 * can specify size and color through character profile
@@ -89,13 +93,34 @@ public class MovePane {
             		this.movementSkills.add(s); 
             	}
             }
-
+            
+            ambientTimer = new Timer(_SECOND, new ActionListener(){
+            	 @Override
+                 public void actionPerformed(ActionEvent e) {
+                       	h.updateMana(h.getManaRegen());
+                       	h.updateHp(h.getHpRegen());
+            	 }
+            });
+            ambientTimer.start();
+            
             moveTimer = new Timer(10, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     Container parent = mobby.getParent(); // TODO: should be retrieving the map data!!
-                    Rectangle bounds = mobby.getBounds(); // retrieves the character data!
+                    Rectangle bounds = mobby.getBounds(); // retrieves the character data!   
                     
+                    if(h.getCurrentHp() == 0){
+                    	mobby.setBackground(Color.BLACK);
+                    	System.out.println("YOU DIED :(  T_T  D:");
+                    	moveTimer.stop();
+                    	ambientTimer.stop();
+                    	return; 
+                    }
+                    double lastUsedSkillTime = movementSkills.get(0).getLastUsedTime();
+                    double diff = (System.currentTimeMillis() - lastUsedSkillTime)/1000;                    
+                    double remainingCD = Math.max(0,movementSkills.get(0).getCoolDown() - diff);
+                    
+                    System.out.println("Health: " + h.getCurrentHp() + "   MANA: " + h.getCurrentMana() + "   Cooldown: " + remainingCD);
                     // can control speed at which the object moves
                     switch (moveDirection) {
                         case Up:
@@ -124,22 +149,43 @@ public class MovePane {
                     }
                     if (bounds.x < 0) {
                         bounds.x = 0;
+                        mobby.setBackground(randomColor());
+                        h.updateHp(-1);
                     } else if (bounds.x + bounds.width > parent.getWidth()) {
+                    	mobby.setBackground(randomColor());
                         bounds.x = parent.getWidth() - bounds.width;
+                        h.updateHp(-1);
                     }
                     if (bounds.y < 0) {
+                    	mobby.setBackground(randomColor());
                         bounds.y = 0;
+                        h.updateHp(-1);
                     } else if (bounds.y + bounds.height > parent.getHeight()) {
+                    	mobby.setBackground(randomColor());
                         bounds.y = parent.getHeight() - bounds.height;
+                        h.updateHp(-1);
                     }
                     h.setPosition(bounds.x, bounds.y);
                     mobby.setBounds(bounds);
-                    double now = System.currentTimeMillis();
-                    if(now - lastTime >= 1000){
-                    	h.updateMana(h.getManaRegen());
-                    }
-                }       
+                }
+                
+                public Color randomColor(){
+                	double i = Math.random();
+                	if(i < 0.25){
+                		return Color.GREEN;
+                	}
+                	else if(i < 0.5){
+                		return Color.BLUE;
+                	}
+                	else if (i < 0.75){
+                		return Color.RED;
+                	}
+                	else{
+                		return Color.ORANGE;
+                	}
+                }
             });
+            moveTimer.start();
             
             InputMap im = pool.getInputMap();
             ActionMap am = pool.getActionMap();
@@ -183,11 +229,12 @@ public class MovePane {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                moveTimer.stop();
+               // moveTimer.stop();
                 moveDirection = Direction.None;
             }
         }
 
+        
         public class MoveAction extends AbstractAction {
 
             private Direction direction;
@@ -199,7 +246,7 @@ public class MovePane {
             @Override
             public void actionPerformed(ActionEvent e) {
                 moveDirection = direction;
-                moveTimer.start();
+               // moveTimer.start();
             }
         }
     }

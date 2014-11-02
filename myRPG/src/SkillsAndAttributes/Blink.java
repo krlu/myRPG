@@ -4,8 +4,7 @@ import BasicWorldMap.MovePane.Direction;
 import RPGelements.CharacterProfile;
 
 // TODO: make blinking call-able from skill class!!
-public class Blink extends Skill {
-	public double lastUsedSkillTime; 
+public class Blink extends Skill { 
 	public Blink() {
 		this.MOVEMENTSKILL = true;
 		this.lastUsedSkillTime = -1;
@@ -38,16 +37,16 @@ public class Blink extends Skill {
 		 
     	 double now = System.currentTimeMillis();
     	 if(lastUsedSkillTime > 0 && (now - lastUsedSkillTime)/1000 < this.coolDown){
-    		 System.out.println("SKILL IS ON COOLDOWN!!");
+    		// System.out.println("SKILL IS ON COOLDOWN!!");
     		 return;
     	 }
-    	 else if(profile.getMana() < this.manaCost){
+    	 else if(profile.getCurrentMana() < this.manaCost){
     		 System.out.println("Not enough mana!!");
     		 return;
     	 }
     	 else{
     		 lastUsedSkillTime = now;
-    		 System.out.println("BLINKED!!");
+    	//	 System.out.println("BLINKED!!");
     		 profile.updateMana(- this.manaCost);
     	 }
     	 switch (currentDirection) {
