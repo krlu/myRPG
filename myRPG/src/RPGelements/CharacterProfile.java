@@ -51,60 +51,60 @@ public class CharacterProfile{
 	private final int MAXITEMS = 6;
 	
 	/* user profile material*/
-	private String name;
-	private String month; 
 	private int date; 
+	private String month; 
+	private String name;
 	private int year; 
 	
 	/* location and orientation in space*/
 	protected Tuple<Integer,Integer> coordinatePosition; /*<x coordinate, y coordinate>*/
-	protected Direction currentDirection = Direction.None;
+	protected Direction 			 currentDirection = Direction.None;
 	
 	/* general stats*/
-	private int exp;
-	private int totalExp;
-	protected int skillPoints;
-	private int level;    /*0 - 30*/
-	private String faction; /*4 major factions: Zaft, Kami, Follen, Xan-Ishrin*/
-	private String profession;  /* thief, spy, vassal, merchant, mercenary, sovereign, official, viceroy, architect*/
-	private String race;  /*elf, dwarf, human, liche, azealin */
-	protected ArrayList<String> characterclasses; /*Warrior, Mage, Assassin, Marksman, Priest*/
-	protected ArrayList<Skill> skills;	/*maximum of 5 skills*/
-	protected ArrayList<Item> equipedItems; /* can equip max of 6 items*/
-	protected int gold;
+	protected ArrayList<String> characterclasses; /*Warrior, Mage, Assassin, Marksman, Priest*/	
+	protected ArrayList<Item> 	equipedItems; /* can equip max of 6 items*/
+	private int 				exp;	
+	private String 				faction; /*4 major factions: Zaft, Kami, Follen, Xan-Ishrin*/
+	protected int 				gold;
+	private int 				level;    /*0 - 30*/
+	private String 				profession;  /* thief, spy, vassal, merchant, mercenary, sovereign, official, viceroy, architect*/
+	private String 				race;  /*elf, dwarf, human, liche, azealin */	
+	protected int 				skillPoints;
+	protected ArrayList<Skill> 	skills;	/*maximum of 5 skills*/
+	private int 				totalExp;
 	
 	
 	/* basic combat stats */
-	protected double coolDownReduction; 
-	protected double lifeSteal; 
-	protected double spellVamp; 
-	protected int maxhp;
-	protected int hp;
-	protected int attackDamage; 
-	protected int attackCounter; 
+	protected int 	 armor; 
+	protected int 	 attackCounter;
+	protected int 	 attackDamage; 
+	protected int 	 attackRange;
 	protected double attackSpeed; 
-	protected int attackRange; 
-	protected int moveSpeed;
-	protected int armor; 
-	protected int magicResistance;
-	protected int fervor;  /* crowd control reduction stat*/
-	protected int mana; 
-	protected int maxMana;
-	protected int bonusMagic;
+	protected int 	 bonusMagic;
+	protected double coolDownReduction; 
+	protected int 	 fervor;  /* crowd control reduction stat*/
+	protected int 	 hp;
+	protected double lifeSteal; 	
+	protected int 	 maxhp;	 
+	protected int 	 moveSpeed;	
+	protected int 	 magicResistance;	
+	protected int 	 mana; 
+	protected int    maxMana;
+	protected double spellVamp; 	
 	protected ArrayList<StatusEffect> statusEffects;
 	
 	/*over time stats in terms of per-second*/
-	protected int manaRegen;
-	protected int gatherSpeed; 
 	protected int buildSpeed;
+	protected int gatherSpeed; 
 	protected int healthRegen; // per 5 seconds
+	protected int manaRegen;
 	
 	/*miscellaneous stats*/
 	protected double luck;
 	
 	/*damaged received during combat phase*/
-	protected int physicalDamageReceived; 
 	protected int magicDamageReceived;
+	protected int physicalDamageReceived; 
 	protected int trueDamageReceived;
 	
 	
@@ -141,7 +141,7 @@ public class CharacterProfile{
 		 * TODO: We can make this waaaay better!!!!
 		 * */
         JPanel mobby = new JPanel();
-        mobby.setBackground(Color.GREEN); 
+        mobby.setBackground(Color.RED); 
         mobby.setSize(50, 50);
         this.avatar = mobby;
 	}

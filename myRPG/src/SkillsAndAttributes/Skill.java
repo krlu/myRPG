@@ -153,8 +153,11 @@ public class Skill {
 	}
 	
 	/*getters*/
-	public double getLastUsedTime(){
-		return this.lastUsedSkillTime;
+	public double getRemainingCD(){
+        double lastUsedSkillTime = this.lastUsedSkillTime;
+        double diff = (System.currentTimeMillis() - lastUsedSkillTime)/1000;                    
+        double remainingCD = Math.max(0,this.coolDown - diff);
+        return remainingCD;
 	}
 	public double getCoolDown(){
 		return this.coolDown;

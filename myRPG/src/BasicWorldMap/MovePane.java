@@ -71,19 +71,21 @@ public class MovePane {
         private Timer ambientTimer; // keeps track of ambient events
         private Direction moveDirection = Direction.None;
         private int SPEED; 
-        
+        private final int barHeight = 10; 
+        private final int barLength = 400; 
+        private JPanel hbar;
+        private JPanel hp;
+        private JPanel mbar;
+        private JPanel mana;
         private ArrayList<Skill> movementSkills; // relevant movement skills 
         
         public TestPane(final Human h) {
-        	/* creates the image on the map
-        	 * can specify size and color through character profile
-        	 */
-            mobby = h.avatar;
-            setLayout(new BorderLayout());
+        	
+        	// load map objects as 2D graphics 
             JPanel pool = new JPanel(null);
-            pool.add(mobby);
-            add(pool);
-            
+        	loadGraphics(h, pool);
+        	
+        	// load player skills on map
             movementSkills = new ArrayList<Skill>();
             this.SPEED = h.getMovementSpeed(); // will depend on the stats of the unit that's moving
             
@@ -94,6 +96,7 @@ public class MovePane {
             	}
             }
             
+            // load timers for events
             ambientTimer = new Timer(_SECOND, new ActionListener(){
             	 @Override
                  public void actionPerformed(ActionEvent e) {
@@ -106,21 +109,16 @@ public class MovePane {
             moveTimer = new Timer(10, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                	
                     Container parent = mobby.getParent(); // TODO: should be retrieving the map data!!
-                    Rectangle bounds = mobby.getBounds(); // retrieves the character data!   
-                    
-                    if(h.getCurrentHp() == 0){
-                    	mobby.setBackground(Color.BLACK);
-                    	System.out.println("YOU DIED :(  T_T  D:");
-                    	moveTimer.stop();
-                    	ambientTimer.stop();
-                    	return; 
-                    }
-                    double lastUsedSkillTime = movementSkills.get(0).getLastUsedTime();
-                    double diff = (System.currentTimeMillis() - lastUsedSkillTime)/1000;                    
-                    double remainingCD = Math.max(0,movementSkills.get(0).getCoolDown() - diff);
-                    
+                    Rectangle bounds = mobby.getBounds(); // retrieves the character data!  
+                    Rectangle hpRect = hp.getBounds();
+                    Rectangle manaRect = mana.getBounds();
+                    hpRect.width = (int)(barLength * ((double)h.getCurrentHp()/h.getMaxHp()));
+                    manaRect.width = (int)(barLength * ((double)h.getCurrentMana()/h.getMaxMana()));
+                    double remainingCD = movementSkills.get(0).getRemainingCD();
                     System.out.println("Health: " + h.getCurrentHp() + "   MANA: " + h.getCurrentMana() + "   Cooldown: " + remainingCD);
+                  
                     // can control speed at which the object moves
                     switch (moveDirection) {
                         case Up:
@@ -156,9 +154,9 @@ public class MovePane {
                         bounds.x = parent.getWidth() - bounds.width;
                         h.updateHp(-1);
                     }
-                    if (bounds.y < 0) {
+                    if (bounds.y < 2*barHeight) {
                     	mobby.setBackground(randomColor());
-                        bounds.y = 0;
+                        bounds.y = 2*barHeight;
                         h.updateHp(-1);
                     } else if (bounds.y + bounds.height > parent.getHeight()) {
                     	mobby.setBackground(randomColor());
@@ -167,6 +165,21 @@ public class MovePane {
                     }
                     h.setPosition(bounds.x, bounds.y);
                     mobby.setBounds(bounds);
+                    hp.setBounds(hpRect);
+                    mana.setBounds(manaRect);
+                    if(h.getCurrentHp() == 0){
+                    	hpRect.width = 0;
+                        hp.setBounds(hpRect);
+                    	mobby.setBackground(Color.BLACK);
+                    	System.out.println("YOU DIED :(  T_T  D:");
+                    	moveTimer.stop();
+                    	ambientTimer.stop();
+                    	return; 
+                    }
+                    if(h.getCurrentMana() == 0){
+                    	manaRect.width = 0;
+                    	mana.setBounds(manaRect);
+                    }
                 }
                 
                 public Color randomColor(){
@@ -203,7 +216,7 @@ public class MovePane {
                        
             KeyUpAction keyUpAction = new KeyUpAction();
             
-            // TODO: add functionality for hot-key assignments!!
+            // TODO: add functionality for arbitrary hot-key assignments!!
             am.put("UpReleased", keyUpAction);
             am.put("DownReleased", keyUpAction);
             am.put("LeftReleased", keyUpAction);
@@ -217,7 +230,50 @@ public class MovePane {
             am.put("ZPressed", new MoveAction(Direction.Blink));
 
         }
-
+        public void loadGraphics(Human h, JPanel pool){
+        	// health bar data
+            hbar = new JPanel();
+            hbar.setBackground(Color.RED); 
+            hbar.setSize(barLength, barHeight);
+            
+        	// health bar data
+            hp = new JPanel();
+            hp.setBackground(Color.GREEN); 
+            int hpLength = (int)(barLength * h.getCurrentHp()/h.getMaxHp());
+            hp.setSize(hpLength, barHeight);
+                       
+            // TODO: mana bar panel prioritizing is weird!!!
+        	// mana bar data
+            mbar = new JPanel();
+            mbar.setBackground(Color.GRAY); 
+            Rectangle mRect = mbar.getBounds(); 
+            mRect.y = 10;
+            mbar.setBounds(mRect);
+            mbar.setSize(barLength, barHeight);
+            
+        	// mana bar data
+            mana = new JPanel();
+            mana.setBackground(Color.CYAN); 
+            Rectangle mRect2 = mana.getBounds(); 
+            mRect2.y = 10;
+            mana.setBounds(mRect2);     
+            int manaLength = (int)(barLength * h.getCurrentMana()/h.getMaxMana());  
+            mana.setSize(manaLength, barHeight);
+            
+            // the player avatar graphics
+            mobby = h.avatar; 
+            Rectangle r = mobby.getBounds(); 
+            r.y = 20;
+            mobby.setBounds(r);
+            setLayout(new BorderLayout());
+            
+            pool.add(mobby);
+            pool.add(hp);
+            pool.add(hbar);
+            pool.add(mana);
+            pool.add(mbar);
+            add(pool);
+        }
         // TODO: map should not be resize-able!!! 
         // TODO: map should also be in map-data class!!
         @Override
@@ -229,7 +285,6 @@ public class MovePane {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-               // moveTimer.stop();
                 moveDirection = Direction.None;
             }
         }
@@ -246,7 +301,6 @@ public class MovePane {
             @Override
             public void actionPerformed(ActionEvent e) {
                 moveDirection = direction;
-               // moveTimer.start();
             }
         }
     }
