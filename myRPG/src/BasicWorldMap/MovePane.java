@@ -108,7 +108,7 @@ public class MovePane {
             ambientTimer = new Timer(10, new ActionListener(){
             	 @Override
                  public void actionPerformed(ActionEvent e) {
-            		 	secondInterval += 10; 
+            		 	secondInterval += 20; 
             		 	if(secondInterval == _SECOND){
             		 		// update health and mana stats
             		 		h.updateMana(h.getManaRegen());
@@ -119,6 +119,15 @@ public class MovePane {
                         Rectangle hpRect = hp.getBounds();
                         Rectangle manaRect = mana.getBounds();   
                         updateHealthAndManaBars(hpRect,manaRect);
+                        
+                        showRealTimeStats();
+                        
+            	 }
+            	 
+            	 public void showRealTimeStats(){
+                     double remainingCD = movementSkills.get(0).getRemainingCD();
+                     System.out.println("Health: " + h.getCurrentHp() + "   MANA: " + h.getCurrentMana() + "   Cooldown: " + remainingCD);
+                   
             	 }
             	 
             	 public void updateHealthAndManaBars(Rectangle hpRect, Rectangle manaRect){
@@ -156,9 +165,6 @@ public class MovePane {
                     Container parent = mobby.getParent(); // TODO: should be retrieving the map data!!
                     Rectangle bounds = mobby.getBounds(); // retrieves the character data!  
 
-                    double remainingCD = movementSkills.get(0).getRemainingCD();
-                    System.out.println("Health: " + h.getCurrentHp() + "   MANA: " + h.getCurrentMana() + "   Cooldown: " + remainingCD);
-                  
                     // can control speed at which the object moves
                     switch (moveDirection) {
                         case Up:
@@ -301,8 +307,14 @@ public class MovePane {
         }
         
         public void addMouseListener(JPanel pool, final CharacterProfile profile){
-        	pool.addMouseListener(new MouseListener(){
 
+        	pool.addMouseListener(new MouseListener(){
+            	private int X; 
+            	private int Y;
+            	private JPanel avatar;
+            	private Rectangle r;
+            	private int SPEED = profile.getMovementSpeed();
+            	private Timer t; 
 				@Override
 				public void mouseClicked(MouseEvent e) {
 
@@ -310,23 +322,51 @@ public class MovePane {
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
-					
+					//System.out.println("HI");
 				}
 
 				@Override
 				public void mouseExited(MouseEvent e) {
-					
+					//System.out.println("BYE");
 				}
 
 				@Override
 				public void mousePressed(MouseEvent e) {
-					JPanel avatar = profile.avatar;
-					Rectangle r = avatar.getBounds(); 
-					int X = e.getX() - r.width/2; 
-					int Y = e.getY() - r.height/2;
-					r.x = X;
-					r.y = Y;
-					avatar.setBounds(r);
+					avatar = profile.avatar;
+					r = avatar.getBounds(); 
+					X = e.getX() - r.width/2; 
+					Y = e.getY() - r.height/2;
+					t = new Timer(10, new ActionListener(){
+
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								if((r.x == X && r.y == Y) || profile.getCurrentHp() == 0){
+									//System.out.println("STOPPED");
+									t.stop();
+									return;
+									//moveTimer.start();
+								}
+								int xDist = Math.abs(r.x - X);
+								int yDist = Math.abs(r.y - Y);
+								if(r.x > X){
+									r.x -= Math.min(xDist,SPEED);
+								}
+								else if(r.x < X){
+									r.x += Math.min(xDist,SPEED);
+								}
+								
+								if(r.y > Y){
+									r.y -= Math.min(yDist,SPEED);
+								}
+								else if(r.y < Y){
+									r.y += Math.min(yDist,SPEED);
+								}
+								avatar.setBounds(r);
+							}
+							
+					});	
+					t.start();
+					//moveTimer.stop();
 				}
 
 				@Override
