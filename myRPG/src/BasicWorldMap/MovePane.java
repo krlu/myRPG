@@ -9,6 +9,8 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
@@ -21,6 +23,7 @@ import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import RPGelements.CharacterProfile;
 import RPGelements.Human;
 import SkillsAndAttributes.Blink;
 import SkillsAndAttributes.Skill;
@@ -66,6 +69,7 @@ public class MovePane {
 	public class TestPane extends JPanel {
     	
     	private final int _SECOND = 1000;
+    	private int secondInterval = 0;
 		private JPanel mobby;
         private Timer moveTimer; 	// keeps track of player input events
         private Timer ambientTimer; // keeps track of ambient events
@@ -78,12 +82,12 @@ public class MovePane {
         private JPanel mbar;
         private JPanel mana;
         private ArrayList<Skill> movementSkills; // relevant movement skills 
-        
         public TestPane(final Human h) {
         	
         	// load map objects as 2D graphics 
             JPanel pool = new JPanel(null);
         	loadGraphics(h, pool);
+        	addMouseListener(pool,h);
         	
         	// load player skills on map
             movementSkills = new ArrayList<Skill>();
@@ -96,26 +100,62 @@ public class MovePane {
             	}
             }
             
-            // load timers for events
-            ambientTimer = new Timer(_SECOND, new ActionListener(){
+            /* ******************************************
+             *  Load timer for ambient events        
+             *  These events occur without user input
+             *  And are computed separately for modularity
+             ********************************************/
+            ambientTimer = new Timer(10, new ActionListener(){
             	 @Override
                  public void actionPerformed(ActionEvent e) {
-                       	h.updateMana(h.getManaRegen());
-                       	h.updateHp(h.getHpRegen());
+            		 	secondInterval += 10; 
+            		 	if(secondInterval == _SECOND){
+            		 		// update health and mana stats
+            		 		h.updateMana(h.getManaRegen());
+                       		h.updateHp(h.getHpRegen());
+                       		secondInterval = 0;
+            		 	}
+                       	// update health and mana bars
+                        Rectangle hpRect = hp.getBounds();
+                        Rectangle manaRect = mana.getBounds();   
+                        updateHealthAndManaBars(hpRect,manaRect);
+            	 }
+            	 
+            	 public void updateHealthAndManaBars(Rectangle hpRect, Rectangle manaRect){
+                     hpRect.width = (int)(barLength * ((double)h.getCurrentHp()/h.getMaxHp()));
+                     manaRect.width = (int)(barLength * ((double)h.getCurrentMana()/h.getMaxMana()));
+                     
+                     hp.setBounds(hpRect);
+                     mana.setBounds(manaRect);
+                     if(h.getCurrentHp() == 0){
+                     	hpRect.width = 0;
+                         hp.setBounds(hpRect);
+                     	mobby.setBackground(Color.BLACK);
+                     	System.out.println("YOU DIED :(  T_T  D:");
+                     	moveTimer.stop();
+                     	ambientTimer.stop();
+                     	return; 
+                     }
+                     if(h.getCurrentMana() == 0){
+                     	manaRect.width = 0;
+                     	mana.setBounds(manaRect);
+                     } 
             	 }
             });
             ambientTimer.start();
             
+            /* *******************************************
+             *  Load timer player dependent events.       
+             *  These events occur based on user input
+             *  Examples include movements and skill usage
+             *********************************************/
             moveTimer = new Timer(10, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                 	
                     Container parent = mobby.getParent(); // TODO: should be retrieving the map data!!
                     Rectangle bounds = mobby.getBounds(); // retrieves the character data!  
-                    Rectangle hpRect = hp.getBounds();
-                    Rectangle manaRect = mana.getBounds();
-                    hpRect.width = (int)(barLength * ((double)h.getCurrentHp()/h.getMaxHp()));
-                    manaRect.width = (int)(barLength * ((double)h.getCurrentMana()/h.getMaxMana()));
+
                     double remainingCD = movementSkills.get(0).getRemainingCD();
                     System.out.println("Health: " + h.getCurrentHp() + "   MANA: " + h.getCurrentMana() + "   Cooldown: " + remainingCD);
                   
@@ -165,21 +205,6 @@ public class MovePane {
                     }
                     h.setPosition(bounds.x, bounds.y);
                     mobby.setBounds(bounds);
-                    hp.setBounds(hpRect);
-                    mana.setBounds(manaRect);
-                    if(h.getCurrentHp() == 0){
-                    	hpRect.width = 0;
-                        hp.setBounds(hpRect);
-                    	mobby.setBackground(Color.BLACK);
-                    	System.out.println("YOU DIED :(  T_T  D:");
-                    	moveTimer.stop();
-                    	ambientTimer.stop();
-                    	return; 
-                    }
-                    if(h.getCurrentMana() == 0){
-                    	manaRect.width = 0;
-                    	mana.setBounds(manaRect);
-                    }
                 }
                 
                 public Color randomColor(){
@@ -242,7 +267,7 @@ public class MovePane {
             int hpLength = (int)(barLength * h.getCurrentHp()/h.getMaxHp());
             hp.setSize(hpLength, barHeight);
                        
-            // TODO: mana bar panel prioritizing is weird!!!
+            // mana bar panel prioritizing is weird!!!
         	// mana bar data
             mbar = new JPanel();
             mbar.setBackground(Color.GRAY); 
@@ -273,6 +298,43 @@ public class MovePane {
             pool.add(mana);
             pool.add(mbar);
             add(pool);
+        }
+        
+        public void addMouseListener(JPanel pool, final CharacterProfile profile){
+        	pool.addMouseListener(new MouseListener(){
+
+				@Override
+				public void mouseClicked(MouseEvent e) {
+
+				}
+
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e) {
+					
+				}
+
+				@Override
+				public void mousePressed(MouseEvent e) {
+					JPanel avatar = profile.avatar;
+					Rectangle r = avatar.getBounds(); 
+					int X = e.getX() - r.width/2; 
+					int Y = e.getY() - r.height/2;
+					r.x = X;
+					r.y = Y;
+					avatar.setBounds(r);
+				}
+
+				@Override
+				public void mouseReleased(MouseEvent e) {
+					
+				}
+            	
+            });
         }
         // TODO: map should not be resize-able!!! 
         // TODO: map should also be in map-data class!!
