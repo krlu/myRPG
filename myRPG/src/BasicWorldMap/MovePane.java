@@ -106,7 +106,7 @@ public class MovePane {
              *  These events occur without user input
              *  Includes hp/mana regen, buffs/debuffs...etc
              ********************************************/
-            ambientTimer = new Timer(10, new ActionListener(){
+            ambientTimer = new Timer(10, new MyActionListener(profile){
             	 @Override
                  public void actionPerformed(ActionEvent e) {
             		 	secondInterval += 20; 
@@ -126,8 +126,8 @@ public class MovePane {
             	 }
             	 
             	 public void showRealTimeStats(){
-                    // double remainingCD = movementSkills.get(0).getRemainingCD();
-                   //  System.out.println("Health: " + profile.getCurrentHp() + "   MANA: " + profile.getCurrentMana() + "   Cooldown: " + remainingCD);
+                   //  double remainingCD = movementSkills.get(0).getRemainingCD();
+                    // System.out.println("Health: " + profile.getCurrentHp() + "   MANA: " + profile.getCurrentMana() + "   Cooldown: " + remainingCD);
                    
             	 }
             	 
@@ -139,7 +139,7 @@ public class MovePane {
                      mana.setBounds(manaRect);
                      if(profile.getCurrentHp() == 0){
                      	hpRect.width = 0;
-                         hp.setBounds(hpRect);
+                        hp.setBounds(hpRect);
                      	mobby.setBackground(Color.BLACK);
                      	System.out.println("YOU DIED :(  T_T  D:");
                      	moveTimer.stop();
@@ -395,10 +395,8 @@ public class MovePane {
 					
 					double magnitude = Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff,2));					
 					if(magnitude == 0){
-						//System.out.println(xDiff + "  " + yDiff);
 						return new Tuple<Double,Double>(0.0,0.0);
 					}
-					//System.out.println(xDiff/magnitude + "  " + yDiff/magnitude);
 					Tuple<Double, Double> vector2D = new Tuple<Double, Double>(xDiff/magnitude,yDiff/magnitude);
 					return vector2D;
 				}
@@ -432,6 +430,17 @@ public class MovePane {
             @Override
             public void actionPerformed(ActionEvent e) {
                 moveDirection = direction;
+            }
+        }
+        private class MyActionListener implements ActionListener {
+            private CharacterProfile profile;
+
+            public MyActionListener(CharacterProfile profile) {
+                this.profile = profile;
+            }
+
+            public void actionPerformed(ActionEvent e) {
+                
             }
         }
     }
