@@ -23,6 +23,7 @@ import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import FundamentalStructures.Tuple;
 import RPGelements.CharacterProfile;
 import RPGelements.Human;
 import SkillsAndAttributes.Blink;
@@ -51,7 +52,7 @@ public class MovePane {
                 Human profile = new Human("Kenny", "August", 30, 1991,  "merchant", "");    
                 profile.addSkill(new Blink());
                 
-                frame.add(new TestPane(profile)); // pass in the character/unit object!!
+                frame.add(new SimpleMap(profile)); // pass in the character/unit object!!
                 frame.pack();
                 frame.setLocationRelativeTo(null);
                 frame.setVisible(true);
@@ -66,7 +67,7 @@ public class MovePane {
 
     @SuppressWarnings("serial")
     // TODO: make this handle arbitrary skills besides blinking!!
-	public class TestPane extends JPanel {
+	public class SimpleMap extends JPanel {
     	
     	private final int _SECOND = 1000;
     	private int secondInterval = 0;
@@ -82,7 +83,7 @@ public class MovePane {
         private JPanel mbar;
         private JPanel mana;
         private ArrayList<Skill> movementSkills; // relevant movement skills 
-        public TestPane(final CharacterProfile profile) {
+        public SimpleMap(final CharacterProfile profile) {
         	
         	// load map objects as 2D graphics 
             JPanel pool = new JPanel(null);
@@ -125,8 +126,8 @@ public class MovePane {
             	 }
             	 
             	 public void showRealTimeStats(){
-                     double remainingCD = movementSkills.get(0).getRemainingCD();
-                     System.out.println("Health: " + profile.getCurrentHp() + "   MANA: " + profile.getCurrentMana() + "   Cooldown: " + remainingCD);
+                    // double remainingCD = movementSkills.get(0).getRemainingCD();
+                   //  System.out.println("Health: " + profile.getCurrentHp() + "   MANA: " + profile.getCurrentMana() + "   Cooldown: " + remainingCD);
                    
             	 }
             	 
@@ -313,38 +314,49 @@ public class MovePane {
             	private int Y;
             	private JPanel avatar;
             	private Rectangle r;
-            	private int SPEED = profile.getMovementSpeed();
+            	private int SPEED = 2*profile.getMovementSpeed();
             	
             	// TODO: find less hacky solution to creating timers!!
-            	private Timer t = new Timer(10, new ActionListener(){
+            	private Timer t = new Timer(0, new ActionListener(){
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
+						Tuple<Double,Double> vector = vector2D(X-r.x,Y-r.y);
 						if((r.x == X && r.y == Y) || profile.getCurrentHp() == 0){
-							//System.out.println("STOPPED");
+							System.out.println("STOPPED");
 							t.stop();
 							//moveTimer.start();
 							return;
+						}						
+						int xDist = Math.abs(X - r.x);
+						int yDist = Math.abs(Y - r.y);
+						
+						// for when vector components are < 1
+						if(xDist == 1){
+							r.x = X;							
 						}
-						int xDist = Math.abs(r.x - X);
-						int yDist = Math.abs(r.y - Y);
-						if(r.x > X){
-							r.x -= Math.min(xDist,SPEED);
+						else if(r.x > X){
+							r.x += Math.min(xDist,SPEED)*vector.l;
 							profile.setOrientation(Direction.Left);
 						}
 						else if(r.x < X){
-							r.x += Math.min(xDist,SPEED);
+							r.x += Math.min(xDist,SPEED)*vector.l;
 							profile.setOrientation(Direction.Right);
 						}
+
 						
-						if(r.y > Y){
-							r.y -= Math.min(yDist,SPEED);
+						if(yDist == 1){
+							r.y = Y;
+						}
+						else if(r.y > Y){
+							r.y += Math.min(yDist,SPEED)*vector.r;
 							profile.setOrientation(Direction.Up);
 						}
 						else if(r.y < Y){
-							r.y += Math.min(yDist,SPEED);
+							r.y += Math.min(yDist,SPEED)*vector.r;
 							profile.setOrientation(Direction.Down);
 						}
+
 						avatar.setBounds(r);
 					}
 					
@@ -377,6 +389,18 @@ public class MovePane {
 				@Override
 				public void mouseReleased(MouseEvent e) {
 					
+				}
+				
+				public Tuple<Double, Double> vector2D(int xDiff, int yDiff){
+					
+					double magnitude = Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff,2));					
+					if(magnitude == 0){
+						//System.out.println(xDiff + "  " + yDiff);
+						return new Tuple<Double,Double>(0.0,0.0);
+					}
+					//System.out.println(xDiff/magnitude + "  " + yDiff/magnitude);
+					Tuple<Double, Double> vector2D = new Tuple<Double, Double>(xDiff/magnitude,yDiff/magnitude);
+					return vector2D;
 				}
             	
             });
