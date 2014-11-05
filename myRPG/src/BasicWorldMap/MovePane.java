@@ -377,7 +377,7 @@ public class MovePane {
 				}
         		
         	});*/
-        	pool.addMouseListener(new MouseListener(){
+        	pool.addMouseListener(new MyMouseListener(profile){
             	private int X = 0; 
             	private int Y = 2*barHeight;
             	private JPanel avatar;
@@ -387,7 +387,6 @@ public class MovePane {
             	
             	// TODO: find less hacky solution to creating timers!!
             	private Timer mouseTimer = new Timer(10, new MyActionListener(profile){
-
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						//System.out.println(mouseHeld + "  ");
@@ -499,6 +498,9 @@ public class MovePane {
 
 				@Override
 				public void mousePressed(MouseEvent e) {
+					if(profile.getCurrentHp() == 0){
+						return;
+					}
 					avatar = profile.avatar;
 					r = avatar.getBounds(); 
 					X = e.getX() - r.width/2; 
@@ -558,6 +560,31 @@ public class MovePane {
             public void actionPerformed(ActionEvent e) {
                 
             }
+        }
+        private class MyMouseListener implements MouseListener{
+        	public MyMouseListener(CharacterProfile profile){
+        	}
+        	
+			@Override
+			public void mouseClicked(MouseEvent arg0) {				
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent arg0) {			
+			}
+
+			@Override
+			public void mouseExited(MouseEvent arg0) {				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+			}
+        	
         }
     }
 }

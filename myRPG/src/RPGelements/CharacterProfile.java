@@ -58,6 +58,7 @@ public class CharacterProfile{
 	
 	/* location and orientation in space*/
 	protected Tuple<Integer,Integer> coordinatePosition; /*<x coordinate, y coordinate>*/
+	protected Tuple<Integer,Integer> directionVector;    /*current unit vector at which player is facing*/ 
 	protected Direction 			 currentDirection = Direction.None;
 	
 	/* general stats*/
@@ -151,6 +152,13 @@ public class CharacterProfile{
 	 * for different fields, as some will be updated 
 	 * more frequently and differently than others
 	 * *********************************************/
+	public void setDirection(int x, int y){
+		this.directionVector.l = x;
+		this.directionVector.r = y; 
+	}
+	public Tuple<Integer,Integer> getDirectionVector(){
+		return this.directionVector;
+	}
 	public void setOrientation(Direction direction){
 		this.currentDirection = direction;
 	}
