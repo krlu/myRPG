@@ -1,6 +1,5 @@
 package SkillsAndAttributes;
 
-import BasicWorldMap.MovePane.Direction;
 import RPGelements.CharacterProfile;
 
 // TODO: make blinking call-able from skill class!!
@@ -24,10 +23,10 @@ public class Blink extends Skill {
 	}
 	
 	public int level1Effect(CharacterProfile profile, CharacterProfile target){
-		return blinkMove(profile, profile.getOrientation());
+		return blinkMove(profile);
 	}	
 	
-	public int blinkMove(CharacterProfile profile, Direction currentDirection){
+	public int blinkMove(CharacterProfile profile){
 		 
 		 int BLINK = this.castRange;
 		 
@@ -43,7 +42,7 @@ public class Blink extends Skill {
     	 //	 System.out.println("Not enough mana!!");
     		 return 0;
     	 }
-    	 else if(profile.getOrientation() == Direction.None){
+    	 else if(profile.getDirectionVector().l == 0 && profile.getDirectionVector().r == 0){
     		 System.out.println("No direction!");
     		 return 0;
     	 }
@@ -52,22 +51,9 @@ public class Blink extends Skill {
     	//	 System.out.println("BLINKED!!");
     		 profile.updateMana(- this.manaCost);
     	 }
-    	 switch (currentDirection) {
-         	case Up:
-             	y -= BLINK;
-             	break;
-         	case Down:
-        	 	y += BLINK;
-             	break;
-         	case Left:
-             	x -= BLINK;
-             	break;
-         	case Right:
-             	x += BLINK;
-             	break;       	 
-         	default:
-         		break;
-    	 }
+    	 x += BLINK * profile.getDirectionVector().l;
+    	 y += BLINK * profile.getDirectionVector().r;
+    	 
     	 profile.setPosition(x, y);
     	 return 1;
     }

@@ -11,7 +11,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
@@ -211,7 +210,7 @@ public class MovePane {
             mbar = new JPanel();
             mbar.setBackground(Color.GRAY); 
             Rectangle mRect = mbar.getBounds(); 
-            mRect.y = 10;
+            mRect.y = barHeight;
             mbar.setBounds(mRect);
             mbar.setSize(barLength, barHeight);
             
@@ -219,15 +218,15 @@ public class MovePane {
             mana = new JPanel();
             mana.setBackground(Color.CYAN); 
             Rectangle mRect2 = mana.getBounds(); 
-            mRect2.y = 10;
+            mRect2.y = barHeight;
             mana.setBounds(mRect2);     
             int manaLength = (int)(barLength * profile.getCurrentMana()/profile.getMaxMana());  
             mana.setSize(manaLength, barHeight);
             
-            // the player avatar graphics
+            // player avatar graphics
             mobby = profile.avatar; 
             Rectangle r = mobby.getBounds(); 
-            r.y = 20;
+            r.y = 2*barHeight;
             mobby.setBounds(r);
             setLayout(new BorderLayout());
             
@@ -384,14 +383,15 @@ public class MovePane {
             	private Rectangle r;
             	private int SPEED = profile.getMovementSpeed();
             	private int usedBlink = 0;
+            	private Tuple<Double,Double> vector;
             	
             	// TODO: find less hacky solution to creating timers!!
+            	// So far all skills used are in here!!
             	private Timer mouseTimer = new Timer(10, new MyActionListener(profile){
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						//System.out.println(mouseHeld + "  ");
-						Container parent = mobby.getParent();
-						Tuple<Double,Double> vector = vector2D(X-r.x,Y-r.y);
+						Container parent = profile.avatar.getParent();
+	
 						if(profile.getCurrentHp() == 0){
 							mouseTimer.stop();
 						}				
@@ -404,11 +404,9 @@ public class MovePane {
 						}
 						else if(r.x > X){
 							r.x += Math.min(xDist,SPEED)*vector.l;
-							profile.setOrientation(Direction.Left);
 						}
 						else if(r.x < X){
 							r.x += Math.min(xDist,SPEED)*vector.l;
-							profile.setOrientation(Direction.Right);
 						}
 
 						
@@ -417,11 +415,9 @@ public class MovePane {
 						}
 						else if(r.y > Y){
 							r.y += Math.min(yDist,SPEED)*vector.r;
-							profile.setOrientation(Direction.Up);
 						}
 						else if(r.y < Y){
 							r.y += Math.min(yDist,SPEED)*vector.r;
-							profile.setOrientation(Direction.Down);
 						}
 						switch (moveDirection) {
 	                        case Blink:	                        	 
@@ -494,19 +490,19 @@ public class MovePane {
 
 				@Override
 				public void mouseExited(MouseEvent e) {
+					mouseTimer.stop();
 				}
 
 				@Override
-				public void mousePressed(MouseEvent e) {
+				public void mousePressed(MouseEvent e) {					
 					if(profile.getCurrentHp() == 0){
 						return;
-					}
-					avatar = profile.avatar;
-					r = avatar.getBounds(); 
+					} 
 					X = e.getX() - r.width/2; 
 					Y = e.getY() - r.height/2;
-					mouseTimer.start();
-
+					this.vector = vector2D(X-r.x,Y-r.y);					
+					profile.setDirection(vector.l, vector.r);		
+					System.out.println(profile.getDirectionVector().l + "   " + profile.getDirectionVector().r);
 				}
 
 				@Override

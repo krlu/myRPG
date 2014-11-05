@@ -58,7 +58,7 @@ public class CharacterProfile{
 	
 	/* location and orientation in space*/
 	protected Tuple<Integer,Integer> coordinatePosition; /*<x coordinate, y coordinate>*/
-	protected Tuple<Integer,Integer> directionVector;    /*current unit vector at which player is facing*/ 
+	protected Tuple<Double,Double> directionVector;    /*current unit vector at which player is facing*/ 
 	protected Direction 			 currentDirection = Direction.None;
 	
 	/* general stats*/
@@ -137,7 +137,7 @@ public class CharacterProfile{
 		this.statusEffects = new ArrayList<StatusEffect>();
 		this.faction = (profession != null  && !profession.equals("")) ? profession : "Unaffiliated"; 
 		this.profession = (profession != null  && !profession.equals("")) ? profession : "Unemployed"; 
-		
+		this.directionVector = new Tuple<Double, Double>(0.0,0.0);
 		/* Sets appearance on UI of character profile
 		 * TODO: We can make this waaaay better!!!!
 		 * */
@@ -152,18 +152,12 @@ public class CharacterProfile{
 	 * for different fields, as some will be updated 
 	 * more frequently and differently than others
 	 * *********************************************/
-	public void setDirection(int x, int y){
+	public void setDirection(double x, double y){
 		this.directionVector.l = x;
 		this.directionVector.r = y; 
 	}
-	public Tuple<Integer,Integer> getDirectionVector(){
+	public Tuple<Double,Double> getDirectionVector(){
 		return this.directionVector;
-	}
-	public void setOrientation(Direction direction){
-		this.currentDirection = direction;
-	}
-	public Direction getOrientation(){
-		return this.currentDirection;
 	}
 	public void setPosition(int x, int y){
 		this.coordinatePosition = new Tuple<Integer, Integer>(x,y);
