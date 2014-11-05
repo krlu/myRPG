@@ -108,11 +108,11 @@ public class Skill {
 	 * targets size is bounded by number of maxTargets
 	 * returns amount of damage dealt to last target 
 	 * TODO: might make method void, unused return value
+	 * TODO: return value represents what !?!?!
 	 ***************************************************/
 	public int applyTargetedEffect(CharacterProfile profile, ArrayList<CharacterProfile> targets){
 		if(this.maxTargets < 0){
-			applyEffectHelper(profile,profile);
-			return 0;
+			return applyEffectHelper(profile,profile);
 		}
 		if(this.SILENCED){
 			System.out.println("cannot cast while silenced");

@@ -24,11 +24,10 @@ public class Blink extends Skill {
 	}
 	
 	public int level1Effect(CharacterProfile profile, CharacterProfile target){
-		blinkMove(profile, profile.getOrientation());
-		return 0;
+		return blinkMove(profile, profile.getOrientation());
 	}	
 	
-	public void blinkMove(CharacterProfile profile, Direction currentDirection){
+	public int blinkMove(CharacterProfile profile, Direction currentDirection){
 		 
 		 int BLINK = this.castRange;
 		 
@@ -38,11 +37,15 @@ public class Blink extends Skill {
     	 double now = System.currentTimeMillis();
     	 if(lastUsedSkillTime > 0 && (now - lastUsedSkillTime)/1000 < this.coolDown){
     		// System.out.println("SKILL IS ON COOLDOWN!!");
-    		 return;
+    		 return 0;
     	 }
     	 else if(profile.getCurrentMana() < this.manaCost){
-    		 System.out.println("Not enough mana!!");
-    		 return;
+    	 //	 System.out.println("Not enough mana!!");
+    		 return 0;
+    	 }
+    	 else if(profile.getOrientation() == Direction.None){
+    		 System.out.println("No direction!");
+    		 return 0;
     	 }
     	 else{
     		 lastUsedSkillTime = now;
@@ -66,5 +69,6 @@ public class Blink extends Skill {
          		break;
     	 }
     	 profile.setPosition(x, y);
+    	 return 1;
     }
 }

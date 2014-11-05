@@ -72,10 +72,8 @@ public class MovePane {
     	private final int _SECOND = 1000;
     	private int secondInterval = 0;
 		private JPanel mobby;
-        private Timer moveTimer; 	// keeps track of player input events
         private Timer ambientTimer; // keeps track of ambient events
         private Direction moveDirection = Direction.None;
-        private int SPEED; 
         private final int barHeight = 10; 
         private final int barLength = 400; 
         private JPanel hbar;
@@ -87,12 +85,10 @@ public class MovePane {
         	
         	// load map objects as 2D graphics 
             JPanel pool = new JPanel(null);
-        	loadGraphics(profile, pool);
-        	addMouseListener(pool,profile);
+        	loadGraphics(profile, pool);       	
         	
         	// load player skills on map
             movementSkills = new ArrayList<Skill>();
-            this.SPEED = profile.getMovementSpeed(); // will depend on the stats of the unit that's moving
             
             // get all movement skills loaded in one place
             for(Skill s : profile.getSkills()){
@@ -126,7 +122,7 @@ public class MovePane {
             	 }
             	 
             	 public void showRealTimeStats(){
-                   //  double remainingCD = movementSkills.get(0).getRemainingCD();
+                     //double remainingCD = movementSkills.get(0).getRemainingCD();
                     // System.out.println("Health: " + profile.getCurrentHp() + "   MANA: " + profile.getCurrentMana() + "   Cooldown: " + remainingCD);
                    
             	 }
@@ -142,7 +138,7 @@ public class MovePane {
                         hp.setBounds(hpRect);
                      	mobby.setBackground(Color.BLACK);
                      	System.out.println("YOU DIED :(  T_T  D:");
-                     	moveTimer.stop();
+                     	//moveTimer.stop();
                      	ambientTimer.stop();
                      	return; 
                      }
@@ -154,88 +150,23 @@ public class MovePane {
             });
             ambientTimer.start();
             
-            /* *******************************************************
-             *  Load timer player dependent events.       
-             *  These events occur based on user input
-             *  Includes targeted/non-targeted skills, effects, etc...
-             *********************************************************/
-            moveTimer = new Timer(10, new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                	
-                    Container parent = mobby.getParent(); // TODO: should be retrieving the map data!!
-                    Rectangle bounds = mobby.getBounds(); // retrieves the character data!  
-
-                    // can control speed at which the object moves
-                    switch (moveDirection) {
-                        case Up:
-                            bounds.y -= SPEED;
-                            profile.setOrientation(Direction.Up);
-                            break;
-                        case Down:
-                            bounds.y += SPEED;
-                            profile.setOrientation(Direction.Down);
-                            break;
-                        case Left:
-                            bounds.x -= SPEED;
-                            profile.setOrientation(Direction.Left);
-                            break;
-                        case Right:
-                            bounds.x += SPEED;
-                            profile.setOrientation(Direction.Right);
-                            break;
-                        case Blink:
-                        	 // TODO: no other targets right now!!! only self targeting!!
-                        	 movementSkills.get(0).applyTargetedEffect(profile, null); 
-                        	 bounds.x = profile.getCoordinatePosition().l;
-                        	 bounds.y = profile.getCoordinatePosition().r;
-                        default:
-                        	break;
-                    }
-                    if (bounds.x < 0) {
-                        bounds.x = 0;
-                        mobby.setBackground(randomColor());
-                        profile.updateHp(-1);
-                    } else if (bounds.x + bounds.width > parent.getWidth()) {
-                    	mobby.setBackground(randomColor());
-                        bounds.x = parent.getWidth() - bounds.width;
-                        profile.updateHp(-1);
-                    }
-                    if (bounds.y < 2*barHeight) {
-                    	mobby.setBackground(randomColor());
-                        bounds.y = 2*barHeight;
-                        profile.updateHp(-1);
-                    } else if (bounds.y + bounds.height > parent.getHeight()) {
-                    	mobby.setBackground(randomColor());
-                        bounds.y = parent.getHeight() - bounds.height;
-                        profile.updateHp(-1);
-                    }
-                    profile.setPosition(bounds.x, bounds.y);
-                    mobby.setBounds(bounds);
-                }
-                
-                public Color randomColor(){
-                	double i = Math.random();
-                	if(i < 0.25){
-                		return Color.GREEN;
-                	}
-                	else if(i < 0.5){
-                		return Color.BLUE;
-                	}
-                	else if (i < 0.75){
-                		return Color.RED;
-                	}
-                	else{
-                		return Color.ORANGE;
-                	}
-                }
-            });
-            moveTimer.start();
+            /* **************************************************
+             *  Load timer for player dependent events.       
+             *  These events occur based on user input such as: 
+             *  targeted/non-targeted skills, mouse click, etc...
+             ****************************************************/          
+            addMouseListener(pool,profile);
             
             InputMap im = pool.getInputMap();
-            ActionMap am = pool.getActionMap();
-
-            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0, false), "UpPressed");
+            ActionMap am = pool.getActionMap();          
+            KeyUpAction keyUpAction = new KeyUpAction();       
+            bindKeys(im,am, keyUpAction);
+        }
+        
+        
+       public void bindKeys(InputMap im, ActionMap am, KeyUpAction keyUpAction){
+    	   
+    	  /*im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0, false), "UpPressed");
             im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0, true), "UpReleased");
             im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0, false), "DownPressed");
             im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0, true), "DownReleased");
@@ -243,25 +174,25 @@ public class MovePane {
             im.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, true), "LeftReleased");
             im.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0, false), "RightPressed");
             im.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0, true), "RightReleased");
-            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, 0, false), "ZPressed");
-            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, 0, true), "ZReleased");
                        
-            KeyUpAction keyUpAction = new KeyUpAction();
             
             // TODO: add functionality for arbitrary hot-key assignments!!
             am.put("UpReleased", keyUpAction);
             am.put("DownReleased", keyUpAction);
             am.put("LeftReleased", keyUpAction);
-            am.put("RightReleased", keyUpAction);
-            am.put("ZReleased", keyUpAction);
+            am.put("RightReleased", keyUpAction);            
             
             am.put("UpPressed", new MoveAction(Direction.Up));
             am.put("DownPressed", new MoveAction(Direction.Down));
             am.put("LeftPressed", new MoveAction(Direction.Left));
-            am.put("RightPressed", new MoveAction(Direction.Right));
-            am.put("ZPressed", new MoveAction(Direction.Blink));
-
-        }
+            am.put("RightPressed", new MoveAction(Direction.Right));*/
+           im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, 0, false), "ZPressed");
+           im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, 0, true), "ZReleased");
+           
+           am.put("ZPressed", new MoveAction(Direction.Blink));
+           am.put("ZReleased", keyUpAction);
+       }
+        
         public void loadGraphics(CharacterProfile profile, JPanel pool){
         	// health bar data
             hbar = new JPanel();
@@ -310,24 +241,24 @@ public class MovePane {
         public void addMouseListener(JPanel pool, final CharacterProfile profile){
 
         	pool.addMouseListener(new MouseListener(){
-            	private int X; 
-            	private int Y;
+            	private int X = 0; 
+            	private int Y = 2*barHeight;
             	private JPanel avatar;
             	private Rectangle r;
-            	private int SPEED = 2*profile.getMovementSpeed();
+            	private int SPEED = profile.getMovementSpeed();
+            	private int usedBlink = 0;
+            	private boolean mouseHeld = false;
             	
             	// TODO: find less hacky solution to creating timers!!
-            	private Timer t = new Timer(0, new ActionListener(){
+            	private Timer mouseTimer = new Timer(10, new MyActionListener(profile){
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
+						Container parent = mobby.getParent();
 						Tuple<Double,Double> vector = vector2D(X-r.x,Y-r.y);
-						if((r.x == X && r.y == Y) || profile.getCurrentHp() == 0){
-							System.out.println("STOPPED");
-							t.stop();
-							//moveTimer.start();
-							return;
-						}						
+						if(profile.getCurrentHp() == 0){
+							mouseTimer.stop();
+						}				
 						int xDist = Math.abs(X - r.x);
 						int yDist = Math.abs(Y - r.y);
 						
@@ -356,25 +287,83 @@ public class MovePane {
 							r.y += Math.min(yDist,SPEED)*vector.r;
 							profile.setOrientation(Direction.Down);
 						}
+						switch (moveDirection) {
+	                        case Blink:	                        	 
+	                        	 // TODO: no other targets right now!!! only self targeting!!
+	                        	 usedBlink = movementSkills.get(0).applyTargetedEffect(profile, null); 
+	                        	 if(usedBlink > 0){
+	                        		 X = profile.getCoordinatePosition().l;
+	                        		 Y = profile.getCoordinatePosition().r;
+		                        	 r.x = profile.getCoordinatePosition().l;
+		                        	 r.y = profile.getCoordinatePosition().r;
+	                        		 //System.out.println("STOPPED HERE");
+	 							 	 //return;
+		                        	 //t.stop();	 							 	
+	                        	 }
+	                        	 else{
+	                        		 //System.out.println("NOPE");
+	                        	 }
+	                        default:
+	                        	break;
+	                    }
+						if (r.x < 0) {
+	                        r.x = 0;
+	                        X = r.x;
+	                        mobby.setBackground(randomColor());
+	                        profile.updateHp(-10);
+	                    } else if (r.x + r.width > parent.getWidth()) {
+	                    	mobby.setBackground(randomColor());
+	                        r.x = parent.getWidth() - r.width;
+	                        X = r.x;
+	                        profile.updateHp(-10);
+	                    }
+	                    if (r.y < 2*barHeight) {
+	                    	mobby.setBackground(randomColor());
+	                        r.y = 2*barHeight;
+	                        profile.updateHp(-10);
+	                        Y = r.y;
+	                    } else if (r.y + r.height > parent.getHeight()) {
+	                    	mobby.setBackground(randomColor());
+	                        r.y = parent.getHeight() - r.height;
+	                        profile.updateHp(-10);
+	                        Y = r.y;
+	                    }
+	                    profile.setPosition(r.x, r.y);
+	                    mobby.setBounds(r);
 
 						avatar.setBounds(r);
 					}
 					
+					 public Color randomColor(){
+		                	double i = Math.random();
+		                	if(i < 0.25){
+		                		return Color.GREEN;
+		                	}
+		                	else if(i < 0.5){
+		                		return Color.BLUE;
+		                	}
+		                	else if (i < 0.75){
+		                		return Color.RED;
+		                	}
+		                	else{
+		                		return Color.ORANGE;
+		                	}
+		                }
+					
             	});	
 				@Override
 				public void mouseClicked(MouseEvent e) {
-
 				}
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
-					//System.out.println("HI");					
+					avatar = profile.avatar;					
+					r = avatar.getBounds(); 
+					mouseTimer.start();
 				}
 
 				@Override
 				public void mouseExited(MouseEvent e) {
-					//System.out.println("BYE");
-					//t.stop();
 				}
 
 				@Override
@@ -383,12 +372,13 @@ public class MovePane {
 					r = avatar.getBounds(); 
 					X = e.getX() - r.width/2; 
 					Y = e.getY() - r.height/2;
-					t.start();
+					mouseTimer.start();
+					mouseHeld = true;
 				}
 
 				@Override
-				public void mouseReleased(MouseEvent e) {
-					
+				public void mouseReleased(MouseEvent e) {		
+					mouseHeld = false;
 				}
 				
 				public Tuple<Double, Double> vector2D(int xDiff, int yDiff){
@@ -433,12 +423,8 @@ public class MovePane {
             }
         }
         private class MyActionListener implements ActionListener {
-            private CharacterProfile profile;
-
             public MyActionListener(CharacterProfile profile) {
-                this.profile = profile;
             }
-
             public void actionPerformed(ActionEvent e) {
                 
             }
