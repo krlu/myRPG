@@ -81,7 +81,11 @@ public class MovePane {
         private JPanel mbar;
         private JPanel mana;
         private ArrayList<Skill> movementSkills; // relevant movement skills 
+        private ArrayList<JPanel> mapObjects; // objects on the map
+
         public SimpleMap(final CharacterProfile profile) {
+        	
+        	// load mapData
         	
         	// load map objects as 2D graphics 
             JPanel pool = new JPanel(null);
@@ -122,8 +126,8 @@ public class MovePane {
             	 }
             	 
             	 public void showRealTimeStats(){
-                     //double remainingCD = movementSkills.get(0).getRemainingCD();
-                    // System.out.println("Health: " + profile.getCurrentHp() + "   MANA: " + profile.getCurrentMana() + "   Cooldown: " + remainingCD);
+                   //  double remainingCD = movementSkills.get(0).getRemainingCD();
+                   //  System.out.println("Health: " + profile.getCurrentHp() + "   MANA: " + profile.getCurrentMana() + "   Cooldown: " + remainingCD);
                    
             	 }
             	 
@@ -138,7 +142,6 @@ public class MovePane {
                         hp.setBounds(hpRect);
                      	mobby.setBackground(Color.BLACK);
                      	System.out.println("YOU DIED :(  T_T  D:");
-                     	//moveTimer.stop();
                      	ambientTimer.stop();
                      	return; 
                      }
@@ -155,7 +158,7 @@ public class MovePane {
              *  These events occur based on user input such as: 
              *  targeted/non-targeted skills, mouse click, etc...
              ****************************************************/          
-            addMouseListener(pool,profile);
+            addMouseListener(pool,profile, mapObjects);
             
             InputMap im = pool.getInputMap();
             ActionMap am = pool.getActionMap();          
@@ -166,26 +169,6 @@ public class MovePane {
         
        public void bindKeys(InputMap im, ActionMap am, KeyUpAction keyUpAction){
     	   
-    	  /*im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0, false), "UpPressed");
-            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0, true), "UpReleased");
-            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0, false), "DownPressed");
-            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0, true), "DownReleased");
-            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, false), "LeftPressed");
-            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, true), "LeftReleased");
-            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0, false), "RightPressed");
-            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0, true), "RightReleased");
-                       
-            
-            // TODO: add functionality for arbitrary hot-key assignments!!
-            am.put("UpReleased", keyUpAction);
-            am.put("DownReleased", keyUpAction);
-            am.put("LeftReleased", keyUpAction);
-            am.put("RightReleased", keyUpAction);            
-            
-            am.put("UpPressed", new MoveAction(Direction.Up));
-            am.put("DownPressed", new MoveAction(Direction.Down));
-            am.put("LeftPressed", new MoveAction(Direction.Left));
-            am.put("RightPressed", new MoveAction(Direction.Right));*/
            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, 0, false), "ZPressed");
            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, 0, true), "ZReleased");
            
@@ -230,153 +213,27 @@ public class MovePane {
             mobby.setBounds(r);
             setLayout(new BorderLayout());
             
+            mapObjects = new ArrayList<JPanel>();
+            
+            JPanel wall = new JPanel(); 
+            wall.setBackground(Color.DARK_GRAY);
+            Rectangle wallRect = wall.getBounds();
+            wallRect.setSize(20, 200);
+            wallRect.y = 2*barHeight + mobby.getBounds().height + 10;
+            wall.setBounds(wallRect);
+           // this.mapObjects.add(wall);
+            
+          //  pool.add(wall);
             pool.add(mobby);
             pool.add(hp);
             pool.add(hbar);
             pool.add(mana);
-            pool.add(mbar);
+            pool.add(mbar);            
             add(pool);
         }
         
-        public void addMouseListener(JPanel pool, final CharacterProfile profile){
-        /*	pool.addMouseMotionListener(new MouseMotionListener(){
-        		
-        		private int X = 0; 
-            	private int Y = 2*barHeight;
-            	private JPanel avatar;
-            	private Rectangle r;
-            	private int SPEED = profile.getMovementSpeed();
-            	private int usedBlink = 0;
-            	
-            	// TODO: find less hacky solution to creating timers!!
-            	private Timer mouseTimer = new Timer(10, new MyActionListener(profile){
-
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						//System.out.println(mouseHeld + "  ");
-						Container parent = mobby.getParent();
-						Tuple<Double,Double> vector = vector2D(X-r.x,Y-r.y);
-						if(profile.getCurrentHp() == 0){
-							mouseTimer.stop();
-						}				
-						int xDist = Math.abs(X - r.x);
-						int yDist = Math.abs(Y - r.y);
-						
-						// for when vector components are < 1
-						if(xDist == 1){
-							r.x = X;							
-						}
-						else if(r.x > X){
-							r.x += Math.min(xDist,SPEED)*vector.l;
-							profile.setOrientation(Direction.Left);
-						}
-						else if(r.x < X){
-							r.x += Math.min(xDist,SPEED)*vector.l;
-							profile.setOrientation(Direction.Right);
-						}
-
-						
-						if(yDist == 1){
-							r.y = Y;
-						}
-						else if(r.y > Y){
-							r.y += Math.min(yDist,SPEED)*vector.r;
-							profile.setOrientation(Direction.Up);
-						}
-						else if(r.y < Y){
-							r.y += Math.min(yDist,SPEED)*vector.r;
-							profile.setOrientation(Direction.Down);
-						}
-						switch (moveDirection) {
-	                        case Blink:	                        	 
-	                        	 // TODO: no other targets right now!!! only self targeting!!
-	                        	 usedBlink = movementSkills.get(0).applyTargetedEffect(profile, null); 
-	                        	 if(usedBlink > 0){
-	                        		 X = profile.getCoordinatePosition().l;
-	                        		 Y = profile.getCoordinatePosition().r;
-		                        	 r.x = profile.getCoordinatePosition().l;
-		                        	 r.y = profile.getCoordinatePosition().r;
-	                        		 //System.out.println("STOPPED HERE");
-	 							 	 //return;
-		                        	 //t.stop();	 							 	
-	                        	 }
-	                        	 else{
-	                        		 //System.out.println("NOPE");
-	                        	 }
-	                        default:
-	                        	break;
-	                    }
-						if (r.x < 0) {
-	                        r.x = 0;
-	                        X = r.x;
-	                        mobby.setBackground(randomColor());
-	                        profile.updateHp(-10);
-	                    } else if (r.x + r.width > parent.getWidth()) {
-	                    	mobby.setBackground(randomColor());
-	                        r.x = parent.getWidth() - r.width;
-	                        X = r.x;
-	                        profile.updateHp(-10);
-	                    }
-	                    if (r.y < 2*barHeight) {
-	                    	mobby.setBackground(randomColor());
-	                        r.y = 2*barHeight;
-	                        profile.updateHp(-10);
-	                        Y = r.y;
-	                    } else if (r.y + r.height > parent.getHeight()) {
-	                    	mobby.setBackground(randomColor());
-	                        r.y = parent.getHeight() - r.height;
-	                        profile.updateHp(-10);
-	                        Y = r.y;
-	                    }
-	                    profile.setPosition(r.x, r.y);
-	                    mobby.setBounds(r);
-
-						avatar.setBounds(r);
-					}
-					
-					 public Color randomColor(){
-		                	double i = Math.random();
-		                	if(i < 0.25){
-		                		return Color.GREEN;
-		                	}
-		                	else if(i < 0.5){
-		                		return Color.BLUE;
-		                	}
-		                	else if (i < 0.75){
-		                		return Color.RED;
-		                	}
-		                	else{
-		                		return Color.ORANGE;
-		                	}
-		                }
-					
-            	});	
-				@Override
-				public void mouseDragged(MouseEvent e) {
-					avatar = profile.avatar;
-					r = avatar.getBounds(); 
-					X = e.getX() - r.width/2; 
-					Y = e.getY() - r.height/2;					
-				}
-
-				@Override
-				public void mouseMoved(MouseEvent e) {
-					avatar = profile.avatar;
-					r = avatar.getBounds(); 
-					mouseTimer.start();				
-				}
-				public Tuple<Double, Double> vector2D(int xDiff, int yDiff){
-					
-					double magnitude = Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff,2));					
-					if(magnitude == 0){
-						return new Tuple<Double,Double>(0.0,0.0);
-					}
-					Tuple<Double, Double> vector2D = new Tuple<Double, Double>(xDiff/magnitude,yDiff/magnitude);
-					return vector2D;
-				}
-        		
-        	});*/
-        	pool.addMouseListener(new MyMouseListener(profile){
+        public void addMouseListener(JPanel pool, final CharacterProfile profile, final ArrayList<JPanel> mapObjects){
+        	pool.addMouseListener(new MyMouseListener(profile, mapObjects){
             	private int X = 0; 
             	private int Y = 2*barHeight;
             	private JPanel avatar;
@@ -454,28 +311,40 @@ public class MovePane {
 	                        profile.updateHp(-10);
 	                        Y = r.y;
 	                    }
+	                    
+	                    checkIntersection(r,mobby, mapObjects);
 	                    profile.setPosition(r.x, r.y);
 	                    mobby.setBounds(r);
 
 						avatar.setBounds(r);
 					}
+					public void checkIntersection(Rectangle r, JPanel mobby, ArrayList<JPanel> mapObjects){		
+						for(JPanel mapObject : mapObjects){
+							Rectangle mapRect = mapObject.getBounds(); 
+							if(IntersectionCalculator.computeIntersectionCases(r, mapRect)){
+								mobby.setBackground(randomColor());							
+								profile.updateHp(-10);
+								X = r.x; 
+								Y = r.y;	
+							}
+						}
+					}					
 					
-					 public Color randomColor(){
-		                	double i = Math.random();
-		                	if(i < 0.25){
-		                		return Color.GREEN;
-		                	}
-		                	else if(i < 0.5){
-		                		return Color.BLUE;
-		                	}
-		                	else if (i < 0.75){
-		                		return Color.RED;
-		                	}
-		                	else{
-		                		return Color.ORANGE;
-		                	}
+					public Color randomColor(){
+		                double i = Math.random();
+		                if(i < 0.25){
+		                	return Color.GREEN;
 		                }
-					
+		                else if(i < 0.5){
+		                	return Color.BLUE;
+		                }
+		                else if (i < 0.75){
+		                	return Color.RED;
+		                }
+		                else{
+		                	return Color.ORANGE;
+		                }
+		            }					
             	});	
 				@Override
 				public void mouseClicked(MouseEvent e) {
@@ -502,7 +371,6 @@ public class MovePane {
 					Y = e.getY() - r.height/2;
 					this.vector = vector2D(X-r.x,Y-r.y);					
 					profile.setDirection(vector.l, vector.r);		
-					System.out.println(profile.getDirectionVector().l + "   " + profile.getDirectionVector().r);
 				}
 
 				@Override
@@ -558,7 +426,7 @@ public class MovePane {
             }
         }
         private class MyMouseListener implements MouseListener{
-        	public MyMouseListener(CharacterProfile profile){
+        	public MyMouseListener(CharacterProfile profile, ArrayList<JPanel> mapObjects){
         	}
         	
 			@Override

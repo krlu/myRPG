@@ -51,9 +51,10 @@ public class Blink extends Skill {
     	//	 System.out.println("BLINKED!!");
     		 profile.updateMana(- this.manaCost);
     	 }
+    	 
+    	 // update position here
     	 x += BLINK * profile.getDirectionVector().l;
     	 y += BLINK * profile.getDirectionVector().r;
-    	 
     	 profile.setPosition(x, y);
     	 return 1;
     }
