@@ -325,8 +325,8 @@ public class MovePane {
 							if(IntersectionCalculator.computeIntersectionCases(r, mapRect)){
 							//	mobby.setBackground(randomColor());							
 								//profile.updateHp(-10);
-							//	X = r.x; 
-							//	Y = r.y;	
+								X = r.x; 
+								Y = r.y;	
 							}
 						}
 					}					

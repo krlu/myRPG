@@ -25,25 +25,29 @@ public class IntersectionCalculator {
 		yCoordsB[3] = B.y + B.height;
 		
 		boolean intersected = false;
-		// intersects side1
-		if(numIntersectionsWithPolygon(xCoordsB[0], yCoordsB[0], xCoordsB[1], yCoordsB[1], A) > 0){
-			System.out.println("side1: " + numIntersectionsWithPolygon(xCoordsB[0], yCoordsB[0], xCoordsB[1], yCoordsB[1], A));
-			//A.y = B.y - A.height;
+		int side1 = numIntersectionsWithPolygon(xCoordsB[0], yCoordsB[0], xCoordsB[1], yCoordsB[1], A);
+		int side2 = numIntersectionsWithPolygon(xCoordsB[1], yCoordsB[1], xCoordsB[2], yCoordsB[2], A);
+		int side3 = numIntersectionsWithPolygon(xCoordsB[2], yCoordsB[2], xCoordsB[3], yCoordsB[3], A);
+		int side4 = numIntersectionsWithPolygon(xCoordsB[3], yCoordsB[3], xCoordsB[0], yCoordsB[0], A);
+		System.out.println(side1 + "  " + side2 + "   " + side3 + "  " + side4);
+		if(side2 == 1 && side1 == 0 && side3 == 0 &&side4 == 1 && aabbContainsSegment (xCoordsB[0], yCoordsB[0], xCoordsB[1], yCoordsB[1], A.x, A.y, A.x + A.width, A.y + A.height)){
+		//	System.out.println("side1: " + numIntersectionsWithPolygon(xCoordsB[0], yCoordsB[0], xCoordsB[1], yCoordsB[1], A));
+			A.y = B.y - A.height;
 			intersected = true;
 		}
-		if(numIntersectionsWithPolygon(xCoordsB[1], yCoordsB[1], xCoordsB[2], yCoordsB[2], A) > 0){
-			System.out.println("side2: " + numIntersectionsWithPolygon(xCoordsB[1], yCoordsB[1], xCoordsB[2], yCoordsB[2], A));
-			//A.x = B.x + B.width;
+		if(side2 == 2 || (side1 == 1 && side2 == 1) || (side3 == 1 && side2 == 1)){
+		//	System.out.println("side2: " + numIntersectionsWithPolygon(xCoordsB[1], yCoordsB[1], xCoordsB[2], yCoordsB[2], A));
+			A.x = B.x + B.width;
 			intersected = true;
 		}
-		if(numIntersectionsWithPolygon(xCoordsB[2], yCoordsB[2], xCoordsB[3], yCoordsB[3], A) > 0){
-			System.out.println("side3!: " + numIntersectionsWithPolygon(xCoordsB[2], yCoordsB[2], xCoordsB[3], yCoordsB[3], A));
-		//	A.y = B.y + B.height;
+		if(side2 == 1 && side4 == 1 && aabbContainsSegment (xCoordsB[2], yCoordsB[2], xCoordsB[3], yCoordsB[3], A.x, A.y, A.x + A.width, A.y + A.height)){
+		//	System.out.println("side3!: " + numIntersectionsWithPolygon(xCoordsB[2], yCoordsB[2], xCoordsB[3], yCoordsB[3], A));
+			A.y = B.y + B.height;
 			intersected = true;
 		}
-		if(numIntersectionsWithPolygon(xCoordsB[3], yCoordsB[3], xCoordsB[0], yCoordsB[0], A) > 0){
-			System.out.println("side4! " + numIntersectionsWithPolygon(xCoordsB[3], yCoordsB[3], xCoordsB[0], yCoordsB[0], A));
-		//	A.x = B.x - A.width;
+		if(side4 == 2 || (side1 == 1 && side4 == 1) || (side3 == 1 && side4 == 1)){
+		//	System.out.println("side4! " + numIntersectionsWithPolygon(xCoordsB[3], yCoordsB[3], xCoordsB[0], yCoordsB[0], A));
+			A.x = B.x - A.width;
 			intersected = true;
 		}		
 
