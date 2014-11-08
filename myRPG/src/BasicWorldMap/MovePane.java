@@ -323,10 +323,10 @@ public class MovePane {
 						for(JPanel mapObject : mapObjects){
 							Rectangle mapRect = mapObject.getBounds(); 
 							if(IntersectionCalculator.computeIntersectionCases(r, mapRect)){
-								mobby.setBackground(randomColor());							
+							//	mobby.setBackground(randomColor());							
 								//profile.updateHp(-10);
-								X = r.x; 
-								Y = r.y;	
+							//	X = r.x; 
+							//	Y = r.y;	
 							}
 						}
 					}					
