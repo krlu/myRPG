@@ -219,11 +219,12 @@ public class MovePane {
             wall.setBackground(Color.DARK_GRAY);
             Rectangle wallRect = wall.getBounds();
             wallRect.setSize(20, 200);
+            wallRect.x = 200;
             wallRect.y = 2*barHeight + mobby.getBounds().height + 10;
             wall.setBounds(wallRect);
-           // this.mapObjects.add(wall);
+            this.mapObjects.add(wall);
             
-          //  pool.add(wall);
+            pool.add(wall);
             pool.add(mobby);
             pool.add(hp);
             pool.add(hbar);
@@ -323,7 +324,7 @@ public class MovePane {
 							Rectangle mapRect = mapObject.getBounds(); 
 							if(IntersectionCalculator.computeIntersectionCases(r, mapRect)){
 								mobby.setBackground(randomColor());							
-								profile.updateHp(-10);
+								//profile.updateHp(-10);
 								X = r.x; 
 								Y = r.y;	
 							}
