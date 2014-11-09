@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
@@ -171,7 +172,7 @@ public class MovePane {
     	   
            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, 0, false), "ZPressed");
            im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, 0, true), "ZReleased");
-           
+                     
            am.put("ZPressed", new MoveAction(Direction.Blink));
            am.put("ZReleased", keyUpAction);
        }
@@ -323,10 +324,10 @@ public class MovePane {
 						for(JPanel mapObject : mapObjects){
 							Rectangle mapRect = mapObject.getBounds(); 
 							if(IntersectionCalculator.computeIntersectionCases(r, mapRect)){
-							//	mobby.setBackground(randomColor());							
-								//profile.updateHp(-10);
-								X = r.x; 
-								Y = r.y;	
+								mobby.setBackground(randomColor());							
+								//profile.updateHp(-1);
+								//X = r.x; 
+								//Y = r.y;	
 							}
 						}
 					}					
@@ -404,7 +405,7 @@ public class MovePane {
                 moveDirection = Direction.None;
             }
         }
-
+        
         
         public class MoveAction extends AbstractAction {
 
